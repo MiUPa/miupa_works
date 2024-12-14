@@ -25,82 +25,107 @@ body {
 }
 
 @page {
-    size: 120mm 235mm;  /* 長3封筒サイズ */
-    margin: 10mm;       /* 余白 */
+    size: A4;
+    margin: 0;
 }
 
 @media print {
     body {
         margin: 0;
         padding: 0;
-        visibility: hidden;  /* body全体を非表示 */
+        visibility: hidden;
+    }
+    
+    .container {
+        visibility: hidden;
     }
     
     .envelope-preview {
-        display: block;     /* 印刷時のみ表示 */
-        visibility: visible;  /* envelope-previewのみ表示 */
+        display: block;
+        visibility: visible;
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 120mm;
         height: 235mm;
-        padding: 10mm;
+        padding: 0;
+        margin: 0;
         box-sizing: border-box;
+        page-break-after: always;
+        background-color: white;
     }
 
     .address-section {
-        display: flex;
-        flex-direction: column;
-        gap: 15mm;
+        position: relative;
+        width: 120mm;
+        height: 235mm;
+        transform-origin: top left;
     }
 
-    .recipient-address {
-        margin-top: 60mm;
-        font-size: 14pt;
-        line-height: 2;
-        text-align: left;
-        position: absolute;
-        left: 0mm;
-        top: 0;
-        width: 100mm;
-    }
+
 
     #recipientPostal {
+        font-size: 16pt;
         margin-bottom: 5mm;
-        position: relative;
     }
 
     #recipientAddress {
+        font-size: 14pt;
+        line-height: 1.8;
         margin-bottom: 5mm;
     }
 
     #recipientName {
-        margin-top: 20mm;
-        font-size: 25pt;
+        font-size: 24pt;
+        margin-top: 30mm;
         text-align: center;
-        width: 100mm;
-        position: relative;
-        left: 0;
+    }
+
+    .recipient-address {
+        position: absolute;
+        top: 70mm;
+        left: 15mm;
+        width: 90mm;
     }
 
     .sender-address {
         position: absolute;
-        bottom: 10mm;
-        left: 0mm;
-        font-size: 10pt;
+        bottom: 0mm;
+        left: 15mm;
+        width: 90mm;
         line-height: 0.3;
-        width: 100mm;
     }
 
     #senderOrganization {
-        font-size: 20pt;
+        font-size: 16pt;
+        margin-bottom: 1mm;
+    }
+
+    #senderName {
+        font-size: 10pt;
+        margin-bottom: 0;
     }
 
     #senderPostal {
-        padding-top: 5mm;
+        font-size: 10pt;
+        margin-top: 2mm;
+        padding-top: 2mm;
         border-top: 1px solid #000;
-        width: 100%;
-        display: block;
+        margin-bottom: 0;
+    }
+
+    #senderAddress {
+        font-size: 10pt;
+        margin-bottom: 0;
+    }
+
+    #senderWebsite {
+        font-size: 10pt;
+        margin-bottom: 0;
     }
 
     .input-section, 
+    .data-preview,
     h1 {
         display: none;
     }

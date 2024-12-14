@@ -60,7 +60,7 @@ function parseCSV(csvText) {
 
 function updateDataTable(orders) {
     const tableBody = document.getElementById('dataTable');
-    tableBody.innerHTML = ''; // テーブルをクリア
+    tableBody.innerHTML = ''; // テーブルをク��ア
     
     orders.forEach((order, index) => {
         const row = document.createElement('tr');
@@ -80,10 +80,26 @@ function updateDataTable(orders) {
     window.orderData = orders;
 }
 
-function printSingleLabel(index) {
+async function printLabel() {
+    const confirmed = confirm(
+        '印刷設定を確認してください：\n\n' +
+        '1. 用紙サイズ：A4\n' +
+        '2. 印刷の向き：縦\n' +
+        '3. 倍率：100%（実際のサイズ）\n' +
+        '4. 余白：なし\n\n' +
+        '※ A4用紙の左上に長3封筒サイズで印刷されます\n' +
+        '印刷を続けますか？'
+    );
+    
+    if (confirmed) {
+        window.print();
+    }
+}
+
+async function printSingleLabel(index) {
     const order = window.orderData[index];
     updateEnvelopePreview(order);
-    window.print();
+    await printLabel();
 }
 
 function updateEnvelopePreview(data) {
