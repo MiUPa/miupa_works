@@ -18,20 +18,23 @@
         <div class="envelope-preview" id="envelopePreview">
             <div class="address-section">
                 <div class="recipient-address">
-                    <p id="recipientPostal">〒000-0000</p>
+                    <p id="recipientPostal">〒 000-0000</p>
                     <p id="recipientAddress">住所が表示されます</p>
-                    <p id="recipientName">お名前が表示されます</p>
+                    <p id="recipientName">お名前 様</p>
                 </div>
                 <div class="sender-address">
-                    <p>〒XXX-XXXX</p>
-                    <p>ご自身の住所</p>
-                    <p>ご自身の名前</p>
+                    <p id="senderOrganization"></p>
+                    <p id="senderName"></p>
+                    <p id="senderPostal"></p>
+                    <p id="senderAddress"></p>
+                    <p id="senderWebsite"></p>
                 </div>
             </div>
         </div>
 
         <button onclick="printLabel()" class="print-button">印刷</button>
     </div>
+    <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
 </html> 

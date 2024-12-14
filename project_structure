@@ -1,4 +1,5 @@
 mercari-shipping-label/
 ├── index.html
 ├── styles.css
-└── script.js 
+├── script.js
+└── config.js

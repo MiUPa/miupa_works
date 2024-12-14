@@ -14,28 +14,82 @@ body {
 }
 
 .envelope-preview {
-    width: 235mm;
-    height: 120mm;
+    width: 120mm;   /* 長3封筒の幅 */
+    height: 235mm;  /* 長3封筒の高さ */
     border: 1px solid #ccc;
     margin: 20px auto;
-    padding: 10mm;
+    padding: 10mm; /* 上下左右の余白 */
     box-sizing: border-box;
+    position: relative;
 }
 
 .address-section {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 15mm;
 }
 
 .recipient-address {
-    font-size: 16pt;
-    line-height: 1.8;
+    margin-top: 60mm;  /* 上部の余白を増やす */
+    font-size: 14pt;
+    line-height: 2;
+    text-align: left;
+    position: absolute;
+    left: 10mm;  /* 左側の余白 */
+    top: 0;
+}
+
+#recipientPostal {
+    margin-bottom: 5mm;
+    position: relative;
+}
+
+#recipientAddress {
+    margin-bottom: 5mm;
+}
+
+#recipientName {
+    margin-top: 20mm;  /* 名前までの間隔を広げる */
+    font-size: 25pt;
+    text-align: center;  /* 中央揃え */
+  width: 100mm;       /* 送り主と同じ幅 */
+    position: relative; /* 相対位置指定 */
+    left: -10mm;       /* 左マージンを相殺して中央揃えの基準を調整 */
 }
 
 .sender-address {
+    position: absolute;
+    bottom: 10mm;
+    left: 10mm;
     font-size: 10pt;
-    text-align: right;
+    line-height: 0.3;
+    width: 100mm;
 }
+
+#senderOrganization {
+    font-size: 20pt;
+    /* margin-bottom: 2mm; */
+}
+
+/* #senderName {
+    margin-bottom: 3mm;
+} */
+
+#senderPostal {
+    padding-top: 5mm;
+    border-top: 1px solid #000;
+    width: 100%;
+    display: block;
+}
+
+/* #senderAddress {
+    padding-top: 3mm;
+    margin-top: 3mm;
+} */
+
+/* #senderWebsite {
+    margin-top: 2mm;
+} */
 
 .print-button {
     display: block;
@@ -45,11 +99,22 @@ body {
 }
 
 @media print {
-    .input-section, .print-button {
-        display: none;
+    body {
+        margin: 0;
+        padding: 0;
     }
     
     .envelope-preview {
         border: none;
+        margin: 0;
+        padding: 10mm;
+        width: 120mm;
+        height: 235mm;
+    }
+    
+    .input-section, 
+    .print-button,
+    h1 {
+        display: none;
     }
 } 
