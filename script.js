@@ -58,55 +58,125 @@ function parseCSV(csvText) {
     return orders;
 }
 
+function formatPostalCode(code) {
+    // 数字以外を除去し、3桁-4桁の形式にフォーマット
+    const cleaned = code.replace(/[^\d]/g, '');
+    if (cleaned.length === 7) {
+        return cleaned.slice(0, 3) + '-' + cleaned.slice(3);
+    }
+    return code;
+}
+
 function updateDataTable(orders) {
     const tableBody = document.getElementById('dataTable');
-    tableBody.innerHTML = ''; // テーブルをク��ア
+    tableBody.innerHTML = '';
     
     orders.forEach((order, index) => {
         const row = document.createElement('tr');
-        row.innerHTML = `
+        const checkboxCell = document.createElement('td');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'order-checkbox';
+        checkbox.dataset.index = index;
+        checkboxCell.style.textAlign = 'center';
+        checkboxCell.appendChild(checkbox);
+
+        row.appendChild(checkboxCell);
+        row.innerHTML += `
             <td>${order.orderId}</td>
-            <td>${order.postalCode}</td>
+            <td>${formatPostalCode(order.postalCode)}</td>
             <td>${order.address}</td>
             <td>${order.name}</td>
-            <td>
+            <td style="text-align: center;">
                 <button onclick="printSingleLabel(${index})">印刷</button>
             </td>
         `;
         tableBody.appendChild(row);
     });
     
-    // グローバル変数に保存（印刷時に使用）
     window.orderData = orders;
 }
 
-async function printLabel() {
+function toggleAllCheckboxes() {
+    const selectAll = document.getElementById('selectAll');
+    const checkboxes = document.querySelectorAll('.order-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = selectAll.checked;
+    });
+}
+
+function createEnvelopePreview(order) {
+    const envelope = document.createElement('div');
+    envelope.className = 'envelope-preview';
+    envelope.innerHTML = `
+        <div class="address-section">
+            <div class="recipient-address">
+                <p id="recipientPostal">〒 ${formatPostalCode(order.postalCode)}</p>
+                <p id="recipientAddress">${order.address}</p>
+                <p id="recipientName">${order.name} 様</p>
+            </div>
+            <div class="sender-address">
+                <p id="senderOrganization">${config.sender.organization}</p>
+                <p id="senderName">${config.sender.name}</p>
+                <p id="senderPostal">〒 ${formatPostalCode(config.sender.postalCode)}</p>
+                <p id="senderAddress">${config.sender.address}</p>
+                <p id="senderWebsite">${config.sender.website}</p>
+            </div>
+        </div>
+    `;
+    return envelope;
+}
+
+async function printSelectedLabels() {
+    const checkboxes = document.querySelectorAll('.order-checkbox:checked');
+    if (checkboxes.length === 0) {
+        alert('印刷する宛名ラベルを選択してください。');
+        return;
+    }
+
     const confirmed = confirm(
-        '印刷設定を確認してください：\n\n' +
+        `選択された ${checkboxes.length} 件の宛名ラベルを印刷します。\n\n` +
+        '印刷設定を確認してください：\n' +
         '1. 用紙サイズ：A4\n' +
         '2. 印刷の向き：縦\n' +
         '3. 倍率：100%（実際のサイズ）\n' +
         '4. 余白：なし\n\n' +
-        '※ A4用紙の左上に長3封筒サイズで印刷されます\n' +
+        '印刷を続けますか？'
+    );
+    
+    if (!confirmed) return;
+
+    const printArea = document.getElementById('printArea');
+    printArea.innerHTML = '';
+
+    checkboxes.forEach(checkbox => {
+        const index = parseInt(checkbox.dataset.index);
+        const order = window.orderData[index];
+        const envelope = createEnvelopePreview(order);
+        printArea.appendChild(envelope);
+    });
+
+    window.print();
+}
+
+function printSingleLabel(index) {
+    const order = window.orderData[index];
+    const printArea = document.getElementById('printArea');
+    printArea.innerHTML = '';
+    printArea.appendChild(createEnvelopePreview(order));
+
+    const confirmed = confirm(
+        '印刷設定を確認してください：\n' +
+        '1. 用紙サイズ：A4\n' +
+        '2. 印刷の向き：縦\n' +
+        '3. 倍率：100%（実際のサイズ）\n' +
+        '4. 余白：なし\n\n' +
         '印刷を続けますか？'
     );
     
     if (confirmed) {
         window.print();
     }
-}
-
-async function printSingleLabel(index) {
-    const order = window.orderData[index];
-    updateEnvelopePreview(order);
-    await printLabel();
-}
-
-function updateEnvelopePreview(data) {
-    console.log('プレビュー更新:', data);
-    document.getElementById('recipientPostal').textContent = `〒 ${data.postalCode}`;
-    document.getElementById('recipientAddress').textContent = data.address;
-    document.getElementById('recipientName').textContent = `${data.name} 様`;
 }
 
 // 差出人情報の読み込み
