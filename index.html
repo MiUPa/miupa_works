@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>メルカリ発送ラベル作成</title>
+    <title>メルカリshops発送ラベル作成ツールβ</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,6 +13,7 @@
         <div class="input-section">
             <input type="file" id="csvFile" accept=".csv">
             <button onclick="processCSV()">ラベル作成</button>
+            <button onclick="printLabel()" class="print-button">印刷</button>
         </div>
 
         <div class="envelope-preview" id="envelopePreview">
@@ -32,7 +33,6 @@
             </div>
         </div>
 
-        <button onclick="printLabel()" class="print-button">印刷</button>
     </div>
     <script src="config.js"></script>
     <script src="script.js"></script>

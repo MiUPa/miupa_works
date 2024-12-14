@@ -35,8 +35,9 @@ body {
     line-height: 2;
     text-align: left;
     position: absolute;
-    left: 10mm;  /* 左側の余白 */
+    left: 0mm;
     top: 0;
+    width: 100mm;  /* 全体幅を制限 */
 }
 
 #recipientPostal {
@@ -49,21 +50,21 @@ body {
 }
 
 #recipientName {
-    margin-top: 20mm;  /* 名前までの間隔を広げる */
+    margin-top: 20mm;
     font-size: 25pt;
-    text-align: center;  /* 中央揃え */
-  width: 100mm;       /* 送り主と同じ幅 */
-    position: relative; /* 相対位置指定 */
-    left: -10mm;       /* 左マージンを相殺して中央揃えの基準を調整 */
+    text-align: center;
+    width: 100mm;    /* 送り主と同じ幅 */
+    position: relative;
+    left: 0;        /* 左オフセットを削除 */
 }
 
 .sender-address {
     position: absolute;
     bottom: 10mm;
-    left: 10mm;
+    left: 0mm;
     font-size: 10pt;
     line-height: 0.3;
-    width: 100mm;
+    width: 100mm;    /* 幅を統一 */
 }
 
 #senderOrganization {
