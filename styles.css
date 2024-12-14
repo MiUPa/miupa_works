@@ -1,0 +1,183 @@
+body {
+    font-family: "Yu Gothic", "メイリオ", sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.input-section {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.input-section button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.envelope-preview {
+    display: none;  /* 画面上では完全に非表示 */
+}
+
+#printArea {
+    display: none;
+}
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        visibility: hidden;
+    }
+    
+    .container {
+        visibility: hidden;
+    }
+    
+    #printArea {
+        display: block;
+        visibility: visible;
+    }
+
+    .envelope-preview {
+        display: block;
+        visibility: visible;
+        position: relative;
+        width: 120mm;
+        height: 235mm;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        page-break-after: always;
+        background-color: white;
+    }
+
+    .address-section {
+        position: relative;
+        width: 120mm;
+        height: 235mm;
+        transform-origin: top left;
+    }
+
+
+
+    #recipientPostal {
+        font-size: 16pt;
+        margin-bottom: 5mm;
+    }
+
+    #recipientAddress {
+        font-size: 14pt;
+        line-height: 1.8;
+        margin-bottom: 5mm;
+    }
+
+    #recipientName {
+        font-size: 24pt;
+        margin-top: 30mm;
+        text-align: center;
+    }
+
+    .recipient-address {
+        position: absolute;
+        top: 70mm;
+        left: 15mm;
+        width: 90mm;
+    }
+
+    .sender-address {
+        position: absolute;
+        bottom: 0mm;
+        left: 15mm;
+        width: 90mm;
+        line-height: 0.3;
+    }
+
+    #senderOrganization {
+        font-size: 16pt;
+        margin-bottom: 1mm;
+    }
+
+    #senderName {
+        font-size: 10pt;
+        margin-bottom: 0;
+    }
+
+    #senderPostal {
+        font-size: 10pt;
+        margin-top: 2mm;
+        padding-top: 2mm;
+        border-top: 1px solid #000;
+        margin-bottom: 0;
+    }
+
+    #senderAddress {
+        font-size: 10pt;
+        margin-bottom: 0;
+    }
+
+    #senderWebsite {
+        font-size: 10pt;
+        margin-bottom: 0;
+    }
+
+    .input-section, 
+    .data-preview,
+    h1 {
+        display: none;
+    }
+} 
+
+.data-preview table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    table-layout: fixed;
+}
+
+.data-preview th,
+.data-preview td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.data-preview th {
+    background-color: #f5f5f5;
+    font-weight: normal;
+    text-align: center;
+    padding: 10px;
+}
+
+.data-preview tr:hover {
+    background-color: #f9f9f9;
+}
+
+.data-preview button {
+    padding: 4px 8px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.data-preview button:hover {
+    background-color: #f5f5f5;
+}
+
+.order-checkbox {
+    cursor: pointer;
+} 

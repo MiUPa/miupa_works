@@ -1,0 +1,9 @@
+const config = {
+    sender: {
+        organization: '店名',
+        name: '指名',
+        postalCode: '郵便番号',
+        address: '住所',
+        website: 'webサイトURL'
+    }
+};
