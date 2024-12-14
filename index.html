@@ -16,7 +16,26 @@
             <button onclick="printLabel()" class="print-button">印刷</button>
         </div>
 
-        <div class="envelope-preview" id="envelopePreview">
+        <!-- 表形式のデータ表示 -->
+        <div class="data-preview">
+            <table>
+                <thead>
+                    <tr>
+                        <th>注文番号</th>
+                        <th>郵便番号</th>
+                        <th>住所</th>
+                        <th>宛名</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTable">
+                    <!-- JavaScriptで動的に追加 -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 印刷用レイアウト（非表示） -->
+        <div class="envelope-preview">
             <div class="address-section">
                 <div class="recipient-address">
                     <p id="recipientPostal">〒 000-0000</p>
@@ -32,7 +51,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <script src="config.js"></script>
     <script src="script.js"></script>

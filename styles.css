@@ -11,111 +11,119 @@ body {
 
 .input-section {
     margin: 20px 0;
+    text-align: center;
+}
+
+.input-section button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
 }
 
 .envelope-preview {
-    width: 120mm;   /* 長3封筒の幅 */
-    height: 235mm;  /* 長3封筒の高さ */
-    border: 1px solid #ccc;
-    margin: 20px auto;
-    padding: 10mm; /* 上下左右の余白 */
-    box-sizing: border-box;
-    position: relative;
+    display: none;  /* 画面上では完全に非表示 */
 }
 
-.address-section {
-    display: flex;
-    flex-direction: column;
-    gap: 15mm;
-}
-
-.recipient-address {
-    margin-top: 60mm;  /* 上部の余白を増やす */
-    font-size: 14pt;
-    line-height: 2;
-    text-align: left;
-    position: absolute;
-    left: 0mm;
-    top: 0;
-    width: 100mm;  /* 全体幅を制限 */
-}
-
-#recipientPostal {
-    margin-bottom: 5mm;
-    position: relative;
-}
-
-#recipientAddress {
-    margin-bottom: 5mm;
-}
-
-#recipientName {
-    margin-top: 20mm;
-    font-size: 25pt;
-    text-align: center;
-    width: 100mm;    /* 送り主と同じ幅 */
-    position: relative;
-    left: 0;        /* 左オフセットを削除 */
-}
-
-.sender-address {
-    position: absolute;
-    bottom: 10mm;
-    left: 0mm;
-    font-size: 10pt;
-    line-height: 0.3;
-    width: 100mm;    /* 幅を統一 */
-}
-
-#senderOrganization {
-    font-size: 20pt;
-    /* margin-bottom: 2mm; */
-}
-
-/* #senderName {
-    margin-bottom: 3mm;
-} */
-
-#senderPostal {
-    padding-top: 5mm;
-    border-top: 1px solid #000;
-    width: 100%;
-    display: block;
-}
-
-/* #senderAddress {
-    padding-top: 3mm;
-    margin-top: 3mm;
-} */
-
-/* #senderWebsite {
-    margin-top: 2mm;
-} */
-
-.print-button {
-    display: block;
-    margin: 20px auto;
-    padding: 10px 20px;
-    font-size: 16px;
+@page {
+    size: 120mm 235mm;  /* 長3封筒サイズ */
+    margin: 10mm;       /* 余白 */
 }
 
 @media print {
     body {
         margin: 0;
         padding: 0;
+        visibility: hidden;  /* body全体を非表示 */
     }
     
     .envelope-preview {
-        border: none;
-        margin: 0;
-        padding: 10mm;
+        display: block;     /* 印刷時のみ表示 */
+        visibility: visible;  /* envelope-previewのみ表示 */
         width: 120mm;
         height: 235mm;
+        padding: 10mm;
+        box-sizing: border-box;
     }
-    
+
+    .address-section {
+        display: flex;
+        flex-direction: column;
+        gap: 15mm;
+    }
+
+    .recipient-address {
+        margin-top: 60mm;
+        font-size: 14pt;
+        line-height: 2;
+        text-align: left;
+        position: absolute;
+        left: 0mm;
+        top: 0;
+        width: 100mm;
+    }
+
+    #recipientPostal {
+        margin-bottom: 5mm;
+        position: relative;
+    }
+
+    #recipientAddress {
+        margin-bottom: 5mm;
+    }
+
+    #recipientName {
+        margin-top: 20mm;
+        font-size: 25pt;
+        text-align: center;
+        width: 100mm;
+        position: relative;
+        left: 0;
+    }
+
+    .sender-address {
+        position: absolute;
+        bottom: 10mm;
+        left: 0mm;
+        font-size: 10pt;
+        line-height: 0.3;
+        width: 100mm;
+    }
+
+    #senderOrganization {
+        font-size: 20pt;
+    }
+
+    #senderPostal {
+        padding-top: 5mm;
+        border-top: 1px solid #000;
+        width: 100%;
+        display: block;
+    }
+
     .input-section, 
-    .print-button,
     h1 {
         display: none;
     }
+} 
+
+.data-preview table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.data-preview th,
+.data-preview td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.data-preview th {
+    background-color: #f5f5f5;
+}
+
+.data-preview button {
+    padding: 5px 10px;
+    cursor: pointer;
 } 
