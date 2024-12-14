@@ -158,6 +158,8 @@ body {
 .data-preview th {
     background-color: #f5f5f5;
     font-weight: normal;
+    text-align: center;
+    padding: 10px;
 }
 
 .data-preview tr:hover {

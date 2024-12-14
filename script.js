@@ -87,9 +87,6 @@ function updateDataTable(orders) {
             <td>${formatPostalCode(order.postalCode)}</td>
             <td>${order.address}</td>
             <td>${order.name}</td>
-            <td style="text-align: center;">
-                <button onclick="printSingleLabel(${index})">印刷</button>
-            </td>
         `;
         tableBody.appendChild(row);
     });
@@ -166,7 +163,7 @@ function printSingleLabel(index) {
     printArea.appendChild(createEnvelopePreview(order));
 
     const confirmed = confirm(
-        '印刷設定を確認してください：\n' +
+        '印刷���定を確認してください：\n' +
         '1. 用紙サイズ：A4\n' +
         '2. 印刷の向き：縦\n' +
         '3. 倍率：100%（実際のサイズ）\n' +

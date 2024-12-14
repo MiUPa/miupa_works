@@ -11,8 +11,7 @@
         <h1>メルカリshops発送ラベル作成ツールβ</h1>
         
         <div class="input-section">
-            <input type="file" id="csvFile" accept=".csv">
-            <button onclick="processCSV()">ラベル作成</button>
+            <input type="file" id="csvFile" accept=".csv" onchange="processCSV()">
             <button onclick="printSelectedLabels()" class="print-button">選択したラベルを印刷</button>
         </div>
 
@@ -26,7 +25,6 @@
                         <th>郵便番号</th>
                         <th>住所</th>
                         <th>宛名</th>
-                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody id="dataTable">
@@ -40,7 +38,12 @@
             <!-- 複数の宛名ラベルがここに追加されます -->
         </div>
     </div>
-    <script src="config.js"></script>
+    <script>
+        // config.jsの動的読み込み
+        const configScript = document.createElement('script');
+        configScript.src = `config.js?v=${new Date().getTime()}`;
+        document.head.appendChild(configScript);
+    </script>
     <script src="script.js"></script>
 </body>
 </html> 
