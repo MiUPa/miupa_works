@@ -3,6 +3,17 @@ console.log('script.js が読み込まれました');
 // 開発モードフラグ
 const isDevelopment = true;  // 開発中はtrue（ダイアログを表示しない）、本番環境ではfalseに変更
 
+// 開発モード時のダミーデータ読み込み
+if (isDevelopment) {
+    fetch('csv/dummy_data.csv')
+        .then(response => response.text())
+        .then(text => {
+            const orders = parseCSV(text);
+            updateDataTable(orders);
+        })
+        .catch(error => console.error('ダミーデータの読み込みに失敗しました:', error));
+}
+
 function processCSV() {
     const fileInput = document.getElementById('csvFile');
     const file = fileInput.files[0];
@@ -178,7 +189,7 @@ function loadSenderInfo() {
             senderWebsite.textContent = config.sender.website;
         }
     } catch (error) {
-        console.error('差出人情報の��み込みに失敗しました:', error);
+        console.error('差出人情報の読み込みに失敗しました:', error);
     }
 }
 
