@@ -16,7 +16,6 @@ const siteConfig = {
             description: 'メルカリShopsの注文CSVから長形3号封筒用の宛名ラベルを作成するWebアプリケーション。',
             image: 'assets/images/mercari-print.png',
             demoUrl: 'projects/mercari-print/src/',
-            githubUrl: 'https://github.com/MiUPa/mercari-print',
             technologies: ['HTML', 'CSS', 'JavaScript']
         }
     ],

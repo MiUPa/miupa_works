@@ -23,20 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectGrid = document.querySelector('.project-grid');
     projectGrid.innerHTML = siteConfig.projects
         .map(project => `
-            <article class="project-card">
-                <img src="${project.image}" alt="${project.title}">
+            <a href="${project.demoUrl}" class="project-card">
+                <div class="project-image">
+                    <img src="${project.image}" alt="${project.title}">
+                </div>
                 <div class="project-content">
                     <h3>${project.title}</h3>
                     <p>${project.description}</p>
-                    <div class="project-links">
-                        <a href="${project.demoUrl}" class="button">Live Demo</a>
-                        <a href="${project.githubUrl}" class="button">GitHub</a>
-                    </div>
                     <div class="tech-stack">
                         ${project.technologies.map(tech => `<span>${tech}</span>`).join('')}
                     </div>
                 </div>
-            </article>
+            </a>
         `)
         .join('');
 
