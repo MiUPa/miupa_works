@@ -16,21 +16,12 @@ if (isDevelopment) {
 
 function processCSV() {
     const fileInput = document.getElementById('csvFile');
-    const file = fileInput.files[0];
+    const fileNameDisplay = document.getElementById('fileName');
     
-    if (file) {
-        console.log('CSVファイルが選択されました:', file.name);
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const text = e.target.result;
-            console.log('CSVの内容:', text.substring(0, 200) + '...'); // 最初の200文字を表示
-            const orders = parseCSV(text);
-            console.log('パース結果:', orders);
-            updateDataTable(orders);
-        };
-        reader.readAsText(file);
+    if (fileInput.files.length > 0) {
+        fileNameDisplay.textContent = fileInput.files[0].name; // 選択されたファイル名を表示
     } else {
-        console.error('ファイルが選択されていません');
+        fileNameDisplay.textContent = 'ファイルが選択されていません'; // デフォルトの文言
     }
 }
 
