@@ -1,7 +1,7 @@
 console.log('script.js が読み込まれました');
 
 // 開発モードフラグ
-const isDevelopment = true;  // 開発中はtrue（ダイアログを表示しない）、本番環境ではfalseに変更
+const isDevelopment = false;  // 開発中はtrue（ダイアログを表示しない）、本番環境ではfalseに変更
 
 // 開発モード時のダミーデータ読み込み
 if (isDevelopment) {
