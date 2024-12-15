@@ -19,10 +19,10 @@
         <div class="sender-form">
             <h2>送り主情報の設定</h2>
             <div class="csv-upload">
-                <p>CSVファイルから読み込む：
-                    <input type="file" id="senderCsvFile" accept=".csv" onchange="processSenderCSV()">
-                    <a href="../assets/templates/sender_template.csv" download class="download-link">テンプレートをダウンロード</a>
-                </p>
+                <a>CSVファイルから読み込む：</a>
+                <label for="senderCsvFile" class="button">ファイルを選択</label>
+                <input type="file" id="senderCsvFile" accept=".csv" onchange="processSenderCSV()" style="display: none;">
+                <a href="../assets/templates/sender_template.csv" download class="download-link">テンプレートをダウンロード</a>
             </div>
             <div class="form-group">
                 <label for="organization">店舗名・組織名:</label>
@@ -47,7 +47,9 @@
         </div>
 
         <div class="input-section">
-            <input type="file" id="csvFile" accept=".csv" onchange="processCSV()">
+            <label for="csvFile" class="button">ファイルを選択</label>
+            <input type="file" id="csvFile" accept=".csv" onchange="processCSV()" style="display: none;">
+            <span id="fileName">ファイルが選択されていません</span>
             <button onclick="printSelectedLabels()" class="button">選択したラベルを印刷</button>
         </div>
 
