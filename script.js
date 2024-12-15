@@ -1,5 +1,19 @@
 console.log('script.js が読み込まれました');
 
+// 開発モードフラグ
+const isDevelopment = true;  // 開発中はtrue（ダイアログを表示しない）、本番環境ではfalseに変更
+
+// 開発モード時のダミーデータ読み込み
+if (isDevelopment) {
+    fetch('csv/dummy_data.csv')
+        .then(response => response.text())
+        .then(text => {
+            const orders = parseCSV(text);
+            updateDataTable(orders);
+        })
+        .catch(error => console.error('ダミーデータの読み込みに失敗しました:', error));
+}
+
 function processCSV() {
     const fileInput = document.getElementById('csvFile');
     const file = fileInput.files[0];
@@ -103,6 +117,9 @@ function toggleAllCheckboxes() {
 }
 
 function createEnvelopePreview(order) {
+    const senderInfo = getSenderInfo();
+    if (!senderInfo) return null;
+
     const envelope = document.createElement('div');
     envelope.className = 'envelope-preview';
     envelope.innerHTML = `
@@ -113,11 +130,11 @@ function createEnvelopePreview(order) {
                 <p id="recipientName">${order.name} 様</p>
             </div>
             <div class="sender-address">
-                <p id="senderOrganization">${config.sender.organization}</p>
-                <p id="senderName">${config.sender.name}</p>
-                <p id="senderPostal">〒 ${formatPostalCode(config.sender.postalCode)}</p>
-                <p id="senderAddress">${config.sender.address}</p>
-                <p id="senderWebsite">${config.sender.website}</p>
+                <p id="senderOrganization">${senderInfo.organization}</p>
+                <p id="senderName">${senderInfo.name}</p>
+                <p id="senderPostal">〒 ${formatPostalCode(senderInfo.postalCode)}</p>
+                <p id="senderAddress">${senderInfo.address}</p>
+                <p id="senderWebsite">${senderInfo.website}</p>
             </div>
         </div>
     `;
@@ -131,18 +148,6 @@ async function printSelectedLabels() {
         return;
     }
 
-    const confirmed = confirm(
-        `選択された ${checkboxes.length} 件の宛名ラベルを印刷します。\n\n` +
-        '印刷設定を確認してください：\n' +
-        '1. 用紙サイズ：A4\n' +
-        '2. 印刷の向き：縦\n' +
-        '3. 倍率：100%（実際のサイズ）\n' +
-        '4. 余白：なし\n\n' +
-        '印刷を続けますか？'
-    );
-    
-    if (!confirmed) return;
-
     const printArea = document.getElementById('printArea');
     printArea.innerHTML = '';
 
@@ -153,50 +158,81 @@ async function printSelectedLabels() {
         printArea.appendChild(envelope);
     });
 
+    if (!isDevelopment) {
+        const confirmed = confirm(
+            `選択された ${checkboxes.length} 件の宛名ラベルを印刷します。\n\n` +
+            '印刷設定を確認してください：\n' +
+            '1. 用紙サイズ：A4\n' +
+            '2. 印刷の向き：縦\n' +
+            '3. 倍率：100%（実際のサイズ）\n' +
+            '4. 余白：なし\n\n' +
+            '印刷を続けますか？'
+        );
+        
+        if (!confirmed) return;
+    }
+
     window.print();
 }
 
-function printSingleLabel(index) {
-    const order = window.orderData[index];
-    const printArea = document.getElementById('printArea');
-    printArea.innerHTML = '';
-    printArea.appendChild(createEnvelopePreview(order));
+// 送り主情報を直接フォームから取得
+function getSenderInfo() {
+    const organization = document.getElementById('organization').value;
+    const name = document.getElementById('name').value;
+    const postalCode = document.getElementById('postalCode').value;
+    const address = document.getElementById('address').value;
+    const website = document.getElementById('website').value;
 
-    const confirmed = confirm(
-        '印刷���定を確認してください：\n' +
-        '1. 用紙サイズ：A4\n' +
-        '2. 印刷の向き：縦\n' +
-        '3. 倍率：100%（実際のサイズ）\n' +
-        '4. 余白：なし\n\n' +
-        '印刷を続けますか？'
-    );
-    
-    if (confirmed) {
-        window.print();
+    if (!organization || !name || !postalCode || !address) {
+        alert('送り主情報を入力してください。\n\n必須項目：\n- 店舗名・組織名\n- お名前\n- 郵便番号\n- 住所');
+        return null;
     }
+
+    return {
+        organization,
+        name,
+        postalCode,
+        address,
+        website
+    };
 }
 
-// 差出人情報の読み込み
+// LocalStorageから前回の入力値を読み込む
 function loadSenderInfo() {
     try {
-        const senderOrganization = document.getElementById('senderOrganization');
-        const senderName = document.getElementById('senderName');
-        const senderPostal = document.getElementById('senderPostal');
-        const senderAddress = document.getElementById('senderAddress');
-        const senderWebsite = document.getElementById('senderWebsite');
-
-        if (senderOrganization && senderName && senderPostal && senderAddress && senderWebsite) {
-            senderOrganization.textContent = config.sender.organization;
-            senderName.textContent = config.sender.name;
-            senderPostal.textContent = `〒 ${config.sender.postalCode}`;
-            senderAddress.textContent = config.sender.address;
-            senderWebsite.textContent = config.sender.website;
+        const savedInfo = localStorage.getItem('senderInfo');
+        if (savedInfo) {
+            const senderInfo = JSON.parse(savedInfo);
+            document.getElementById('organization').value = senderInfo.organization || '';
+            document.getElementById('name').value = senderInfo.name || '';
+            document.getElementById('postalCode').value = senderInfo.postalCode || '';
+            document.getElementById('address').value = senderInfo.address || '';
+            document.getElementById('website').value = senderInfo.website || '';
         }
     } catch (error) {
-        console.error('差出人情報の読み込みに失敗しました:', error);
+        console.error('送り主情報の読み込みに失敗しました:', error);
     }
 }
 
-// 即時実行して確実に読み込
-loadSenderInfo();
-document.addEventListener('DOMContentLoaded', loadSenderInfo);
+// フォームの値が変更されたら自動保存
+function setupAutoSave() {
+    const inputs = document.querySelectorAll('.sender-form input');
+    inputs.forEach(input => {
+        input.addEventListener('change', () => {
+            const senderInfo = {
+                organization: document.getElementById('organization').value,
+                name: document.getElementById('name').value,
+                postalCode: document.getElementById('postalCode').value,
+                address: document.getElementById('address').value,
+                website: document.getElementById('website').value
+            };
+            localStorage.setItem('senderInfo', JSON.stringify(senderInfo));
+        });
+    });
+}
+
+// 初期設定
+document.addEventListener('DOMContentLoaded', () => {
+    loadSenderInfo();
+    setupAutoSave();
+});
