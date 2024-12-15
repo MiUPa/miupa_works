@@ -1,15 +1,24 @@
-# メルカリShops発送ラベル作成ツール
+# メルカリShops宛名ラベル作成ツール
 
-メルカリShopsの注文CSVから長形3号封筒用の宛名ラベルを作成するツールです。
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 機能
+メルカリShopsの注文CSVから長形3号封筒用の宛名ラベルを作成するWebアプリケーションです。
+ブラウザ上で動作し、サーバーへのアップロードは不要です。
 
-- メルカリShopsの注文CSVファイルの読み込み
-- 宛名データの一覧表示
-- 複数宛名の一括印刷
-- A4用紙に長形3号封筒サイズで印刷
-- 送り主情報のブラウザ保存
-- 送り主情報のCSVファイルからの読み込み
+## デモ
+
+[デモサイトを見る](https://yourusername.github.io/mercari-print/)
+
+![スクリーンショット](docs/images/screenshot.png)
+
+## 特徴
+
+- 📦 メルカリShopsの注文CSVに対応
+- 🖨 長形3号封筒サイズの宛名ラベルを作成
+- 📝 送り主情報の保存と読み込み
+- 🔒 プライバシーに配慮（データはローカルのみで処理）
+- 💻 モダンブラウザ対応
+- 🎨 シンプルで使いやすいUI
 
 ## 使い方
 
@@ -23,12 +32,6 @@
    - 「テンプレートをダウンロード」リンクからCSVテンプレートをダウンロード
    - テンプレートに送り主情報を入力して保存
    - 「ファイルを選択」から保存したCSVファイルをアップロード
-   
-   必須項目：
-   - 店舗名・組織名
-   - お名前
-   - 郵便番号
-   - 住所
 
 2. CSVファイルの準備
    - メルカリShopsの管理画面から注文CSVをダウンロード
@@ -48,59 +51,68 @@
 
 ## 開発者向け情報
 
-### 開発モードについて
+### プロジェクト構成
 
-`script.js`の先頭に開発モードフラグがあります：
-```javascript
-const isDevelopment = true;  // 開発中はtrue、本番環境ではfalseに変更
 ```
-
-開発モード（`isDevelopment = true`）の機能：
-- ダミーデータ（`csv/dummy_data.csv`）の自動読み込み
-- 印刷確認ダイアログのスキップ
-
-### 本番環境へのデプロイ時の注意点
-
-1. 開発モードを無効化
-   ```javascript
-   const isDevelopment = false;
-   ```
-
-2. 必要に応じて以下のファイルを削除
-   - `csv/dummy_data.csv`（ダミーデータ）
-
-3. キャッシュ関連��注意
-   - 設定変更後はブラウザのキャッシュをクリア
-   - ユーザーにもキャッシュクリアを依頼する可能性あり
+mercari-print/
+├── src/
+│   └── index.html
+├── assets/
+│   ├── css/
+│   │   └── styles.css
+│   ├── js/
+│   │   └── script.js
+│   └── templates/
+│       └── sender_template.csv
+├── docs/
+│   └── images/
+│       └── screenshot.png
+└── README.md
+```
 
 ### 開発環境のセットアップ
 
 1. リポジトリのクローン
-2. `csv/dummy_data.csv` の内容を必要に応じて編集
+   ```bash
+   git clone https://github.com/yourusername/mercari-print.git
+   cd mercari-print
+   ```
 
-## 注意事項
+2. 開発サーバーの起動
+   ```bash
+   # Python 3の場合
+   python -m http.server 8000
+   # または
+   # Node.jsの場合
+   npx http-server
+   ```
 
-- ブラウザは Chrome または Safari の最新版を推奨
-- 印刷時は必ずプレビューで確認してから印刷してください
-- 送り主情報はブラウザのローカルストレージに保存されます
-- ブラウザのデータを消去すると、保存された送り主情報も削除されます
+3. ブラウザで http://localhost:8000/src/ にアクセス
 
-## 動作環境
+### 開発モードについて
 
-- モダンブラウザ（Chrome, Safari, Firefox, Edge の最新版）
-- ローカル環境で動作（インターネット接続不要）
-- サーバーへのアップロード不要
+`assets/js/script.js`の先頭にある開発モードフラグで動作を切り替えできます：
+```javascript
+const isDevelopment = true;  // 開発中はtrue、本番環境ではfalseに変更
+```
 
-## トラブルシューティング
+## 貢献
 
-1. 送り主情報が消えてしまった場合
-   - ブラウザのデータ消去時に送り主情報も削除された可能性があります
-   - 送り主情報を再入力してください
+1. このリポジトリをフォーク
+2. 新しいブランチを作成 (`git checkout -b feature/amazing-feature`)
+3. 変更をコミット (`git commit -m 'Add some amazing feature'`)
+4. ブランチをプッシュ (`git push origin feature/amazing-feature`)
+5. プルリクエストを作成
 
-2. 印刷レイアウトがずれる場合
-   - 印刷設定で用紙サイズとスケールを確認
-   - ブラウザの印刷設定で余白を「なし」に設定
+## ライセンス
 
-3. CSVファイルが読み込めない場合
-   - ファイルの文字コードがUTF-8である���とを確認
-   - CSVファイルの形式が正しいことを確認
+MIT License - 詳細は [LICENSE](LICENSE) ファイルを参照してください。
+
+## 作者
+
+Y.Miura - [@yourusername](https://github.com/yourusername)
+
+## 謝辞
+
+- このプロジェクトは個人的な学習とポートフォリオ用に作成されました
+- メルカリShopsのサービスに感謝します
