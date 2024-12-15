@@ -3,72 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>メルカリshops発送ラベル作成ツールβ</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <meta name="description" content="ポートフォリオサイトです。Web開発、ツール開発などの作品を紹介しています。">
+    <meta name="author" content="">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <div class="container">
-        <h1>メルカリshops発送ラベル作成ツールβ</h1>
-        
-        <!-- 送り主情報設定フォーム -->
-        <div class="sender-form">
-            <h2>送り主情報の設定</h2>
-            <div class="csv-upload">
-                <p>CSVファイルから読み込む：
-                    <input type="file" id="senderCsvFile" accept=".csv" onchange="processSenderCSV()">
-                    <a href="csv/sender_template.csv" download class="download-link">テンプレートをダウンロード</a>
-                </p>
+    <header>
+        <nav>
+            <div class="nav-content">
+                <a href="#" class="logo"></a>
+                <ul class="nav-links">
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
             </div>
-            <div class="form-group">
-                <label for="organization">店舗名・組織名:</label>
-                <input type="text" id="organization" required>
-            </div>
-            <div class="form-group">
-                <label for="name">お名前:</label>
-                <input type="text" id="name" required>
-            </div>
-            <div class="form-group">
-                <label for="postalCode">郵便番号:</label>
-                <input type="text" id="postalCode" placeholder="000-0000" required>
-            </div>
-            <div class="form-group">
-                <label for="address">住所:</label>
-                <input type="text" id="address" required>
-            </div>
-            <div class="form-group">
-                <label for="website">ウェブサイトURL:</label>
-                <input type="url" id="website">
-            </div>
-        </div>
+        </nav>
+    </header>
 
-        <div class="input-section">
-            <input type="file" id="csvFile" accept=".csv" onchange="processCSV()">
-            <button onclick="printSelectedLabels()" class="print-button">選択したラベルを印刷</button>
-        </div>
+    <main>
+        <section id="hero">
+            <div class="container">
+                <h1></h1>
+                <p class="subtitle"></p>
+            </div>
+        </section>
 
-        <!-- 表形式のデータ表示 -->
-        <div class="data-preview">
-            <table>
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" id="selectAll" onclick="toggleAllCheckboxes()"></th>
-                        <th>注文番号</th>
-                        <th>郵便番号</th>
-                        <th>住所</th>
-                        <th>宛名</th>
-                    </tr>
-                </thead>
-                <tbody id="dataTable">
-                    <!-- JavaScriptで動的に追加 -->
-                </tbody>
-            </table>
-        </div>
+        <section id="projects">
+            <div class="container">
+                <h2>Projects</h2>
+                <div class="project-grid">
+                    <!-- JavaScriptで動的に生成 -->
+                </div>
+            </div>
+        </section>
 
-        <!-- 印刷用レイアウト（非表示） -->
-        <div id="printArea">
-            <!-- 数の宛名ラベルがここに追加されます -->
+        <section id="about">
+            <div class="container">
+                <h2>About Me</h2>
+                <div class="about-content">
+                    <div class="profile">
+                        <p></p>
+                        <div class="social-links">
+                            <!-- JavaScriptで動的に生成 -->
+                        </div>
+                    </div>
+                    <div class="skills">
+                        <h3>Skills</h3>
+                        <ul></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p></p>
         </div>
-    </div>
-    <script src="script.js"></script>
+    </footer>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html> 
