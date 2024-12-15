@@ -1,5 +1,8 @@
 console.log('script.js が読み込まれました');
 
+// 開発モードフラグ
+const isDevelopment = true;  // 開発中はtrue（ダイアログを表示しない）、本番環境ではfalseに変更
+
 function processCSV() {
     const fileInput = document.getElementById('csvFile');
     const file = fileInput.files[0];
@@ -131,18 +134,6 @@ async function printSelectedLabels() {
         return;
     }
 
-    const confirmed = confirm(
-        `選択された ${checkboxes.length} 件の宛名ラベルを印刷します。\n\n` +
-        '印刷設定を確認してください：\n' +
-        '1. 用紙サイズ：A4\n' +
-        '2. 印刷の向き：縦\n' +
-        '3. 倍率：100%（実際のサイズ）\n' +
-        '4. 余白：なし\n\n' +
-        '印刷を続けますか？'
-    );
-    
-    if (!confirmed) return;
-
     const printArea = document.getElementById('printArea');
     printArea.innerHTML = '';
 
@@ -153,27 +144,21 @@ async function printSelectedLabels() {
         printArea.appendChild(envelope);
     });
 
-    window.print();
-}
-
-function printSingleLabel(index) {
-    const order = window.orderData[index];
-    const printArea = document.getElementById('printArea');
-    printArea.innerHTML = '';
-    printArea.appendChild(createEnvelopePreview(order));
-
-    const confirmed = confirm(
-        '印刷���定を確認してください：\n' +
-        '1. 用紙サイズ：A4\n' +
-        '2. 印刷の向き：縦\n' +
-        '3. 倍率：100%（実際のサイズ）\n' +
-        '4. 余白：なし\n\n' +
-        '印刷を続けますか？'
-    );
-    
-    if (confirmed) {
-        window.print();
+    if (!isDevelopment) {
+        const confirmed = confirm(
+            `選択された ${checkboxes.length} 件の宛名ラベルを印刷します。\n\n` +
+            '印刷設定を確認してください：\n' +
+            '1. 用紙サイズ：A4\n' +
+            '2. 印刷の向き：縦\n' +
+            '3. 倍率：100%（実際のサイズ）\n' +
+            '4. 余白：なし\n\n' +
+            '印刷を続けますか？'
+        );
+        
+        if (!confirmed) return;
     }
+
+    window.print();
 }
 
 // 差出人情報の読み込み
@@ -193,7 +178,7 @@ function loadSenderInfo() {
             senderWebsite.textContent = config.sender.website;
         }
     } catch (error) {
-        console.error('差出人情報の読み込みに失敗しました:', error);
+        console.error('差出人情報の��み込みに失敗しました:', error);
     }
 }
 
