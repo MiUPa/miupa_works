@@ -236,3 +236,61 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSenderInfo();
     setupAutoSave();
 });
+
+// 送り主情報CSVの処理
+function processSenderCSV() {
+    const fileInput = document.getElementById('senderCsvFile');
+    const file = fileInput.files[0];
+    
+    if (file) {
+        console.log('送り主情報CSVファイルが選択されました:', file.name);
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const text = e.target.result;
+            const lines = text.split('\n');
+            if (lines.length < 2) {
+                alert('CSVファイルの形式が正しくありません。');
+                return;
+            }
+            
+            const headers = lines[0].split(',');
+            const data = lines[1].split(',');
+            
+            // ヘッダーの検証
+            const requiredHeaders = ['organization', 'name', 'postal_code', 'address', 'website'];
+            const isValidFormat = requiredHeaders.every(header => headers.includes(header));
+            
+            if (!isValidFormat) {
+                alert('CSVファイルの形式が正しくありません。テンプレートファイルを使用してください。');
+                return;
+            }
+            
+            // 各フィールドのインデックスを取得
+            const orgIndex = headers.indexOf('organization');
+            const nameIndex = headers.indexOf('name');
+            const postalIndex = headers.indexOf('postal_code');
+            const addressIndex = headers.indexOf('address');
+            const websiteIndex = headers.indexOf('website');
+            
+            // フォームに値を設定
+            document.getElementById('organization').value = data[orgIndex].replace(/^"|"$/g, '').trim();
+            document.getElementById('name').value = data[nameIndex].replace(/^"|"$/g, '').trim();
+            document.getElementById('postalCode').value = data[postalIndex].replace(/^"|"$/g, '').trim();
+            document.getElementById('address').value = data[addressIndex].replace(/^"|"$/g, '').trim();
+            document.getElementById('website').value = data[websiteIndex].replace(/^"|"$/g, '').trim();
+            
+            // LocalStorageに保存
+            const senderInfo = {
+                organization: document.getElementById('organization').value,
+                name: document.getElementById('name').value,
+                postalCode: document.getElementById('postalCode').value,
+                address: document.getElementById('address').value,
+                website: document.getElementById('website').value
+            };
+            localStorage.setItem('senderInfo', JSON.stringify(senderInfo));
+            
+            alert('送り主情報を読み込みました。');
+        };
+        reader.readAsText(file);
+    }
+}
