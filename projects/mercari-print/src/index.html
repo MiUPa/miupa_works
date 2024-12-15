@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>メルカリshops発送ラベル作成ツールβ</title>
+    <title>メルカリShops宛名ラベル作成ツールβ</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
     <meta name="description" content="メルカリShopsの注文CSVから長形3号封筒用の宛名ラベルを作成するツールです。">
     <meta name="keywords" content="メルカリ,Shops,宛名ラベル,印刷,住所ラベル">
     <meta name="author" content="Y.Miura">
     <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <div class="container">
-        <h1>メルカリshops発送ラベル作成ツールβ</h1>
-        
-        <!-- 送り主情報設定フォーム -->
+    <header>
+        <h1>メルカリShops宛名ラベル作成ツールβ</h1>
+    </header>
+    <main class="container">
         <div class="sender-form">
             <h2>送り主情報の設定</h2>
             <div class="csv-upload">
@@ -47,7 +48,7 @@
 
         <div class="input-section">
             <input type="file" id="csvFile" accept=".csv" onchange="processCSV()">
-            <button onclick="printSelectedLabels()" class="print-button">選択したラベルを印刷</button>
+            <button onclick="printSelectedLabels()" class="button">選択したラベルを印刷</button>
         </div>
 
         <!-- 表形式のデータ表示 -->
@@ -72,7 +73,7 @@
         <div id="printArea">
             <!-- 複数の宛名ラベルがここに追加されます -->
         </div>
-    </div>
+    </main>
     <footer>
         <p>© 2023 Y.Miura. <a href="https://github.com/yourusername/mercari-print" target="_blank">GitHub</a></p>
     </footer>
