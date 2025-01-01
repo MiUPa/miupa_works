@@ -7,7 +7,7 @@
 
 ## デモ
 
-[デモサイトを見る](https://yourusername.github.io/mercari-print/)
+[デモサイトを見る](https://miupa.jp/projects/mercari-print/src/)
 
 ![スクリーンショット](docs/images/screenshot.png)
 
@@ -49,70 +49,7 @@
       - 余白：なし
    6. 印刷を実行
 
-## 開発者向け情報
 
-### プロジェクト構成
-
-```
-mercari-print/
-├── src/
-│   └── index.html
-├── assets/
-│   ├── css/
-│   │   └── styles.css
-│   ├── js/
-│   │   └── script.js
-│   └── templates/
-│       └── sender_template.csv
-├── docs/
-│   └── images/
-│       └── screenshot.png
-└── README.md
-```
-
-### 開発環境のセットアップ
-
-1. リポジトリのクローン
-   ```bash
-   git clone https://github.com/yourusername/mercari-print.git
-   cd mercari-print
-   ```
-
-2. 開発サーバーの起動
-   ```bash
-   # Python 3の場合
-   python -m http.server 8000
-   # または
-   # Node.jsの場合
-   npx http-server
-   ```
-
-3. ブラウザで http://localhost:8000/src/ にアクセス
-
-### 開発モードについて
-
-`assets/js/script.js`の先頭にある開発モードフラグで動作を切り替えできます：
-```javascript
-const isDevelopment = true;  // 開発中はtrue、本番環境ではfalseに変更
-```
-
-## 貢献
-
-1. このリポジトリをフォーク
-2. 新しいブランチを作成 (`git checkout -b feature/amazing-feature`)
-3. 変更をコミット (`git commit -m 'Add some amazing feature'`)
-4. ブランチをプッシュ (`git push origin feature/amazing-feature`)
-5. プルリクエストを作成
-
-## ライセンス
-
-MIT License - 詳細は [LICENSE](LICENSE) ファイルを参照してください。
-
-## 作者
-
-Y.Miura - [@yourusername](https://github.com/yourusername)
-
-## 謝辞
+## 補足
 
 - このプロジェクトは個人的な学習とポートフォリオ用に作成されました
-- メルカリShopsのサービスに感謝します
