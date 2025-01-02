@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.logo').textContent = siteConfig.author.name;
 
     // ヒーローセクションの更新
-    document.querySelector('#hero h1').textContent = siteConfig.author.name;
-    document.querySelector('#hero .subtitle').textContent = siteConfig.author.title;
+    // document.querySelector('#hero h1').textContent = siteConfig.author.name;
+    // document.querySelector('#hero .subtitle').textContent = siteConfig.author.title;
 
     // Aboutセクションの更新
     document.querySelector('#about p').textContent = siteConfig.author.description;
