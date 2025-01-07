@@ -14,6 +14,44 @@ if (isDevelopment) {
         .catch(error => console.error('ダミーデータの読み込みに失敗しました:', error));
 }
 
+function detectEncoding(arrayBuffer) {
+    const uint8Array = new Uint8Array(arrayBuffer);
+    
+    // UTF-8のBOMをチェック
+    if (uint8Array[0] === 0xEF && uint8Array[1] === 0xBB && uint8Array[2] === 0xBF) {
+        return 'utf-8'; // UTF-8 BOMがある場合
+    }
+
+    // UTF-8のバイトパターンをチェック
+    let isValidUtf8 = true;
+    for (let i = 0; i < uint8Array.length; i++) {
+        if (uint8Array[i] > 0x7F) { // 1バイト目が0x80以上の場合
+            if (i + 1 < uint8Array.length && (uint8Array[i] & 0xE0) === 0xC0) {
+                // 2バイトUTF-8の先頭バイト
+                i++;
+            } else if (i + 2 < uint8Array.length && (uint8Array[i] & 0xF0) === 0xE0) {
+                // 3バイトUTF-8の先頭バイト
+                i += 2;
+            } else {
+                isValidUtf8 = false;
+                break;
+            }
+        }
+    }
+    if (isValidUtf8) {
+        return 'utf-8'; // 有効なUTF-8
+    }
+
+    // Shift_JISの判別（簡易的な方法）
+    for (let i = 0; i < uint8Array.length; i++) {
+        if (uint8Array[i] >= 0x80) {
+            return 'shift_jis'; // 80以上のバイトがあればShift_JISと判断
+        }
+    }
+
+    return 'utf-8'; // デフォルトはUTF-8
+}
+
 function processCSV() {
     const fileInput = document.getElementById('csvFile');
     const file = fileInput.files[0];
@@ -22,13 +60,33 @@ function processCSV() {
         console.log('CSVファイルが選択されました:', file.name);
         const reader = new FileReader();
         reader.onload = function(e) {
-            const text = e.target.result;
+            const arrayBuffer = e.target.result;
+            const encoding = detectEncoding(arrayBuffer); // エンコーディングを判別
+            let text;
+
+            // 判別したエンコーディングに基づいてデコード
+            if (encoding === 'utf-8') {
+                const decoder = new TextDecoder('utf-8');
+                text = decoder.decode(arrayBuffer);
+                // BOMがある場合は最初の3バイトをスキップ
+                if (text.startsWith('\uFEFF')) {
+                    text = text.slice(1);
+                }
+            } else if (encoding === 'shift_jis') {
+                const decoder = new TextDecoder('shift_jis');
+                text = decoder.decode(arrayBuffer);
+            } else {
+                console.error('サポートされていないエンコーディングです:', encoding);
+                return;
+            }
+
             console.log('CSVの内容:', text.substring(0, 200) + '...'); // 最初の200文字を表示
+            
             const orders = parseCSV(text);
             console.log('パース結果:', orders);
             updateDataTable(orders);
         };
-        reader.readAsText(file);
+        reader.readAsArrayBuffer(file); // ArrayBufferとして読み込む
     } else {
         console.error('ファイルが選択されていません');
     }
