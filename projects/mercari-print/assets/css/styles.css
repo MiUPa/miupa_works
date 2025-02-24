@@ -63,7 +63,7 @@ body {
         width: 120mm;
         height: 235mm;
         padding: 0;
-        margin: 10mm 0 0 10mm;
+        margin: 0mm 0 0 0mm;  /* 10mm分ずつ減らして左上に移動 */
         box-sizing: border-box;
         background-color: white;
         break-after: page;
