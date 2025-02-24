@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>みまもりAI - リアルタイム物体検出</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>みまもりAI</h1>
+        <p class="subtitle">AIによるリアルタイム物体検出</p>
+    </header>
+
+    <main>
+        <div class="video-container">
+            <video id="video" width="640" height="480" autoplay></video>
+            <canvas id="canvas"></canvas>
+        </div>
+        <div id="status" class="status">モデルを読み込んでいます...</div>
+        <div id="error" class="error" style="display: none;"></div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <p class="privacy-notice">
+                    <i class="fas fa-shield-alt"></i>
+                    プライバシーについて：カメラの映像はすべてお使いの端末内で処理され、外部に送信されることはありません。
+                </p>
+            </div>
+            <div class="footer-section">
+                <p class="powered-by">
+                    Powered by 
+                    <a href="https://www.tensorflow.org/js" target="_blank" rel="noopener noreferrer">TensorFlow.js</a> &
+                    <a href="https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd" target="_blank" rel="noopener noreferrer">COCO-SSD</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/detector.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html> 
