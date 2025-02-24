@@ -48,38 +48,35 @@ body {
     #printArea {
         display: block;
         visibility: visible;
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
         margin: 0;
         padding: 0;
+        width: 100%;
     }
 
     .envelope-preview {
         display: block;
         visibility: visible;
-        position: absolute;
-        top: 0;
-        left: 0;
+        position: relative;
         width: 120mm;
         height: 235mm;
         padding: 0;
-        margin: 0;
+        margin: 10mm 0 0 10mm;
         box-sizing: border-box;
-        page-break-after: always;
         background-color: white;
+        break-after: page;
+        break-inside: avoid;
+        page-break-before: avoid; /* 最初のページの前での改ページを防ぐ */
     }
 
     .address-section {
         position: relative;
         width: 120mm;
         height: 235mm;
-        transform-origin: top left;
+        break-inside: avoid;
     }
-
-
 
     #recipientPostal {
         font-size: 16pt;
@@ -103,14 +100,16 @@ body {
         top: 70mm;
         left: 15mm;
         width: 90mm;
+        break-inside: avoid; /* ページ内での分割を防ぐ */
     }
 
     .sender-address {
         position: absolute;
-        bottom: 0mm;
+        bottom: 20mm;
         left: 15mm;
         width: 90mm;
         line-height: 0.3;
+        break-inside: avoid; /* ページ内での分割を防ぐ */
     }
 
     #senderOrganization {
