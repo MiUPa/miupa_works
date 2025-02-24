@@ -12,6 +12,13 @@ const siteConfig = {
     ],
     projects: [
         {
+            title: 'みまもりAI',
+            description: 'TensorFlow.jsとCOCO-SSDモデルを使用したリアルタイム物体検出Webアプリケーション。カメラを通じて人や物体をリアルタイムで検出します。',
+            image: 'assets/images/mimamori-ai.png',
+            demoUrl: 'projects/MimamoriAI/',
+            technologies: ['HTML', 'CSS', 'JavaScript', 'TensorFlow.js', 'COCO-SSD']
+        },
+        {
             title: 'メルカリShops宛名ラベル作成ツール',
             description: 'メルカリShopsの注文CSVから長形3号封筒用の宛名ラベルを作成するWebアプリケーション。',
             image: 'assets/images/mercari-print.png',
