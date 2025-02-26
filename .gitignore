@@ -167,3 +167,9 @@ csv/
 .AppleDouble
 .LSOverride
 ._*
+
+# VSCode
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
