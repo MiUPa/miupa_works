@@ -4,12 +4,6 @@ const siteConfig = {
         title: 'Web Developer & Software Engineer',
         description: '1992-. 用水路の観察が趣味です。'
     },
-    skills: [
-        { category: 'Frontend', items: 'HTML, CSS, JavaScript' },
-        { category: 'Backend', items: 'Python, Node.js' },
-        { category: 'Tools', items: 'Git, Docker' },
-        { category: 'Other', items: 'UI/UX Design, Responsive Web Design' }
-    ],
     projects: [
         {
             title: '絵心チェッカー',
