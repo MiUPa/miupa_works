@@ -13,11 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Aboutセクションの更新
     document.querySelector('#about p').textContent = siteConfig.author.description;
     
-    // スキルの更新
-    const skillsList = document.querySelector('.skills ul');
-    skillsList.innerHTML = siteConfig.skills
-        .map(skill => `<li>${skill.category}: ${skill.items}</li>`)
-        .join('');
+    // スキルセクションを非表示
+    const skillsElement = document.querySelector('.skills');
+    if (skillsElement) {
+        skillsElement.style.display = 'none';
+    }
 
     // プロジェクトの更新
     const projectGrid = document.querySelector('.project-grid');

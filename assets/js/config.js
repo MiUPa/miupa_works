@@ -2,15 +2,16 @@ const siteConfig = {
     author: {
         name: 'MiUPa',
         title: 'Web Developer & Software Engineer',
-        description: 'Web開発とソフトウェアエンジニアリングを専門とするエンジニアです。あったら便利なツールの開発が趣味です。'
+        description: '1992-. 用水路の観察が趣味です。'
     },
-    skills: [
-        { category: 'Frontend', items: 'HTML, CSS, JavaScript' },
-        { category: 'Backend', items: 'Python, Node.js' },
-        { category: 'Tools', items: 'Git, Docker' },
-        { category: 'Other', items: 'UI/UX Design, Responsive Web Design' }
-    ],
     projects: [
+        {
+            title: '絵心チェッカー',
+            description: 'AIがあなたの絵の上手さを判定！出題されるお題に合わせて絵を描き、カメラに映すだけの簡単絵心テスト。TensorFlow.jsを活用したブラウザで動作するゲームアプリ。',
+            image: 'assets/images/egokoro-checker.png',
+            demoUrl: 'projects/egokoroChecker/',
+            technologies: ['HTML', 'CSS', 'JavaScript', 'TensorFlow.js', 'COCO-SSD']
+        },
         {
             title: 'みまもりAI',
             description: 'TensorFlow.jsとCOCO-SSDモデルを使用したリアルタイム物体検出Webアプリケーション。カメラを通じて人や物体をリアルタイムで検出します。',
