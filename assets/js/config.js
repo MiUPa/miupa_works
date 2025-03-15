@@ -2,7 +2,7 @@ const siteConfig = {
     author: {
         name: 'MiUPa',
         title: 'Web Developer & Software Engineer',
-        description: 'Web開発とソフトウェアエンジニアリングを専門とするエンジニアです。あったら便利なツールの開発が趣味です。'
+        description: '1992-. 用水路の観察が趣味です。'
     },
     skills: [
         { category: 'Frontend', items: 'HTML, CSS, JavaScript' },
