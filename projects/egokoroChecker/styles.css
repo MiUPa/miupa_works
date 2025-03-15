@@ -1,0 +1,478 @@
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #ff6b6b;
+    --text-color: #333;
+    --background-color: #f5f5f5;
+    --container-background: #ffffff;
+    --error-color: #ff4444;
+    --success-color: #00c853;
+    --warning-color: #ffbb33;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.subtitle {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+main {
+    flex: 1;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 横並びレイアウト用のコンテナ */
+.horizontal-layout {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.5rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.video-container {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 640px;
+    height: 480px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    flex-shrink: 0;
+}
+
+video, canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 640px;
+    max-height: 480px;
+    object-fit: cover;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* カメラ切り替えボタン */
+.btn-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    z-index: 10;
+}
+
+.btn-icon:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+}
+
+.btn-icon.off i {
+    color: var(--error-color);
+}
+
+.video-off-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+/* 一時停止メッセージのオーバーレイ */
+.pause-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    pointer-events: none; /* クリックを通過させる */
+}
+
+.pause-message {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* 再開ボタンの強調表示 */
+.btn-resume {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    animation: pulse 1.5s infinite;
+}
+
+.btn-resume:hover {
+    background-color: #3a80d2;
+}
+
+.status, .error {
+    margin: 0 0 1rem;
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    width: 100%;
+}
+
+.status {
+    background-color: var(--container-background);
+    color: var(--text-color);
+    border: 1px solid #ddd;
+}
+
+.error {
+    background-color: var(--error-color);
+    color: white;
+}
+
+footer {
+    background-color: var(--container-background);
+    padding: 1rem;
+    border-top: 1px solid #eee;
+    margin-top: 2rem;
+}
+
+.footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.footer-section {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.privacy-notice {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.powered-by {
+    text-align: center;
+}
+
+.powered-by a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.powered-by a:hover {
+    text-decoration: underline;
+}
+
+/* 絵心チェックゲーム用スタイル */
+.game-container {
+    margin: 0;
+    max-width: 1200px;
+    background-color: var(--container-background);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 100%;
+}
+
+.screen {
+    text-align: center;
+}
+
+.form-group {
+    margin: 1.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.mode-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0.5rem 0 1.5rem;
+    font-style: italic;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 遊び方セクションのスタイル */
+.how-to-play {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin: 1rem auto;
+    max-width: 100%;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.how-to-play h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.8rem;
+    text-align: center;
+}
+
+.how-to-play ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.how-to-play li {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.how-to-play .tip {
+    font-style: italic;
+    color: #666;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 0.8rem;
+}
+
+.select {
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: white;
+    font-size: 1rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #3a80d2;
+}
+
+.btn-secondary {
+    background-color: #f5f5f5;
+    color: var(--text-color);
+    border: 1px solid #ddd;
+}
+
+.btn-secondary:hover {
+    background-color: #e5e5e5;
+}
+
+.game-info {
+    margin-bottom: 1rem;
+}
+
+.topic-container {
+    margin-bottom: 1.5rem;
+}
+
+.topic-container h3 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+    color: var(--primary-color);
+}
+
+.game-status {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+
+.progress, .timer {
+    font-weight: bold;
+}
+
+.judgement {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    font-weight: bold;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.judgement.correct {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.judgement.incorrect {
+    background-color: var(--warning-color);
+    color: var(--text-color);
+}
+
+/* 次のお題ボタン */
+.nav-buttons {
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.nav-buttons .btn {
+    min-width: 150px;
+}
+
+.nav-buttons .btn-primary {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.result-content {
+    margin: 2rem 0;
+}
+
+.result-score {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.evaluation-container {
+    margin: 1.5rem 0;
+}
+
+.result-evaluation {
+    font-size: 2rem;
+    margin: 0.5rem 0;
+    color: var(--primary-color);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 992px) {
+    /* タブレットサイズ以下で縦並びに戻す */
+    .horizontal-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .game-info-container {
+        width: 100%;
+        max-width: 640px;
+    }
+    
+    main {
+        max-width: 800px;
+    }
+    
+    .game-container {
+        max-width: 640px;
+        margin: 1rem auto;
+    }
+    
+    .status, .error {
+        margin: 1rem auto;
+        max-width: 640px;
+    }
+    
+    .how-to-play {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 0.8rem;
+    }
+    
+    h1 {
+        font-size: 1.6rem;
+    }
+    
+    .game-container {
+        padding: 1rem;
+    }
+    
+    .topic-container h3 {
+        font-size: 1.3rem;
+    }
+    
+    .result-evaluation {
+        font-size: 1.6rem;
+    }
+}
+
+/* ゲーム情報コンテナ */
+.game-info-container {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+} 
