@@ -12,6 +12,13 @@ const siteConfig = {
     ],
     projects: [
         {
+            title: '絵心チェッカー',
+            description: 'AIがあなたの絵の上手さを判定！出題されるお題に合わせて絵を描き、カメラに映すだけの簡単絵心テスト。TensorFlow.jsを活用したブラウザで動作するゲームアプリ。',
+            image: 'assets/images/egokoro-checker.png',
+            demoUrl: 'projects/egokoroChecker/',
+            technologies: ['HTML', 'CSS', 'JavaScript', 'TensorFlow.js', 'COCO-SSD']
+        },
+        {
             title: 'みまもりAI',
             description: 'TensorFlow.jsとCOCO-SSDモデルを使用したリアルタイム物体検出Webアプリケーション。カメラを通じて人や物体をリアルタイムで検出します。',
             image: 'assets/images/mimamori-ai.png',
