@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>絵心チェッカー - AIが判定する絵心テスト</title>
     
+    <!-- 基本的なメタタグを追加 -->
+    <meta name="description" content="AIがあなたの絵の上手さを判定します。出題されるお題に合わせて絵を描き、カメラに映してチャレンジ！">
+    <meta name="keywords" content="絵心チェッカー,AI,絵心テスト,お絵かき,TensorFlow.js">
+    <meta name="author" content="miupa.jp">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://miupa.jp/projects/egokoroChecker/">
+    
     <!-- OGPタグを追加 -->
     <meta property="og:title" content="絵心チェッカー - AIが判定する絵心テスト">
     <meta property="og:description" content="AIがあなたの絵の上手さを判定します。出題されるお題に合わせて絵を描き、カメラに映してチャレンジ！">
@@ -29,6 +36,9 @@
             <div class="video-container">
                 <video id="video" width="640" height="480" autoplay></video>
                 <canvas id="canvas"></canvas>
+                <noscript>
+                    <p class="error-message">このアプリケーションを使用するには、JavaScriptを有効にしてください。</p>
+                </noscript>
                 <!-- カメラ切り替えボタン -->
                 <button id="toggle-camera" class="btn-icon">
                     <i class="fas fa-video"></i>
@@ -36,6 +46,12 @@
             </div>
             
             <div class="game-info-container">
+                <section class="about-section">
+                    <h2>絵心チェッカーについて</h2>
+                    <p>絵心チェッカーは、AIを使用してあなたの描いた絵を分析し、絵の上手さを判定するウェブアプリケーションです。</p>
+                    <p>TensorFlow.jsとCOCO-SSDモデルを使用して、リアルタイムで描かれた絵を認識し、評価を行います。</p>
+                </section>
+                
                 <div id="status" class="status">モデルを読み込んでいます...</div>
                 <div id="error" class="error" style="display: none;"></div>
                 
