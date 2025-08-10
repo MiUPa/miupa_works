@@ -22,8 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // プロジェクトの更新
     const projectGrid = document.querySelector('.project-grid');
     projectGrid.innerHTML = siteConfig.projects
-        .map(project => `
-            <a href="${project.demoUrl}" class="project-card">
+        .map(project => {
+            const isExternalLink = /^https?:\/\//.test(project.demoUrl);
+            const targetAttributes = isExternalLink ? ' target="_blank" rel="noopener noreferrer"' : '';
+            return `
+            <a href="${project.demoUrl}" class="project-card"${targetAttributes}>
                 <div class="project-image">
                     <img src="${project.image}" alt="${project.title}">
                 </div>
@@ -35,7 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             </a>
-        `)
+        `;
+        })
         .join('');
 
     // ソーシャルリンクの更新

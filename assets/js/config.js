@@ -25,6 +25,13 @@ const siteConfig = {
             image: 'assets/images/mercari-print.png',
             demoUrl: 'projects/mercari-print/src/',
             technologies: ['HTML', 'CSS', 'JavaScript']
+        },
+        {
+            title: '投資コーチ（Invest Coach）',
+            description: '投資学習とポートフォリオ管理を支援するWebアプリケーション。資産配分、モデリング、目標達成の可視化などを提供。',
+            image: 'assets/images/invest-coach.svg',
+            demoUrl: 'http://invest-coach.miupa.jp/',
+            technologies: ['HTML', 'CSS', 'JavaScript']
         }
     ],
     social: {
