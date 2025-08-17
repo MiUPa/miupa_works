@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return `
             <a href="${project.demoUrl}" class="project-card"${targetAttributes}>
                 <div class="project-image">
-                    <img src="${project.image}" alt="${project.title}">
+                    <img src="${project.image}" alt="${project.title}" loading="lazy" width="300" height="200">
                 </div>
                 <div class="project-content">
                     <h3>${project.title}</h3>
