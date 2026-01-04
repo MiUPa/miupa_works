@@ -23,10 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectGrid = document.querySelector('.project-grid');
     projectGrid.innerHTML = siteConfig.projects
         .map(project => {
-            const isExternalLink = /^https?:\/\//.test(project.demoUrl);
-            const targetAttributes = isExternalLink ? ' target="_blank" rel="noopener noreferrer"' : '';
             return `
-            <a href="${project.demoUrl}" class="project-card"${targetAttributes}>
+            <a href="${project.demoUrl}" class="project-card" target="_blank" rel="noopener noreferrer">
                 <div class="project-image">
                     <img src="${project.image}" alt="${project.title}" loading="lazy" width="300" height="200">
                 </div>
