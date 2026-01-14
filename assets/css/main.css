@@ -250,6 +250,94 @@ h2 {
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
+/* Certifications */
+.certifications {
+    list-style: none;
+    display: grid;
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+.certifications li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.certifications li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.profile h3 {
+    font-size: 1.3rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Blog Section */
+#blog {
+    background-color: var(--secondary-bg);
+}
+
+.blog-articles {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.blog-articles > p {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.article-list {
+    display: grid;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.article-card {
+    background-color: var(--bg-color);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.article-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.article-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.article-card h3 a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.article-card h3 a:hover {
+    color: var(--primary-color);
+}
+
+.article-card p {
+    color: #666;
+    line-height: 1.8;
+}
+
+.blog-link {
+    text-align: center;
+    margin-top: 2rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .about-content {
@@ -274,5 +362,13 @@ h2 {
 
     h2 {
         font-size: 2rem;
+    }
+
+    .article-card {
+        padding: 1.5rem;
+    }
+
+    .article-card h3 {
+        font-size: 1.1rem;
     }
 } 
