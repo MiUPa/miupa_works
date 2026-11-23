@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiUPa - Web Developer Portfolio</title>
-    <meta name="description" content="MiUPaのポートフォリオサイト。AI技術を取り入れたWebアプリケーション開発に取り組むWebデベロッパーの作品集。TensorFlow.js、JavaScript、HTML/CSSを使用したプロジェクトを紹介。">
-    <meta name="keywords" content="MiUPa,ポートフォリオ,Web開発,AI,機械学習,TensorFlow.js,JavaScript,フロントエンド,Webデベロッパー">
+    <meta name="description" content="MiUPaのポートフォリオサイト。Pythonによる業務自動化・データ収集、API連携、小規模ツール開発の実績と、Chrome拡張機能「それ、メルカリなら安いよ」を紹介。開発のご依頼も受け付けています。">
+    <meta name="keywords" content="MiUPa,ポートフォリオ,Python,業務自動化,スクレイピング,API連携,Google Apps Script,Chrome拡張機能,Web開発,AI,機械学習">
     <meta name="author" content="MiUPa">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="https://miupa.jp/">
@@ -41,12 +41,14 @@
         "https://x.com/MiUPa"
       ],
       "knowsAbout": [
+        "Python",
         "JavaScript",
-        "HTML",
-        "CSS",
+        "Web Scraping",
+        "API Integration",
+        "Google Apps Script",
+        "AWS",
         "TensorFlow.js",
-        "Web Development",
-        "Frontend Development"
+        "Web Development"
       ]
     }
     </script>
@@ -67,7 +69,9 @@
             <div class="nav-content">
                 <a href="#" class="logo">MiUPa</a>
                 <ul class="nav-links">
+                    <li><a href="#extension">Extension</a></li>
                     <li><a href="#projects">Projects</a></li>
+                    <li><a href="#services">Services</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#blog">Blog</a></li>
                 </ul>
@@ -83,10 +87,40 @@
             </div>
         </section> -->
 
+        <section id="extension">
+            <div class="container">
+                <h2>Chrome Extension</h2>
+                <div class="extension-card">
+                    <div class="extension-image">
+                        <img src="assets/images/mercari-extension.png" alt="それ、メルカリなら安いよ の動作イメージ。Amazonの商品ページにメルカリの中古候補と価格差が表示されている" loading="lazy" width="1280" height="800" onerror="this.parentElement.style.display='none'">
+                    </div>
+                    <div class="extension-content">
+                        <h3>それ、メルカリなら安いよ</h3>
+                        <p>Amazonの商品ページを開くだけで、メルカリの中古の候補と価格差がその場で分かります。別タブで検索し直す必要はありません。「買う前に中古もチェックしたい」を、ページを離れずに済ませるためのChrome拡張機能です。無料で使えます。</p>
+                        <div class="tech-stack">
+                            <span>Chrome Extension</span><span>JavaScript</span>
+                        </div>
+                        <p class="extension-cta">
+                            <a href="https://chromewebstore.google.com/detail/pooiaaojomiobedlgihdaeljappmckmh" class="button" target="_blank" rel="noopener noreferrer">Chromeに追加（Chrome Web Store）</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="projects">
             <div class="container">
                 <h2>Projects</h2>
                 <div class="project-grid">
+                    <div class="project-card project-card-static">
+                        <div class="project-content">
+                            <h3>営業リスト自動収集ツール <span class="badge">デモ準備中</span></h3>
+                            <p>Web上の公開情報から営業リストを自動で収集し、スプレッドシート形式で出力するツール。開発案件向けのデモとして準備中です。</p>
+                            <div class="tech-stack">
+                                <span>Python</span><span>スクレイピング</span>
+                            </div>
+                        </div>
+                    </div>
                     <a href="projects/egokoroChecker/" class="project-card" target="_blank" rel="noopener noreferrer">
                         <div class="project-image">
                             <img src="assets/images/egokoro-checker.png" alt="絵心チェッカー" loading="lazy" width="300" height="200">
@@ -163,6 +197,40 @@
             </div>
         </section>
 
+        <section id="services">
+            <div class="container">
+                <h2>開発のご依頼</h2>
+                <p>業務の自動化や小さなツールの開発を、副業としてお受けしています。「手作業で繰り返している作業を自動化したい」「公開情報を集めて一覧にしたい」といったご相談に対応します。</p>
+                <div class="service-grid">
+                    <div class="service-box">
+                        <h3>対応範囲</h3>
+                        <ul>
+                            <li><strong>業務自動化スクリプト:</strong> 定型作業の自動化、ファイル・データの定期処理</li>
+                            <li><strong>データ収集・加工:</strong> Webからの情報収集（スクレイピング）、CSV／スプレッドシートへの整形</li>
+                            <li><strong>API連携:</strong> 外部サービスとのデータ連携、通知の自動化</li>
+                            <li><strong>小規模ツール:</strong> 業務用ツールの新規作成、既存ツールの改修・バグ修正</li>
+                            <li><strong>Google Apps Script:</strong> フォーム・スプレッドシート周りの自動化</li>
+                        </ul>
+                    </div>
+                    <div class="service-box">
+                        <h3>進め方</h3>
+                        <ol class="steps">
+                            <li>ご相談（下記の窓口からメッセージをお送りください）</li>
+                            <li>内容を確認し、お見積りと進め方をご提案</li>
+                            <li>開発・動作確認</li>
+                            <li>納品</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="service-contact">
+                    <p>ご相談はランサーズのプロフィールから受け付けています。CrowdWorksでも同じアカウント名（miuray）で活動しています。</p>
+                    <div class="social-links">
+                        <a href="https://www.lancers.jp/profile/miuray" class="button" target="_blank" rel="noopener noreferrer">ランサーズで相談する</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="about">
             <div class="container">
                 <h2>About Me</h2>
@@ -191,11 +259,12 @@
                     <div class="skills">
                         <h3>Technical Skills</h3>
                         <ul>
-                            <li><strong>フロントエンド:</strong> HTML5, CSS3, JavaScript (ES6+)</li>
+                            <li><strong>言語:</strong> Python, JavaScript (ES6+), HTML5, CSS3</li>
+                            <li><strong>データ収集・加工:</strong> Webスクレイピング, CSV／スプレッドシート整形</li>
+                            <li><strong>自動化・連携:</strong> Google Apps Script, REST API連携, 業務自動化スクリプト</li>
                             <li><strong>AI/機械学習:</strong> TensorFlow.js, COCO-SSD</li>
-                            <li><strong>Web API:</strong> Canvas API, MediaDevices API</li>
                             <li><strong>クラウド:</strong> AWS</li>
-                            <li><strong>その他:</strong> レスポンシブデザイン, PWA, Git/GitHub</li>
+                            <li><strong>その他:</strong> Git/GitHub, PWA, レスポンシブデザイン</li>
                         </ul>
                     </div>
                 </div>
