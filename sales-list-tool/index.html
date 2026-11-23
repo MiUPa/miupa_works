@@ -34,7 +34,16 @@
     }
     </script>
 
-    <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3Q0TK9GK8H"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3Q0TK9GK8H');
+    </script>
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232e7d46'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='34' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
     <style>
         body { font-family: sans-serif; margin: 2em auto; max-width: 880px; padding: 0 1em; color: #222; line-height: 1.7; }
         h1 { font-size: 1.5em; }
@@ -55,9 +64,16 @@
         .dl button { margin-right: 1em; }
         a { color: #305496; }
         .back { margin-top: 3em; font-size: .9em; }
+        .site-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: .6em; margin-bottom: 1.6em; font-size: .95em; }
+        .site-bar .brand { font-weight: bold; font-size: 1.15em; color: #1d201d; text-decoration: none; }
+        .site-bar nav a { margin-left: 1.2em; text-decoration: none; }
     </style>
 </head>
 <body>
+    <div class="site-bar">
+        <a class="brand" href="https://miupa.jp/">MiUPa</a>
+        <nav><a href="https://miupa.jp/#works">Works</a><a href="https://miupa.jp/#contact">Contact</a></nav>
+    </div>
     <h1>営業リスト自動収集ツール <span class="note">（ブラウザで試せるデモ）</span></h1>
     <p>「業種 × 地域」を指定すると、公開されている店舗・事業者情報（名称・住所・電話番号・Webサイト）を自動収集し、重複を除いてリスト化します。手作業で数時間かかるリスト作成を、数分に短縮するためのツールです。このページのデモは、実際にブラウザから取得元のAPIを呼んで動作します。</p>
 

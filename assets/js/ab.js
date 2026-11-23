@@ -4,7 +4,7 @@
  * 仕組み:
  * - 実験ごとにバリアント（A/B）を localStorage で固定割当する（同じ訪問者には常に同じ版を見せる）。
  * - 計測イベントは GA4 の gtag が存在すれば送信し、無ければ window.__abEvents に貯めるだけにする。
- *   → GA4 導入（測定IDの設定）が済むまで、実験は enabled:false で眠らせておく。
+ *   → GA4（G-3Q0TK9GK8H）は 2026-11-23 に導入済み。実験1は同日開始。
  * - ストアへの導線クリック（.cta-store）も cta_click イベントとして記録する。
  *
  * 実験の始め方・実験案は運用記録（miupa-jp-optimization.md）参照。
@@ -15,7 +15,7 @@
     var EXPERIMENTS = [
         {
             id: 'ext-mercari-copy-01',
-            enabled: false, // GA4 導入後に true にして開始する
+            enabled: true, // 実験1: 2026-11-23 開始（GA4導入とサイト再構築に合わせて有効化）
             // A = 現行コピー（変更なし）, B = 書き換え案
             applyB: function () {
                 var title = document.getElementById('ext-mercari-title');
