@@ -37,14 +37,44 @@
         errorEl.hidden = false;
     }
 
+    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     form.addEventListener('submit', function (event) {
         event.preventDefault();
         errorEl.hidden = true;
 
+        /* All four fields are required (matches the Google Form). */
+        var typeEl = form.querySelector('input[name="cf-type"]:checked');
+        var nameEl = document.getElementById('cf-name');
+        var emailEl = document.getElementById('cf-email');
+        var name = nameEl.value.trim();
+        var email = emailEl.value.trim();
         var message = messageEl.value.trim();
+
+        var problems = [];
+        var firstInvalid = null;
+        if (!typeEl) {
+            problems.push('種別を選択してください。');
+            firstInvalid = form.querySelector('input[name="cf-type"]');
+        }
+        if (!name) {
+            problems.push('お名前を入力してください。');
+            if (!firstInvalid) firstInvalid = nameEl;
+        }
+        if (!email) {
+            problems.push('返信用メールアドレスを入力してください。');
+            if (!firstInvalid) firstInvalid = emailEl;
+        } else if (!EMAIL_RE.test(email)) {
+            problems.push('返信用メールアドレスの形式が正しくありません。');
+            if (!firstInvalid) firstInvalid = emailEl;
+        }
         if (!message) {
-            showError('お問い合わせ内容を入力してください。');
-            messageEl.focus();
+            problems.push('お問い合わせ内容を入力してください。');
+            if (!firstInvalid) firstInvalid = messageEl;
+        }
+        if (problems.length) {
+            showError(problems.join(''));
+            if (firstInvalid) firstInvalid.focus();
             return;
         }
 
@@ -57,12 +87,9 @@
         }
 
         var params = new URLSearchParams();
-        var type = form.querySelector('input[name="cf-type"]:checked');
-        if (type) params.append(ENTRY.type, type.value);
-        var name = document.getElementById('cf-name').value.trim();
-        if (name) params.append(ENTRY.name, name);
-        var email = document.getElementById('cf-email').value.trim();
-        if (email) params.append(ENTRY.email, email);
+        params.append(ENTRY.type, typeEl.value);
+        params.append(ENTRY.name, name);
+        params.append(ENTRY.email, email);
         params.append(ENTRY.message, message);
         params.append('fvv', '1');
         params.append('pageHistory', '0');

@@ -320,20 +320,20 @@ crossorigin="anonymous"></script>
 <p class="contact-text">ここに置いているものは、仕事の合間に作っている個人の作品です。使ってみた感想や質問、「似たようなものを作ってほしい」といった相談など、何かあれば、こちらのフォームからどうぞ。</p>
 <form class="contact-form" id="contact-form" novalidate>
 <div class="form-field">
-<span class="form-label" id="cf-type-label">種別 <span class="form-tag">任意</span></span>
+<span class="form-label" id="cf-type-label">種別 <span class="form-tag form-tag-required">必須</span></span>
 <div class="form-radios" role="radiogroup" aria-labelledby="cf-type-label">
-<label class="form-radio"><input type="radio" name="cf-type" value="お仕事の相談">お仕事の相談</label>
-<label class="form-radio"><input type="radio" name="cf-type" value="拡張機能・ツールについて">拡張機能・ツールについて</label>
-<label class="form-radio"><input type="radio" name="cf-type" value="その他">その他</label>
+<label class="form-radio"><input type="radio" name="cf-type" value="お仕事の相談" required>お仕事の相談</label>
+<label class="form-radio"><input type="radio" name="cf-type" value="拡張機能・ツールについて" required>拡張機能・ツールについて</label>
+<label class="form-radio"><input type="radio" name="cf-type" value="その他" required>その他</label>
 </div>
 </div>
 <div class="form-field">
-<label class="form-label" for="cf-name">お名前 <span class="form-tag">任意</span></label>
-<input class="form-input" type="text" id="cf-name" name="cf-name" autocomplete="name">
+<label class="form-label" for="cf-name">お名前 <span class="form-tag form-tag-required">必須</span></label>
+<input class="form-input" type="text" id="cf-name" name="cf-name" autocomplete="name" required>
 </div>
 <div class="form-field">
-<label class="form-label" for="cf-email">返信用メールアドレス <span class="form-tag">任意</span></label>
-<input class="form-input" type="email" id="cf-email" name="cf-email" autocomplete="email">
+<label class="form-label" for="cf-email">返信用メールアドレス <span class="form-tag form-tag-required">必須</span></label>
+<input class="form-input" type="email" id="cf-email" name="cf-email" autocomplete="email" required>
 </div>
 <div class="form-field">
 <label class="form-label" for="cf-message">お問い合わせ内容 <span class="form-tag form-tag-required">必須</span></label>
