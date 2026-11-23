@@ -11,6 +11,7 @@
     --accent-strong: #256b3a;
     --on-accent: #ffffff;
     --border: #e2e5e0;
+    --error: #b3261e;
     --shadow: 0 1px 3px rgba(20, 30, 20, 0.08);
     --radius: 14px;
 }
@@ -26,6 +27,7 @@
         --accent-strong: #6fc48d;
         --on-accent: #10130f;
         --border: #2d3138;
+        --error: #f2b8b5;
         --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
 }
@@ -436,16 +438,114 @@ h2 {
     max-width: 44rem;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    overflow: hidden;
     background: var(--surface);
     box-shadow: var(--shadow);
+    padding: 1.6rem;
+    display: grid;
+    gap: 1.3rem;
 }
 
-.contact-form iframe {
-    display: block;
+.form-field {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.98rem;
+}
+
+.form-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--muted);
+    background: var(--surface-2);
+    border-radius: 999px;
+    padding: 0.1rem 0.55rem;
+    margin-left: 0.3rem;
+    vertical-align: middle;
+}
+
+.form-tag-required {
+    color: var(--on-accent);
+    background: var(--accent);
+}
+
+.form-radios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.form-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    background: var(--bg);
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.form-radio input {
+    accent-color: var(--accent);
+}
+
+.form-input {
     width: 100%;
-    height: 860px;
-    border: 0;
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.6rem 0.8rem;
+}
+
+.form-input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-color: var(--accent);
+}
+
+textarea.form-input {
+    resize: vertical;
+    min-height: 8rem;
+}
+
+.form-hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.form-error {
+    color: var(--error);
+    font-size: 0.95rem;
+}
+
+.form-submit {
+    justify-self: start;
+    cursor: pointer;
+    font: inherit;
+}
+
+.form-submit:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.form-thanks {
+    max-width: 44rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    padding: 1.6rem;
 }
 
 .contact-alt {
@@ -455,8 +555,12 @@ h2 {
 }
 
 @media (max-width: 768px) {
-    .contact-form iframe {
-        height: 1020px;
+    .contact-form {
+        padding: 1.2rem;
+    }
+
+    .form-thanks {
+        padding: 1.2rem;
     }
 }
 

@@ -318,10 +318,34 @@ crossorigin="anonymous"></script>
 <p class="section-eyebrow">Contact</p>
 <h2>お問い合わせ</h2>
 <p class="contact-text">ここに置いているものは、仕事の合間に作っている個人の作品です。使ってみた感想や質問、「似たようなものを作ってほしい」といった相談など、何かあれば、こちらのフォームからどうぞ。</p>
-<div class="contact-form">
-<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd_hIBHaibkUGzNusEB7nSvlL5KyfgrsCLbS2_IiiWcCk0J3Q/viewform?embedded=true" title="お問い合わせフォーム" loading="lazy">読み込んでいます…</iframe>
+<form class="contact-form" id="contact-form" novalidate>
+<div class="form-field">
+<span class="form-label" id="cf-type-label">種別 <span class="form-tag">任意</span></span>
+<div class="form-radios" role="radiogroup" aria-labelledby="cf-type-label">
+<label class="form-radio"><input type="radio" name="cf-type" value="お仕事の相談">お仕事の相談</label>
+<label class="form-radio"><input type="radio" name="cf-type" value="拡張機能・ツールについて">拡張機能・ツールについて</label>
+<label class="form-radio"><input type="radio" name="cf-type" value="その他">その他</label>
 </div>
-<p class="contact-alt">フォームが表示されない場合は<a href="https://docs.google.com/forms/d/e/1FAIpQLSd_hIBHaibkUGzNusEB7nSvlL5KyfgrsCLbS2_IiiWcCk0J3Q/viewform" target="_blank" rel="noopener noreferrer">こちら</a>から開けます。</p>
+</div>
+<div class="form-field">
+<label class="form-label" for="cf-name">お名前 <span class="form-tag">任意</span></label>
+<input class="form-input" type="text" id="cf-name" name="cf-name" autocomplete="name">
+</div>
+<div class="form-field">
+<label class="form-label" for="cf-email">返信用メールアドレス <span class="form-tag">任意</span></label>
+<input class="form-input" type="email" id="cf-email" name="cf-email" autocomplete="email">
+</div>
+<div class="form-field">
+<label class="form-label" for="cf-message">お問い合わせ内容 <span class="form-tag form-tag-required">必須</span></label>
+<textarea class="form-input" id="cf-message" name="cf-message" rows="6" required></textarea>
+</div>
+<div class="form-hp" aria-hidden="true">
+<label>この欄は入力しないでください<input type="text" name="cf-website" tabindex="-1" autocomplete="off"></label>
+</div>
+<p class="form-error" id="cf-error" hidden></p>
+<button type="submit" class="button form-submit" id="cf-submit">送信する</button>
+</form>
+<p class="contact-alt">フォームが使えない場合は<a href="https://docs.google.com/forms/d/e/1FAIpQLSd_hIBHaibkUGzNusEB7nSvlL5KyfgrsCLbS2_IiiWcCk0J3Q/viewform" target="_blank" rel="noopener noreferrer">こちら</a>からも送れます。</p>
 </div>
 </section>
 </main>
@@ -333,5 +357,6 @@ crossorigin="anonymous"></script>
 </footer>
 
 <script src="assets/js/ab.js"></script>
+<script src="assets/js/contact.js"></script>
 </body>
 </html>
