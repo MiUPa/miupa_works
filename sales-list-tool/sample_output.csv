@@ -1,0 +1,5 @@
+﻿名称,業種,郵便番号,住所,電話番号,Webサイト,データ出典
+あおぞら歯科クリニック,歯科医院,700-0000,サンプル県サンプル市中央1-2-3,086-000-0001,https://example-dental-aozora.invalid,OpenStreetMap
+さくらデンタルオフィス,歯科医院,700-0001,サンプル県サンプル市駅前4-5-6,086-000-0002,https://example-dental-sakura.invalid,OpenStreetMap
+ひまわり歯科,歯科医院,700-0002,サンプル県サンプル市本町7-8-9,,https://example-dental-himawari.invalid,OpenStreetMap
+みどり歯科医院,歯科医院,700-0003,サンプル県サンプル市南町2-4-6,086-000-0004,,OpenStreetMap

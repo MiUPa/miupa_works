@@ -1,0 +1,25 @@
+# MiUPa
+
+> MiUPa is a web developer based in Okayama, Japan. This site (https://miupa.jp/) is a personal portfolio of Chrome extensions and small automation tools built alongside a day job. All products listed here are free.
+
+## Chrome Extensions
+
+- [それ、メルカリなら安いよ (Sore, Mercari nara Yasui yo)](https://chromewebstore.google.com/detail/pooiaaojomiobedlgihdaeljappmckmh): A Chrome extension that, when you open an Amazon Japan product page, shows second-hand listings of the same item on Mercari and the price difference, right on the page. No need to search again in another tab.
+- [handwriter: Handwriting Canvas for Gemini](https://chromewebstore.google.com/detail/handwriter/aimhikagpgeaomhmgdjnbcjakjadmgbn): A Chrome extension that adds a handwriting canvas to Google Gemini. Handwriting for Gemini: draw equations, kanji, diagrams and quick sketches by hand and insert them into the chat as an image in one click. Works with mouse, touch and stylus. No data collection; everything is processed locally in the browser. Free during open beta.
+
+## Tools and Demos
+
+- [営業リスト自動収集ツール (Sales List Auto-Collection Tool) — live demo](https://miupa.jp/sales-list-tool/): Enter a business category and an area in Japan (e.g. dentists in Okayama City) and it automatically collects publicly available business information (name, address, phone, website) from the OpenStreetMap API, removes duplicates, and produces a CSV sales list. The demo runs entirely in the browser. A Python version outputs formatted Excel files as well.
+- [メルカリShops宛名ラベル作成ツール](http://mercari-print.miupa.jp/): Creates mailing labels (Nagagata No.3 envelope format) from Mercari Shops order CSV files.
+- [投資コーチ Invest Coach](http://invest-coach.miupa.jp/): A web app supporting investment learning and portfolio management.
+- [Goulette](https://goulette.miupa.jp/): A service for discovering restaurants you did not know about, by roulette.
+
+## About
+
+- [Portfolio top page](https://miupa.jp/): Profile, skills (Python, JavaScript, web scraping, API integration, Google Apps Script, AWS), certifications, and project list.
+- [Blog (note)](https://note.com/miupa_): Articles about development and products, in Japanese.
+- [GitHub](https://github.com/MiUPa)
+
+## Contact
+
+Questions or feedback about the works on this site are welcome via the Lancers profile: https://www.lancers.jp/profile/miuray (also active on CrowdWorks under the account name "miuray").

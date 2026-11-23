@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiUPa - Web Developer Portfolio</title>
-    <meta name="description" content="MiUPaのポートフォリオサイト。Pythonによる業務自動化・データ収集、API連携、小規模ツール開発の実績と、Chrome拡張機能「それ、メルカリなら安いよ」を紹介。開発のご依頼も受け付けています。">
-    <meta name="keywords" content="MiUPa,ポートフォリオ,Python,業務自動化,スクレイピング,API連携,Google Apps Script,Chrome拡張機能,Web開発,AI,機械学習">
+    <title>MiUPa｜Chrome拡張機能と業務自動化ツールのポートフォリオ</title>
+    <meta name="description" content="MiUPaのポートフォリオサイト。Chrome拡張機能「それ、メルカリなら安いよ」「handwriter（Geminiに手書き入力）」と、Pythonによる業務自動化・データ収集ツールのデモを紹介しています。">
+    <meta name="keywords" content="MiUPa,ポートフォリオ,Chrome拡張機能,handwriter,handwriting for Gemini,Gemini,手書き入力,Python,業務自動化,スクレイピング,営業リスト,API連携,Google Apps Script,Web開発,AI,機械学習">
     <meta name="author" content="MiUPa">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="https://miupa.jp/">
@@ -13,8 +13,8 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://miupa.jp/">
-    <meta property="og:title" content="MiUPa - Web Developer Portfolio">
-    <meta property="og:description" content="AI技術を取り入れたWebアプリケーション開発に取り組むWebデベロッパーのポートフォリオ。TensorFlow.jsを使用したプロジェクトを紹介。">
+    <meta property="og:title" content="MiUPa｜Chrome拡張機能と業務自動化ツールのポートフォリオ">
+    <meta property="og:description" content="Chrome拡張機能「それ、メルカリなら安いよ」「handwriter（Geminiに手書き入力）」と、Pythonの業務自動化・データ収集ツールを紹介するポートフォリオ。">
     <meta property="og:image" content="https://miupa.jp/assets/images/og-image.jpg">
     <meta property="og:site_name" content="MiUPa Portfolio">
     <meta property="og:locale" content="ja_JP">
@@ -22,8 +22,8 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://miupa.jp/">
-    <meta property="twitter:title" content="MiUPa - Web Developer Portfolio">
-    <meta property="twitter:description" content="AI技術を取り入れたWebアプリケーション開発に取り組むWebデベロッパーのポートフォリオ。">
+    <meta property="twitter:title" content="MiUPa｜Chrome拡張機能と業務自動化ツールのポートフォリオ">
+    <meta property="twitter:description" content="Chrome拡張機能「それ、メルカリなら安いよ」「handwriter（Geminiに手書き入力）」と、Pythonの業務自動化・データ収集ツールを紹介するポートフォリオ。">
     <meta property="twitter:image" content="https://miupa.jp/assets/images/og-image.jpg">
     <meta name="twitter:creator" content="@MiUPa">
     
@@ -31,24 +31,54 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "MiUPa",
-      "jobTitle": "Web Developer",
-      "description": "AI技術を取り入れたWebアプリケーション開発に取り組むWebデベロッパー",
-      "url": "https://miupa.jp/",
-      "sameAs": [
-        "https://github.com/MiUPa",
-        "https://x.com/MiUPa"
-      ],
-      "knowsAbout": [
-        "Python",
-        "JavaScript",
-        "Web Scraping",
-        "API Integration",
-        "Google Apps Script",
-        "AWS",
-        "TensorFlow.js",
-        "Web Development"
+      "@graph": [
+        {
+          "@type": "Person",
+          "name": "MiUPa",
+          "jobTitle": "Web Developer",
+          "description": "Chrome拡張機能と業務自動化ツールを開発するWebデベロッパー",
+          "url": "https://miupa.jp/",
+          "sameAs": [
+            "https://github.com/MiUPa",
+            "https://x.com/MiUPa",
+            "https://note.com/miupa_"
+          ],
+          "knowsAbout": [
+            "Python",
+            "JavaScript",
+            "Chrome Extensions",
+            "Web Scraping",
+            "API Integration",
+            "Google Apps Script",
+            "AWS",
+            "TensorFlow.js",
+            "Web Development"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "name": "MiUPa Portfolio",
+          "url": "https://miupa.jp/"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "それ、メルカリなら安いよ",
+          "applicationCategory": "BrowserApplication",
+          "operatingSystem": "Chrome",
+          "description": "Amazonの商品ページを開くだけで、メルカリの中古の候補と価格差がその場で分かるChrome拡張機能。",
+          "url": "https://chromewebstore.google.com/detail/pooiaaojomiobedlgihdaeljappmckmh",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "handwriter: Handwriting Canvas for Gemini",
+          "alternateName": "handwriter",
+          "applicationCategory": "BrowserApplication",
+          "operatingSystem": "Chrome",
+          "description": "Handwriting input for Google Gemini. Draw equations, kanji, diagrams and sketches on a handwriting canvas and insert them into your Gemini chat in one click.",
+          "url": "https://chromewebstore.google.com/detail/handwriter/aimhikagpgeaomhmgdjnbcjakjadmgbn",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+        }
       ]
     }
     </script>
@@ -71,7 +101,7 @@
                 <ul class="nav-links">
                     <li><a href="#extension">Extension</a></li>
                     <li><a href="#projects">Projects</a></li>
-                    <li><a href="#services">Services</a></li>
+                    <li><a href="#contact">Contact</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#blog">Blog</a></li>
                 </ul>
@@ -95,13 +125,26 @@
                         <img src="assets/images/mercari-extension.png" alt="それ、メルカリなら安いよ の動作イメージ。Amazonの商品ページにメルカリの中古候補と価格差が表示されている" loading="lazy" width="1280" height="800" onerror="this.parentElement.style.display='none'">
                     </div>
                     <div class="extension-content">
-                        <h3>それ、メルカリなら安いよ</h3>
+                        <h3 id="ext-mercari-title">それ、メルカリなら安いよ</h3>
                         <p>Amazonの商品ページを開くだけで、メルカリの中古の候補と価格差がその場で分かります。別タブで検索し直す必要はありません。「買う前に中古もチェックしたい」を、ページを離れずに済ませるためのChrome拡張機能です。無料で使えます。</p>
                         <div class="tech-stack">
                             <span>Chrome Extension</span><span>JavaScript</span>
                         </div>
                         <p class="extension-cta">
-                            <a href="https://chromewebstore.google.com/detail/pooiaaojomiobedlgihdaeljappmckmh" class="button" target="_blank" rel="noopener noreferrer">Chromeに追加（Chrome Web Store）</a>
+                            <a href="https://chromewebstore.google.com/detail/pooiaaojomiobedlgihdaeljappmckmh" class="button cta-store" data-store-link="mercari-compare" target="_blank" rel="noopener noreferrer">Chromeに追加（Chrome Web Store）</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="extension-card">
+                    <div class="extension-content">
+                        <h3>handwriter｜Geminiに手書き入力</h3>
+                        <p>Google Gemini のチャットに手書きキャンバスを追加するChrome拡張機能です。数式・漢字・図表など、タイピングでは伝えにくい内容を、そのまま手で書いてワンクリックで画像として送れます。マウス・タッチ・ペンタブレット対応。データ収集は一切なく、処理はすべてブラウザ内で完結します。</p>
+                        <p lang="en">Handwriting for Gemini — handwriter adds a handwriting canvas to Google Gemini. Draw equations, kanji, diagrams and quick sketches by hand and insert them into your chat in one click. Free during open beta, private by design: no data collection, everything runs locally in your browser.</p>
+                        <div class="tech-stack">
+                            <span>Chrome Extension</span><span>JavaScript</span><span>Gemini</span>
+                        </div>
+                        <p class="extension-cta">
+                            <a href="https://chromewebstore.google.com/detail/handwriter/aimhikagpgeaomhmgdjnbcjakjadmgbn" class="button cta-store" data-store-link="handwriter" target="_blank" rel="noopener noreferrer">Chromeに追加（Chrome Web Store）</a>
                         </p>
                     </div>
                 </div>
@@ -112,15 +155,15 @@
             <div class="container">
                 <h2>Projects</h2>
                 <div class="project-grid">
-                    <div class="project-card project-card-static">
+                    <a href="sales-list-tool/" class="project-card">
                         <div class="project-content">
-                            <h3>営業リスト自動収集ツール <span class="badge">デモ準備中</span></h3>
-                            <p>Web上の公開情報から営業リストを自動で収集し、スプレッドシート形式で出力するツール。開発案件向けのデモとして準備中です。</p>
+                            <h3>営業リスト自動収集ツール <span class="badge">デモ公開中</span></h3>
+                            <p>「業種 × 地域」を指定すると、Web上の公開情報から店舗・事業者情報を自動収集し、重複を除いてCSVリストを作成するツール。ブラウザでそのまま試せるデモを公開しています。</p>
                             <div class="tech-stack">
-                                <span>Python</span><span>スクレイピング</span>
+                                <span>Python</span><span>JavaScript</span><span>スクレイピング</span><span>OpenStreetMap API</span>
                             </div>
                         </div>
-                    </div>
+                    </a>
                     <a href="projects/egokoroChecker/" class="project-card" target="_blank" rel="noopener noreferrer">
                         <div class="project-image">
                             <img src="assets/images/egokoro-checker.png" alt="絵心チェッカー" loading="lazy" width="300" height="200">
@@ -197,37 +240,11 @@
             </div>
         </section>
 
-        <section id="services">
+        <section id="contact">
             <div class="container">
-                <h2>開発のご依頼</h2>
-                <p>業務の自動化や小さなツールの開発を、副業としてお受けしています。「手作業で繰り返している作業を自動化したい」「公開情報を集めて一覧にしたい」といったご相談に対応します。</p>
-                <div class="service-grid">
-                    <div class="service-box">
-                        <h3>対応範囲</h3>
-                        <ul>
-                            <li><strong>業務自動化スクリプト:</strong> 定型作業の自動化、ファイル・データの定期処理</li>
-                            <li><strong>データ収集・加工:</strong> Webからの情報収集（スクレイピング）、CSV／スプレッドシートへの整形</li>
-                            <li><strong>API連携:</strong> 外部サービスとのデータ連携、通知の自動化</li>
-                            <li><strong>小規模ツール:</strong> 業務用ツールの新規作成、既存ツールの改修・バグ修正</li>
-                            <li><strong>Google Apps Script:</strong> フォーム・スプレッドシート周りの自動化</li>
-                        </ul>
-                    </div>
-                    <div class="service-box">
-                        <h3>進め方</h3>
-                        <ol class="steps">
-                            <li>ご相談（下記の窓口からメッセージをお送りください）</li>
-                            <li>内容を確認し、お見積りと進め方をご提案</li>
-                            <li>開発・動作確認</li>
-                            <li>納品</li>
-                        </ol>
-                    </div>
-                </div>
-                <div class="service-contact">
-                    <p>ご相談はランサーズのプロフィールから受け付けています。CrowdWorksでも同じアカウント名（miuray）で活動しています。</p>
-                    <div class="social-links">
-                        <a href="https://www.lancers.jp/profile/miuray" class="button" target="_blank" rel="noopener noreferrer">ランサーズで相談する</a>
-                    </div>
-                </div>
+                <h2>Contact</h2>
+                <p>ここに置いているものは、仕事の合間に作っている個人の作品です。使ってみた感想や質問、「似たようなものを作ってほしい」といった相談があれば、お気軽にどうぞ。窓口はランサーズのプロフィールに置いています（CrowdWorksでは miuray というアカウント名で活動しています）。</p>
+                <p><a href="https://www.lancers.jp/profile/miuray" target="_blank" rel="noopener noreferrer">ランサーズのプロフィールはこちら</a></p>
             </div>
         </section>
 
@@ -301,5 +318,6 @@
     </footer>
 
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/ab.js"></script>
 </body>
 </html> 

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>営業リスト自動収集ツール（ブラウザで試せるデモ）｜MiUPa</title>
+    <meta name="description" content="「業種 × 地域」を指定すると、公開されている店舗・事業者情報（名称・住所・電話番号・Webサイト）を自動収集し、重複を除いてCSVリストを作成するツールのデモです。ブラウザ上でそのまま試せます。">
+    <meta name="keywords" content="営業リスト,リスト作成,スクレイピング,データ収集,自動化,Python,OpenStreetMap,MiUPa">
+    <meta name="author" content="MiUPa">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="https://miupa.jp/sales-list-tool/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://miupa.jp/sales-list-tool/">
+    <meta property="og:title" content="営業リスト自動収集ツール（ブラウザで試せるデモ）｜MiUPa">
+    <meta property="og:description" content="業種と地域を指定するだけで、公開情報から営業リストを自動作成するツール。ブラウザでそのまま試せます。">
+    <meta property="og:site_name" content="MiUPa Portfolio">
+    <meta property="og:locale" content="ja_JP">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="営業リスト自動収集ツール（ブラウザで試せるデモ）｜MiUPa">
+    <meta name="twitter:description" content="業種と地域を指定するだけで、公開情報から営業リストを自動作成するツール。ブラウザでそのまま試せます。">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "営業リスト自動収集ツール",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser",
+      "description": "業種と地域を指定すると、OpenStreetMapの公開情報から店舗・事業者情報を自動収集し、重複を除いてCSVリストを作成するツール。",
+      "url": "https://miupa.jp/sales-list-tool/",
+      "author": { "@type": "Person", "name": "MiUPa", "url": "https://miupa.jp/" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+    }
+    </script>
+
+    <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
+    <style>
+        body { font-family: sans-serif; margin: 2em auto; max-width: 880px; padding: 0 1em; color: #222; line-height: 1.7; }
+        h1 { font-size: 1.5em; }
+        h2 { font-size: 1.15em; margin-top: 2em; border-bottom: 2px solid #305496; padding-bottom: .2em; }
+        .card { border: 1px solid #ccc; border-radius: 8px; padding: 1em 1.2em; }
+        label { display: block; margin: .7em 0 .2em; font-weight: bold; }
+        input, select { width: 100%; padding: .5em; font-size: 1em; box-sizing: border-box; }
+        button { margin-top: 1em; padding: .6em 1.6em; font-size: 1em; background: #305496; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+        button:disabled { background: #8aa3c7; cursor: wait; }
+        .examples { margin-top: .8em; font-size: .9em; }
+        .examples button { margin: .2em .3em 0 0; padding: .3em .9em; font-size: .85em; background: #eef2f8; color: #305496; border: 1px solid #305496; }
+        table { border-collapse: collapse; width: 100%; margin-top: 1em; font-size: .88em; }
+        th, td { border: 1px solid #bbb; padding: .35em .5em; text-align: left; vertical-align: top; }
+        th { background: #305496; color: #fff; }
+        .note { color: #555; font-size: .85em; }
+        .err { color: #b00; font-weight: bold; }
+        .status { color: #305496; font-weight: bold; min-height: 1.5em; }
+        .dl button { margin-right: 1em; }
+        a { color: #305496; }
+        .back { margin-top: 3em; font-size: .9em; }
+    </style>
+</head>
+<body>
+    <h1>営業リスト自動収集ツール <span class="note">（ブラウザで試せるデモ）</span></h1>
+    <p>「業種 × 地域」を指定すると、公開されている店舗・事業者情報（名称・住所・電話番号・Webサイト）を自動収集し、重複を除いてリスト化します。手作業で数時間かかるリスト作成を、数分に短縮するためのツールです。このページのデモは、実際にブラウザから取得元のAPIを呼んで動作します。</p>
+
+    <div class="card">
+        <form id="demo-form">
+            <label for="keyword">業種キーワード</label>
+            <input id="keyword" list="kw" placeholder="例：歯科医院" required>
+            <datalist id="kw"></datalist>
+            <label for="area">地域</label>
+            <input id="area" placeholder="例：岡山市" required>
+            <label for="limit">最大件数</label>
+            <select id="limit">
+                <option value="30">30</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+            </select>
+            <button type="submit" id="run">リストを作成する</button>
+            <div class="examples">
+                すぐ試す：
+                <button type="button" data-kw="歯科医院" data-area="岡山市">歯科医院 × 岡山市</button>
+                <button type="button" data-kw="カフェ" data-area="倉敷市">カフェ × 倉敷市</button>
+                <button type="button" data-kw="美容室" data-area="岡山市">美容室 × 岡山市</button>
+            </div>
+        </form>
+        <p class="note">※ 公開情報のみを対象とし、取得元APIの利用ポリシーに従って間隔を空けて取得します。地域の中心から半径3kmが対象です。データの取得に1〜2分かかることがあります。</p>
+        <p class="status" id="status"></p>
+        <div id="result"></div>
+    </div>
+
+    <h2>出力サンプル（架空データ）</h2>
+    <p>実際の出力形式はこのような形です（以下はすべて架空のサンプルデータ）。Excel版では見出しの色付け・列幅調整・フィルター・先頭行固定まで整形して出力します（Python版）。</p>
+    <table>
+        <tr><th>名称</th><th>業種</th><th>郵便番号</th><th>住所</th><th>電話番号</th><th>Webサイト</th></tr>
+        <tr><td>あおぞら歯科クリニック</td><td>歯科医院</td><td>700-0000</td><td>サンプル県サンプル市中央1-2-3</td><td>086-000-0001</td><td>https://example-dental-aozora.invalid</td></tr>
+        <tr><td>さくらデンタルオフィス</td><td>歯科医院</td><td>700-0001</td><td>サンプル県サンプル市駅前4-5-6</td><td>086-000-0002</td><td>https://example-dental-sakura.invalid</td></tr>
+        <tr><td>ひまわり歯科</td><td>歯科医院</td><td>700-0002</td><td>サンプル県サンプル市本町7-8-9</td><td></td><td>https://example-dental-himawari.invalid</td></tr>
+        <tr><td>みどり歯科医院</td><td>歯科医院</td><td>700-0003</td><td>サンプル県サンプル市南町2-4-6</td><td>086-000-0004</td><td></td></tr>
+    </table>
+    <p><a href="sample_output.csv" download>サンプルCSVをダウンロード</a>（架空データ）</p>
+
+    <h2>仕組み</h2>
+    <ul>
+        <li>取得元は OpenStreetMap（ボランティアが編集する公開地図データ）の公式APIです。データは ODbL ライセンスで公開されており、API経由の取得が正式な利用方法です。</li>
+        <li>地域名を緯度経度に変換（Nominatim API）→ 業種タグで周辺を検索（Overpass API）→ 名称＋電話/住所で重複除去、という流れです。1回の実行あたりのリクエストは最小限に抑えています。</li>
+        <li>納品形態は Python ツール（コマンドライン／簡易Web UI）で、CSV / Excel(.xlsx) 出力に対応します。このページは、そのWeb UIをブラウザだけで動く形にしたデモ版です。</li>
+    </ul>
+
+    <h2>カスタマイズ例（案件ごとに調整）</h2>
+    <ul>
+        <li><strong>取得元の追加・変更：</strong> 業界団体の公開名簿、自治体の公開データ、対象サイトの公式API・公開ページなど、適法に取得できる情報源への差し替え・組み合わせ</li>
+        <li><strong>取得項目の追加：</strong> 営業時間、メールアドレス、SNSアカウント、代表者名など</li>
+        <li><strong>出力形式：</strong> Google スプレッドシートへの直接出力、CRM（HubSpot等）取り込み形式</li>
+        <li><strong>定期実行：</strong> 週次・月次で自動更新し、差分（新規・閉店）だけを通知</li>
+        <li><strong>絞り込み条件：</strong> 電話番号ありのみ、Webサイトなしのみ（HP制作営業向け）など</li>
+    </ul>
+    <p class="note">※ OpenStreetMap はボランティア編集の公開データのため、地域・業種により登録密度（電話番号・Webサイトの有無）に差があります。実案件では取得元を選定・組み合わせてカバー率を高めます。</p>
+
+    <p class="back">← <a href="https://miupa.jp/">MiUPa のポートフォリオに戻る</a> ／ データ出典：© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>（ODbL）</p>
+
+<script>
+(function () {
+    'use strict';
+    // Python版 collector.py の業種対応表をそのまま移植
+    var CATEGORY_TAGS = {
+        '歯科医院': [['amenity', 'dentists'], ['amenity', 'dentist']],
+        '歯科': [['amenity', 'dentists'], ['amenity', 'dentist']],
+        'デンタルクリニック': [['amenity', 'dentists'], ['amenity', 'dentist']],
+        '病院': [['amenity', 'hospital']],
+        'クリニック': [['amenity', 'clinic'], ['amenity', 'doctors']],
+        '医院': [['amenity', 'clinic'], ['amenity', 'doctors']],
+        '薬局': [['amenity', 'pharmacy']],
+        'ドラッグストア': [['amenity', 'pharmacy']],
+        'カフェ': [['amenity', 'cafe']],
+        '喫茶店': [['amenity', 'cafe']],
+        'レストラン': [['amenity', 'restaurant']],
+        '飲食店': [['amenity', 'restaurant'], ['amenity', 'fast_food']],
+        '居酒屋': [['amenity', 'pub'], ['amenity', 'bar']],
+        '美容室': [['shop', 'hairdresser']],
+        'ヘアサロン': [['shop', 'hairdresser']],
+        '理容室': [['shop', 'hairdresser']],
+        'コンビニ': [['shop', 'convenience']],
+        'ホテル': [['tourism', 'hotel']],
+        '旅館': [['tourism', 'ryokan'], ['tourism', 'hotel']],
+        '不動産': [['office', 'estate_agent']],
+        '学習塾': [['amenity', 'prep_school']],
+        '塾': [['amenity', 'prep_school']],
+        '整骨院': [['healthcare', 'alternative'], ['amenity', 'doctors']],
+        '整体': [['healthcare', 'alternative']],
+        'ペットショップ': [['shop', 'pet']],
+        '動物病院': [['amenity', 'veterinary']],
+        '税理士事務所': [['office', 'accountant'], ['office', 'tax_advisor']],
+        '法律事務所': [['office', 'lawyer']],
+        '工務店': [['craft', 'builder'], ['office', 'company']]
+    };
+    var CATEGORY_NAME_HINTS = {
+        '歯科医院': '歯科|デンタル', '歯科': '歯科|デンタル', 'デンタルクリニック': '歯科|デンタル',
+        '美容室': '美容室|美容院', '学習塾': '塾|学習|進学', '整骨院': '整骨院|接骨院'
+    };
+    var COLUMNS = ['名称', '業種', '郵便番号', '住所', '電話番号', 'Webサイト', 'データ出典'];
+    var NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
+    var OVERPASS_URLS = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
+    var RADIUS_M = 3000;
+
+    var datalist = document.getElementById('kw');
+    Object.keys(CATEGORY_TAGS).forEach(function (k) {
+        var o = document.createElement('option');
+        o.value = k;
+        datalist.appendChild(o);
+    });
+
+    function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+    function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+    function normalize(text) {
+        return (text || '').normalize('NFKC').replace(/\s+/g, '').toLowerCase();
+    }
+    function buildAddress(t) {
+        if (t['addr:full']) return t['addr:full'];
+        var keys = ['addr:state', 'addr:city', 'addr:suburb', 'addr:neighbourhood', 'addr:quarter', 'addr:street', 'addr:block_number', 'addr:housenumber'];
+        return keys.map(function (k) { return t[k] || ''; }).join('');
+    }
+
+    function geocode(area, signal) {
+        var url = NOMINATIM_URL + '?q=' + encodeURIComponent(area) + '&format=json&limit=1&countrycodes=jp';
+        return fetch(url, { signal: signal }).then(function (r) {
+            if (!r.ok) throw new Error('地域の検索に失敗しました');
+            return r.json();
+        }).then(function (data) {
+            if (!data.length) throw new Error('地域が見つかりませんでした: ' + area);
+            return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), label: data[0].display_name };
+        });
+    }
+
+    function buildQuery(keyword, geo, limit) {
+        var around = 'around:' + RADIUS_M + ',' + geo.lat + ',' + geo.lon;
+        var filters = [];
+        var tags = CATEGORY_TAGS[keyword];
+        if (tags) {
+            tags.forEach(function (kv) {
+                filters.push('node["' + kv[0] + '"="' + kv[1] + '"](' + around + ');');
+            });
+            var hint = CATEGORY_NAME_HINTS[keyword];
+            if (hint) filters.push('node["name"~"' + hint + '"](' + around + ');');
+        } else {
+            filters.push('node["name"~"' + keyword.replace(/"/g, '') + '"](' + around + ');');
+        }
+        return '[out:json][timeout:60];(' + filters.join('') + ');out tags ' + (limit * 3) + ';';
+    }
+
+    function fetchOverpass(query, signal) {
+        var chain = Promise.reject(new Error('start'));
+        OVERPASS_URLS.forEach(function (url) {
+            chain = chain.catch(function () {
+                return fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                    body: 'data=' + encodeURIComponent(query),
+                    signal: signal
+                }).then(function (r) {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.json();
+                });
+            });
+        });
+        return chain;
+    }
+
+    var lastCsv = null, lastName = '';
+
+    function run(keyword, area, limit) {
+        var status = document.getElementById('status');
+        var result = document.getElementById('result');
+        var btn = document.getElementById('run');
+        result.innerHTML = '';
+        btn.disabled = true;
+        var controller = new AbortController();
+        var timer = setTimeout(function () { controller.abort(); }, 150000);
+        status.textContent = '地域を検索しています…';
+        geocode(area, controller.signal).then(function (geo) {
+            status.textContent = '事業者情報を取得しています…（1〜2分かかることがあります）';
+            return sleep(1200).then(function () {
+                return fetchOverpass(buildQuery(keyword, geo, limit), controller.signal)
+                    .then(function (data) { return { geo: geo, elements: data.elements || [] }; });
+            });
+        }).then(function (out) {
+            clearTimeout(timer);
+            var seen = {}, items = [];
+            out.elements.forEach(function (el) {
+                var t = el.tags || {};
+                var name = (t.name || '').trim();
+                if (!name) return;
+                var phone = (t.phone || t['contact:phone'] || '').trim();
+                var address = buildAddress(t);
+                var key = normalize(name) + '|' + (normalize(phone) || normalize(address));
+                if (seen[key]) return;
+                seen[key] = 1;
+                items.push({
+                    name: name, category: keyword,
+                    postcode: (t['addr:postcode'] || '').trim(),
+                    address: address, phone: phone,
+                    website: (t.website || t['contact:website'] || '').trim(),
+                    source: 'OpenStreetMap'
+                });
+            });
+            items.sort(function (a, b) { return a.name < b.name ? -1 : 1; });
+            items = items.slice(0, limit);
+            var withPhone = items.filter(function (i) { return i.phone; }).length;
+            var withWeb = items.filter(function (i) { return i.website; }).length;
+
+            var csvRows = [COLUMNS.join(',')];
+            items.forEach(function (i) {
+                csvRows.push([i.name, i.category, i.postcode, i.address, i.phone, i.website, i.source]
+                    .map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(','));
+            });
+            lastCsv = new Blob(['\ufeff' + csvRows.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+            lastName = 'sales_list_' + area + '_' + keyword + '.csv';
+
+            var rows = items.slice(0, 50).map(function (i) {
+                return '<tr><td>' + esc(i.name) + '</td><td>' + esc(i.category) + '</td><td>' + esc(i.postcode) +
+                    '</td><td>' + esc(i.address) + '</td><td>' + esc(i.phone) + '</td><td>' +
+                    (i.website ? '<a href="' + esc(i.website) + '" target="_blank" rel="noopener noreferrer">' + esc(i.website) + '</a>' : '') +
+                    '</td></tr>';
+            }).join('');
+            result.innerHTML =
+                '<h2>作成結果：「' + esc(keyword) + '」×「' + esc(area) + '」</h2>' +
+                '<p>' + items.length + ' 件（電話番号あり ' + withPhone + ' 件 / Webサイトあり ' + withWeb + ' 件） ' +
+                '<span class="note">対象エリア: ' + esc(out.geo.label) + '</span></p>' +
+                '<p class="dl"><button type="button" id="dl">CSVをダウンロード</button>' +
+                '<span class="note">Excel版（整形済み）は Python 版ツールで出力できます。</span></p>' +
+                '<table><tr><th>名称</th><th>業種</th><th>郵便番号</th><th>住所</th><th>電話番号</th><th>Webサイト</th></tr>' + rows + '</table>' +
+                '<p class="note">※ プレビューは先頭50件まで表示しています。ダウンロードファイルには全件が入ります。</p>';
+            document.getElementById('dl').addEventListener('click', function () {
+                var a = document.createElement('a');
+                a.href = URL.createObjectURL(lastCsv);
+                a.download = lastName;
+                a.click();
+                setTimeout(function () { URL.revokeObjectURL(a.href); }, 5000);
+            });
+            status.textContent = '完了しました。';
+        }).catch(function (e) {
+            clearTimeout(timer);
+            status.textContent = '';
+            result.innerHTML = '<p class="err">取得に失敗しました：' + esc(e.name === 'AbortError' ? 'タイムアウトしました。時間をおいて再度お試しください。' : e.message) + '</p>';
+        }).finally(function () {
+            btn.disabled = false;
+        });
+    }
+
+    document.getElementById('demo-form').addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        var keyword = document.getElementById('keyword').value.trim();
+        var area = document.getElementById('area').value.trim();
+        var limit = parseInt(document.getElementById('limit').value, 10) || 50;
+        if (keyword && area) run(keyword, area, limit);
+    });
+    document.querySelectorAll('.examples button').forEach(function (b) {
+        b.addEventListener('click', function () {
+            document.getElementById('keyword').value = b.getAttribute('data-kw');
+            document.getElementById('area').value = b.getAttribute('data-area');
+            run(b.getAttribute('data-kw'), b.getAttribute('data-area'),
+                parseInt(document.getElementById('limit').value, 10) || 50);
+        });
+    });
+})();
+</script>
+</body>
+</html>
