@@ -92,19 +92,85 @@ gtag('config', 'G-3Q0TK9GK8H');
 </script>
 
 <link rel="stylesheet" href="../assets/css/main.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232e7d46'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='34' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23D97757'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='34' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
 <style>
-.steps { display: grid; gap: 1rem; margin-top: 1.5rem; }
-@media (min-width: 720px) { .steps { grid-template-columns: repeat(3, 1fr); } }
-.step-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
-.step-card .step-num { display: inline-block; font-weight: bold; color: var(--accent); margin-bottom: .4rem; }
-.step-card h3 { margin-bottom: .4rem; }
-.faq-list { margin-top: 1.5rem; }
-.faq-item { border-bottom: 1px solid var(--border); padding: 1.1rem 0; }
-.faq-item h3 { margin-bottom: .35rem; }
-.feature-list { margin: 1rem 0 0 1.25rem; }
-.feature-list li { margin-bottom: .5rem; }
-.lp-cta { text-align: center; padding: 2.5rem 0 .5rem; }
+/* このLP専用のライトテーマ（Anthropic風の温かいパレット）。
+   共有 main.css の prefers-color-scheme: dark を、このページでは効かせない。 */
+html { color-scheme: light only; }
+:root {
+    --bg: #FAF9F5;
+    --surface: #FFFFFF;
+    --surface-2: #F0EEE6;
+    --text: #1F1E1D;
+    --muted: #6B6963;
+    --accent: #D97757;
+    --accent-strong: #C15F3C;
+    --on-accent: #FFFFFF;
+    --border: #E8E4DA;
+    --shadow: 0 2px 14px rgba(31, 30, 29, 0.07);
+    --radius: 16px;
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #FAF9F5;
+        --surface: #FFFFFF;
+        --surface-2: #F0EEE6;
+        --text: #1F1E1D;
+        --muted: #6B6963;
+        --accent: #D97757;
+        --accent-strong: #C15F3C;
+        --on-accent: #FFFFFF;
+        --border: #E8E4DA;
+        --shadow: 0 2px 14px rgba(31, 30, 29, 0.07);
+    }
+}
+body { background: #FAF9F5; color: #1F1E1D; line-height: 1.9; }
+a { color: var(--accent-strong); }
+.button { color: #FFFFFF; }
+.button:hover { color: #FFFFFF; }
+.button-ghost { color: var(--accent-strong); }
+.button-ghost:hover { color: var(--accent-strong); }
+.site-header { background: rgba(250, 249, 245, 0.9); }
+section { padding: 4.25rem 0; }
+.hero { border-bottom: none; padding: 4.5rem 0 3.5rem; }
+h1, h2 { font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho", "Yu Mincho", "Noto Serif JP", Georgia, serif; font-weight: 600; letter-spacing: 0.01em; }
+.hero-eyebrow, .section-eyebrow { color: var(--accent-strong); }
+.hero-grid { display: grid; gap: 2.5rem; align-items: center; }
+@media (min-width: 920px) { .hero-grid { grid-template-columns: 1fr 1.15fr; gap: 3.5rem; } }
+.hero-note { color: var(--muted); font-size: 0.92rem; margin-top: 1rem; }
+.browser-frame { background: #FFFFFF; border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 18px 44px rgba(31, 30, 29, 0.12); overflow: hidden; }
+.browser-bar { display: flex; gap: 0.45rem; padding: 0.7rem 1rem; background: var(--surface-2); border-bottom: 1px solid var(--border); }
+.browser-bar span { width: 11px; height: 11px; border-radius: 50%; background: #DAD4C4; display: block; }
+.browser-bar span:first-child { background: var(--accent); }
+.browser-frame img { display: block; width: 100%; height: auto; }
+.shot-caption { color: var(--muted); font-size: 0.88rem; margin-top: 0.8rem; text-align: center; }
+.feature-grid { display: grid; gap: 1.5rem; margin-top: 2.25rem; }
+@media (min-width: 820px) { .feature-grid { grid-template-columns: 1fr 1fr; } }
+.feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+.feature-card img { display: block; width: 100%; height: auto; }
+.feature-body { padding: 1.5rem 1.6rem 1.7rem; }
+.feature-body h3 { margin-bottom: 0.5rem; }
+.section-lead { color: var(--muted); max-width: 44rem; margin-top: 0.75rem; }
+.steps { display: grid; gap: 1.5rem; margin-top: 2.25rem; }
+@media (min-width: 920px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+.step-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+.step-card img { display: block; width: 100%; height: auto; }
+.step-body { padding: 1.4rem 1.5rem 1.6rem; }
+.step-card .step-num { display: inline-block; font-weight: bold; color: var(--accent-strong); letter-spacing: 0.08em; font-size: 0.85rem; margin-bottom: 0.4rem; }
+.step-card h3 { margin-bottom: 0.4rem; }
+.faq-layout { display: grid; gap: 2.5rem; margin-top: 2.25rem; }
+@media (min-width: 920px) { .faq-layout { grid-template-columns: 0.85fr 1.4fr; gap: 3.5rem; align-items: start; } }
+.faq-side img { display: block; width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--border); }
+.faq-side p { color: var(--muted); font-size: 0.94rem; margin-top: 1rem; }
+.faq-item { border-bottom: 1px solid var(--border); padding: 1.15rem 0; }
+.faq-item:first-child { padding-top: 0; }
+.faq-item h3 { margin-bottom: 0.35rem; }
+.cta-band { background: var(--surface-2); border: 1px solid var(--border); border-radius: 20px; padding: 3rem 1.5rem; text-align: center; }
+.cta-band h2 { margin-bottom: 0.75rem; }
+.cta-band p { color: var(--muted); }
+.cta-band .hero-actions { justify-content: center; margin-top: 1.5rem; }
+.cta-dev { margin-top: 1.5rem; font-size: 0.94rem; }
+footer { background: transparent; }
 </style>
 </head>
 <body>
@@ -126,6 +192,8 @@ gtag('config', 'G-3Q0TK9GK8H');
 <main id="top">
 <section class="hero">
 <div class="container">
+<div class="hero-grid">
+<div>
 <p class="hero-eyebrow">Chrome Extension</p>
 <h1>Amazonで買う前に、<br class="br-pc">メルカリの中古価格をその場でチェック</h1>
 <p class="hero-lead">「それ、メルカリなら安いよ」は、Amazon.co.jpの商品ページを開くだけで、メルカリで今買える中古の候補と、Amazon価格との差額をその場に表示するChrome拡張機能です。別タブを開いて商品名をコピペ検索し直す手間をなくします。無料で使えます。</p>
@@ -133,27 +201,54 @@ gtag('config', 'G-3Q0TK9GK8H');
 <a href="https://chromewebstore.google.com/detail/pooiaaojomiobedlgihdaeljappmckmh" class="button cta-store" data-store-link="mercari-compare" target="_blank" rel="noopener noreferrer">Chromeに追加（Chrome Web Store）</a>
 <a href="#howto" class="button button-ghost">使い方を見る</a>
 </p>
+<p class="hero-note">無料 ・ アカウント登録不要 ・ Chrome Web Store で公開中</p>
+</div>
+<div>
+<figure class="browser-frame">
+<div class="browser-bar"><span></span><span></span><span></span></div>
+<img src="assets/shot-book.png" alt="実際の動作画面。Amazonの本の商品ページに、メルカリの中古候補と価格差（322円安い、など）が表示されている" width="1280" height="800">
+</figure>
+<p class="shot-caption">実際の画面：Amazonの商品ページでの表示例（Chrome Web Store掲載中のスクリーンショット）</p>
+</div>
+</div>
 </div>
 </section>
 
 <section>
 <div class="container">
-<article class="work-card">
-<div class="work-image">
-<img src="../assets/images/mercari-extension.png" alt="それ、メルカリなら安いよ の動作イメージ。Amazonの商品ページにメルカリの中古候補と価格差が表示されている" width="1280" height="800" onerror="this.parentElement.style.display='none'">
-</div>
-<div class="work-body">
 <p class="section-eyebrow">What it does</p>
 <h2>何ができるか</h2>
-<p>新品を買った直後に、メルカリでずっと安い出品を見つけて悔しい思いをしたことはないでしょうか。この拡張機能は、Amazonの商品ページ上でその確認を済ませるためのものです。</p>
-<ul class="feature-list">
-<li><strong>その場で候補と価格差を表示</strong>：販売中の候補だけを、価格とAmazon価格との差額つきで表示します。候補をクリックすればメルカリの商品ページへ移動できます。</li>
-<li><strong>検索は自動</strong>：商品名・ブランド・型番・JAN / ISBN・色・サイズから、メルカリ用の検索語を自動で組み立てます。検索語の手動調整、並び替え、表示件数の切り替えもできます。</li>
-<li><strong>ノイズ除去</strong>：ケース・カバー・フィルム・空箱・ジャンク・付属品のみといった「本体ではない出品」を自動で除外します。</li>
-<li><strong>対象ジャンルは広め</strong>：本・ゲーム・家電・日用品・コスメなど、「中古で十分だから安く買いたい」買い物の前にどうぞ。</li>
-</ul>
+<p class="section-lead">新品を買った直後に、メルカリでずっと安い出品を見つけて悔しい思いをしたことはないでしょうか。この拡張機能は、Amazonの商品ページ上でその確認を済ませるためのものです。</p>
+<div class="feature-grid">
+<article class="feature-card">
+<img src="assets/shot-electronics.png" alt="実際の動作画面。Amazonのイヤホンの商品ページに、メルカリの中古候補と価格差が表示されている" width="1280" height="800" loading="lazy">
+<div class="feature-body">
+<h3>その場で候補と価格差を表示</h3>
+<p>販売中の候補だけを、価格とAmazon価格との差額つきで表示します。候補をクリックすればメルカリの商品ページへ移動できます。</p>
 </div>
 </article>
+<article class="feature-card">
+<img src="assets/shot-beauty.png" alt="実際の動作画面。Amazonの化粧水の商品ページに、自動生成された検索語とメルカリの中古候補が表示されている" width="1280" height="800" loading="lazy">
+<div class="feature-body">
+<h3>検索は自動</h3>
+<p>商品名・ブランド・型番・JAN / ISBN・色・サイズから、メルカリ用の検索語を自動で組み立てます。検索語の手動調整、並び替え、表示件数の切り替えもできます。</p>
+</div>
+</article>
+<article class="feature-card">
+<img src="assets/illus-filter.png" alt="本体だけがフィルターに残り、ケースや空箱などの付属品が振り落とされる様子のイラスト" width="1200" height="800" loading="lazy">
+<div class="feature-body">
+<h3>「本体ではない出品」を除く</h3>
+<p>ケース・カバー・フィルム・空箱・ジャンク・付属品のみといった出品を自動で除外します。比べたいのは本体の価格なので、その手前のノイズを取り除きます。</p>
+</div>
+</article>
+<article class="feature-card">
+<img src="assets/illus-genres.png" alt="本、ゲームコントローラー、ヘッドホン、化粧品ボトル、カメラが値札つきで棚に並ぶイラスト" width="1200" height="800" loading="lazy">
+<div class="feature-body">
+<h3>対象ジャンルは広め</h3>
+<p>本・ゲーム・家電・日用品・コスメなど、「中古で十分だから安く買いたい」買い物の前にどうぞ。</p>
+</div>
+</article>
+</div>
 </div>
 </section>
 
@@ -163,19 +258,28 @@ gtag('config', 'G-3Q0TK9GK8H');
 <h2>使い方（3ステップ）</h2>
 <div class="steps">
 <div class="step-card">
+<img src="assets/illus-step1.png" alt="ブラウザのツールバーのパズルピースのアイコンと、追加ボタンをクリックするカーソルのイラスト" width="1200" height="800" loading="lazy">
+<div class="step-body">
 <span class="step-num">STEP 1</span>
 <h3>Chromeに追加する</h3>
 <p>Chrome Web Storeのページから「Chromeに追加」を押します。料金は無料で、登録も不要です。</p>
 </div>
+</div>
 <div class="step-card">
+<img src="assets/illus-step2.png" alt="ノートパソコンにヘッドホンの商品ページが表示されているイラスト" width="1200" height="800" loading="lazy">
+<div class="step-body">
 <span class="step-num">STEP 2</span>
 <h3>Amazonの商品ページを開く</h3>
 <p>いつもどおりAmazon.co.jpで商品ページを開くだけです。拡張機能が自動でメルカリの中古候補を探します。</p>
 </div>
+</div>
 <div class="step-card">
+<img src="assets/illus-step3.png" alt="本の商品カード2枚と価格タグを、虫眼鏡で見比べているイラスト" width="1200" height="800" loading="lazy">
+<div class="step-body">
 <span class="step-num">STEP 3</span>
 <h3>候補と価格差を確認する</h3>
 <p>ページ上に表示された候補と価格差を見て、新品で買うか中古にするかを判断します。気になる候補はクリックでメルカリへ。</p>
+</div>
 </div>
 </div>
 </div>
@@ -185,6 +289,11 @@ gtag('config', 'G-3Q0TK9GK8H');
 <div class="container">
 <p class="section-eyebrow">FAQ</p>
 <h2>よくある質問</h2>
+<div class="faq-layout">
+<div class="faq-side">
+<img src="assets/illus-privacy.png" alt="ブラウザのウィンドウと、盾と鍵のイラスト" width="1200" height="800" loading="lazy">
+<p>データの扱いについて：独自サーバーは使っておらず、設定と短時間の検索キャッシュはお使いのブラウザの中にだけ保存されます。</p>
+</div>
 <div class="faq-list">
 <div class="faq-item">
 <h3>料金はかかりますか？</h3>
@@ -211,12 +320,19 @@ gtag('config', 'G-3Q0TK9GK8H');
 <p>いいえ。Amazon / Mercari 公式のものではなく、個人が開発している非公式ツールです。メルカリ側の仕様変更により、一時的に動作しなくなる場合があります。</p>
 </div>
 </div>
+</div>
+</div>
+</section>
 
-<div class="lp-cta">
-<p class="hero-actions" style="justify-content:center">
+<section>
+<div class="container">
+<div class="cta-band">
+<h2>買う前のひと確認に</h2>
+<p>Amazonの商品ページを開く、いつもの流れのまま使えます。</p>
+<p class="hero-actions">
 <a href="https://chromewebstore.google.com/detail/pooiaaojomiobedlgihdaeljappmckmh" class="button cta-store" data-store-link="mercari-compare" target="_blank" rel="noopener noreferrer">無料で Chrome に追加する</a>
 </p>
-<p>開発者：<a href="https://miupa.jp/">MiUPa</a>（個人開発）。他の作品は<a href="https://miupa.jp/#works">Works</a>に置いています。</p>
+<p class="cta-dev">開発者：<a href="https://miupa.jp/">MiUPa</a>（個人開発）。他の作品は<a href="https://miupa.jp/#works">Works</a>に置いています。</p>
 </div>
 </div>
 </section>
