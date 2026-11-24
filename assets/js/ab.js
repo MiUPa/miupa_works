@@ -27,6 +27,14 @@
                     cta.textContent = '無料で Chrome に追加';
                 }
             }
+        },
+        {
+            id: 'font-heading-01',
+            enabled: true, // 実験2: 2026-11-25 開始。見出しフォント 明朝(A) vs ゴシック(B)
+            // B = <html> に ab-font-gothic を付け、CSS 側のルールで見出しだけ本文と同じサンセリフに切り替える。
+            applyB: function () {
+                document.documentElement.classList.add('ab-font-gothic');
+            }
         }
     ];
 

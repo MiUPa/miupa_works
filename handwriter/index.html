@@ -180,6 +180,8 @@ section { padding: 3.6rem 0; }
 section.alt { background: var(--surface-muted); }
 .section-eyebrow { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 0.6rem; }
 h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.6rem, 3.6vw, 2.2rem); line-height: 1.45; margin-bottom: 1rem; }
+/* A/Bテスト font-heading-01（2026-11-25開始）: バリアントB は見出しをゴシック（本文フォント）に */
+html.ab-font-gothic .hero h1, html.ab-font-gothic h2, html.ab-font-gothic .feature-text h3 { font-family: var(--font-body); }
 .section-lead { color: var(--muted); max-width: 46em; margin-bottom: 2.2rem; }
 
 .feature-list { display: grid; gap: 4rem; }

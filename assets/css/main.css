@@ -183,6 +183,13 @@ h1, h2 {
     letter-spacing: 0.01em;
 }
 
+/* A/Bテスト font-heading-01（2026-11-25開始）: バリアントB は見出しをゴシック（本文と同じ書体）に */
+html.ab-font-gothic h1,
+html.ab-font-gothic h2 {
+    font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif;
+}
+
 h2 {
     font-size: clamp(1.5rem, 3.5vw, 2rem);
     line-height: 1.4;
