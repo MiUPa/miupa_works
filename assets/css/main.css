@@ -1,35 +1,23 @@
 /* miupa.jp — main stylesheet (restructured 2026-11-23)
-   Single file, no frameworks. System fonts. Light + dark via prefers-color-scheme. */
+   Single file, no frameworks. System fonts.
+   Theme unified 2026-11-24: Anthropic-style warm light palette
+   (cream + clay), matching the /mercari-compare/ LP. Light only —
+   dark mode intentionally does not flip the site. */
 
 :root {
-    --bg: #ffffff;
-    --surface: #f6f7f4;
-    --surface-2: #eef1ec;
-    --text: #1d201d;
-    --muted: #5b605b;
-    --accent: #2e7d46;
-    --accent-strong: #256b3a;
-    --on-accent: #ffffff;
-    --border: #e2e5e0;
+    color-scheme: light only;
+    --bg: #FAF9F5;
+    --surface: #FFFFFF;
+    --surface-2: #F0EEE6;
+    --text: #1F1E1D;
+    --muted: #6B6963;
+    --accent: #D97757;
+    --accent-strong: #C15F3C;
+    --on-accent: #FFFFFF;
+    --border: #E8E4DA;
     --error: #b3261e;
-    --shadow: 0 1px 3px rgba(20, 30, 20, 0.08);
-    --radius: 14px;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #14161a;
-        --surface: #1d2026;
-        --surface-2: #262a31;
-        --text: #e9ebe7;
-        --muted: #a4a9a2;
-        --accent: #57b877;
-        --accent-strong: #6fc48d;
-        --on-accent: #10130f;
-        --border: #2d3138;
-        --error: #f2b8b5;
-        --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    }
+    --shadow: 0 1px 3px rgba(31, 30, 29, 0.08);
+    --radius: 16px;
 }
 
 * {
@@ -185,6 +173,14 @@ section {
 
 section + section {
     border-top: 1px solid var(--border);
+}
+
+/* Headings — Mincho serif, mirroring the LP theme */
+h1, h2 {
+    font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho", "Yu Mincho",
+        "Noto Serif JP", Georgia, serif;
+    font-weight: 600;
+    letter-spacing: 0.01em;
 }
 
 h2 {
