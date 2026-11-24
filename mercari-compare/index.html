@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>それ、メルカリなら安いよ｜Amazonで買う前にメルカリの中古価格を比較できるChrome拡張機能</title>
+<meta name="description" content="Amazon.co.jpの商品ページを開くだけで、メルカリで今買える中古の候補と価格差をその場に表示する無料のChrome拡張機能。別タブで検索し直す手間なく、買う前に「中古で安く買えないか」を確認できます。">
+<meta name="keywords" content="Amazon,メルカリ,価格比較,中古,Chrome拡張機能,それ、メルカリなら安いよ,買う前に確認">
+<meta name="author" content="MiUPa">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://miupa.jp/mercari-compare/">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://miupa.jp/mercari-compare/">
+<meta property="og:title" content="それ、メルカリなら安いよ｜Amazonで買う前にメルカリの中古価格をその場で比較">
+<meta property="og:description" content="Amazonの商品ページを開くだけで、メルカリの中古候補と価格差がその場で分かります。買う前のひと確認に使える、無料のChrome拡張機能です。">
+<meta property="og:image" content="https://miupa.jp/assets/images/mercari-extension.png">
+<meta property="og:site_name" content="MiUPa Portfolio">
+<meta property="og:locale" content="ja_JP">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://miupa.jp/mercari-compare/">
+<meta name="twitter:title" content="それ、メルカリなら安いよ｜Amazonで買う前にメルカリの中古価格をその場で比較">
+<meta name="twitter:description" content="Amazonの商品ページを開くだけで、メルカリの中古候補と価格差がその場で分かります。無料のChrome拡張機能です。">
+<meta name="twitter:image" content="https://miupa.jp/assets/images/mercari-extension.png">
+<meta name="twitter:creator" content="@MiUPa">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+"@context": "https://schema.org",
+"@graph": [
+{
+"@type": "SoftwareApplication",
+"name": "それ、メルカリなら安いよ",
+"applicationCategory": "BrowserApplication",
+"operatingSystem": "Chrome",
+"description": "Amazon.co.jpの商品ページを開くだけで、メルカリで今買える中古の候補と価格差をその場に表示するChrome拡張機能。",
+"url": "https://miupa.jp/mercari-compare/",
+"downloadUrl": "https://chromewebstore.google.com/detail/pooiaaojomiobedlgihdaeljappmckmh",
+"author": { "@type": "Person", "name": "MiUPa", "url": "https://miupa.jp/" },
+"offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+},
+{
+"@type": "FAQPage",
+"mainEntity": [
+{
+"@type": "Question",
+"name": "料金はかかりますか？",
+"acceptedAnswer": { "@type": "Answer", "text": "無料です。Chrome Web Storeから追加するだけで使えます。" }
+},
+{
+"@type": "Question",
+"name": "対応しているサイトはどこですか？",
+"acceptedAnswer": { "@type": "Answer", "text": "Amazon.co.jpの商品ページに対応しています。ページを開くと、その商品の中古候補をメルカリから探して表示します。比較先はメルカリです。" }
+},
+{
+"@type": "Question",
+"name": "使うのにアカウント登録は必要ですか？",
+"acceptedAnswer": { "@type": "Answer", "text": "拡張機能自体への登録は不要です。Chrome Web Storeから追加すればすぐに使えます。候補の購入手続きはメルカリ側で行います。" }
+},
+{
+"@type": "Question",
+"name": "データが外部に送信されることはありますか？",
+"acceptedAnswer": { "@type": "Answer", "text": "独自サーバーは使っていません。設定と短時間の検索キャッシュは、お使いのブラウザ内（chrome.storage.local）にだけ保存されます。収集するデータは比較に必要なページ内容のみで、第三者への販売や目的外の利用はしません。" }
+},
+{
+"@type": "Question",
+"name": "表示される価格は正確ですか？",
+"acceptedAnswer": { "@type": "Answer", "text": "表示価格は取得時点のメルカリの出品情報です。売り切れや価格変更のほか、中古品の状態は出品ごとに異なるため、購入前に必ずメルカリの出品ページでご確認ください。" }
+},
+{
+"@type": "Question",
+"name": "Amazonやメルカリの公式ツールですか？",
+"acceptedAnswer": { "@type": "Answer", "text": "いいえ。Amazon / Mercari 公式のものではなく、個人が開発している非公式ツールです。メルカリ側の仕様変更により、一時的に動作しなくなる場合があります。" }
+}
+]
+}
+]
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3Q0TK9GK8H"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-3Q0TK9GK8H');
+</script>
+
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232e7d46'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='34' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+<style>
+.steps { display: grid; gap: 1rem; margin-top: 1.5rem; }
+@media (min-width: 720px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+.step-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+.step-card .step-num { display: inline-block; font-weight: bold; color: var(--accent); margin-bottom: .4rem; }
+.step-card h3 { margin-bottom: .4rem; }
+.faq-list { margin-top: 1.5rem; }
+.faq-item { border-bottom: 1px solid var(--border); padding: 1.1rem 0; }
+.faq-item h3 { margin-bottom: .35rem; }
+.feature-list { margin: 1rem 0 0 1.25rem; }
+.feature-list li { margin-bottom: .5rem; }
+.lp-cta { text-align: center; padding: 2.5rem 0 .5rem; }
+</style>
+</head>
+<body>
+<header class="site-header">
+<div class="header-inner">
+<a href="https://miupa.jp/" class="logo">MiUPa</a>
+<nav aria-label="メインナビゲーション">
+<ul class="nav-links">
+<li><a href="https://miupa.jp/#works">Works</a></li>
+<li><a href="https://miupa.jp/#tools">Tools</a></li>
+<li><a href="https://miupa.jp/#about">About</a></li>
+<li><a href="https://miupa.jp/#blog">Blog</a></li>
+<li><a href="https://miupa.jp/#contact">Contact</a></li>
+</ul>
+</nav>
+</div>
+</header>
+
+<main id="top">
+<section class="hero">
+<div class="container">
+<p class="hero-eyebrow">Chrome Extension</p>
+<h1>Amazonで買う前に、<br class="br-pc">メルカリの中古価格をその場でチェック</h1>
+<p class="hero-lead">「それ、メルカリなら安いよ」は、Amazon.co.jpの商品ページを開くだけで、メルカリで今買える中古の候補と、Amazon価格との差額をその場に表示するChrome拡張機能です。別タブを開いて商品名をコピペ検索し直す手間をなくします。無料で使えます。</p>
+<p class="hero-actions">
+<a href="https://chromewebstore.google.com/detail/pooiaaojomiobedlgihdaeljappmckmh" class="button cta-store" data-store-link="mercari-compare" target="_blank" rel="noopener noreferrer">Chromeに追加（Chrome Web Store）</a>
+<a href="#howto" class="button button-ghost">使い方を見る</a>
+</p>
+</div>
+</section>
+
+<section>
+<div class="container">
+<article class="work-card">
+<div class="work-image">
+<img src="../assets/images/mercari-extension.png" alt="それ、メルカリなら安いよ の動作イメージ。Amazonの商品ページにメルカリの中古候補と価格差が表示されている" width="1280" height="800" onerror="this.parentElement.style.display='none'">
+</div>
+<div class="work-body">
+<p class="section-eyebrow">What it does</p>
+<h2>何ができるか</h2>
+<p>新品を買った直後に、メルカリでずっと安い出品を見つけて悔しい思いをしたことはないでしょうか。この拡張機能は、Amazonの商品ページ上でその確認を済ませるためのものです。</p>
+<ul class="feature-list">
+<li><strong>その場で候補と価格差を表示</strong>：販売中の候補だけを、価格とAmazon価格との差額つきで表示します。候補をクリックすればメルカリの商品ページへ移動できます。</li>
+<li><strong>検索は自動</strong>：商品名・ブランド・型番・JAN / ISBN・色・サイズから、メルカリ用の検索語を自動で組み立てます。検索語の手動調整、並び替え、表示件数の切り替えもできます。</li>
+<li><strong>ノイズ除去</strong>：ケース・カバー・フィルム・空箱・ジャンク・付属品のみといった「本体ではない出品」を自動で除外します。</li>
+<li><strong>対象ジャンルは広め</strong>：本・ゲーム・家電・日用品・コスメなど、「中古で十分だから安く買いたい」買い物の前にどうぞ。</li>
+</ul>
+</div>
+</article>
+</div>
+</section>
+
+<section id="howto">
+<div class="container">
+<p class="section-eyebrow">How to use</p>
+<h2>使い方（3ステップ）</h2>
+<div class="steps">
+<div class="step-card">
+<span class="step-num">STEP 1</span>
+<h3>Chromeに追加する</h3>
+<p>Chrome Web Storeのページから「Chromeに追加」を押します。料金は無料で、登録も不要です。</p>
+</div>
+<div class="step-card">
+<span class="step-num">STEP 2</span>
+<h3>Amazonの商品ページを開く</h3>
+<p>いつもどおりAmazon.co.jpで商品ページを開くだけです。拡張機能が自動でメルカリの中古候補を探します。</p>
+</div>
+<div class="step-card">
+<span class="step-num">STEP 3</span>
+<h3>候補と価格差を確認する</h3>
+<p>ページ上に表示された候補と価格差を見て、新品で買うか中古にするかを判断します。気になる候補はクリックでメルカリへ。</p>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="container">
+<p class="section-eyebrow">FAQ</p>
+<h2>よくある質問</h2>
+<div class="faq-list">
+<div class="faq-item">
+<h3>料金はかかりますか？</h3>
+<p>無料です。Chrome Web Storeから追加するだけで使えます。</p>
+</div>
+<div class="faq-item">
+<h3>対応しているサイトはどこですか？</h3>
+<p>Amazon.co.jpの商品ページに対応しています。ページを開くと、その商品の中古候補をメルカリから探して表示します。比較先はメルカリです。対応ブラウザはGoogle Chrome（PC版）です。</p>
+</div>
+<div class="faq-item">
+<h3>使うのにアカウント登録は必要ですか？</h3>
+<p>拡張機能自体への登録は不要です。候補の購入手続きはメルカリ側で行います。</p>
+</div>
+<div class="faq-item">
+<h3>データが外部に送信されることはありますか？</h3>
+<p>独自サーバーは使っていません。設定と短時間の検索キャッシュは、お使いのブラウザ内（chrome.storage.local）にだけ保存されます。収集するデータは比較に必要なページ内容のみで、第三者への販売や、目的外の利用はしません。</p>
+</div>
+<div class="faq-item">
+<h3>表示される価格は正確ですか？</h3>
+<p>表示価格は取得時点のメルカリの出品情報です。売り切れや価格変更のほか、中古品の状態は出品ごとに異なるため、購入前に必ずメルカリの出品ページでご確認ください。</p>
+</div>
+<div class="faq-item">
+<h3>Amazonやメルカリの公式ツールですか？</h3>
+<p>いいえ。Amazon / Mercari 公式のものではなく、個人が開発している非公式ツールです。メルカリ側の仕様変更により、一時的に動作しなくなる場合があります。</p>
+</div>
+</div>
+
+<div class="lp-cta">
+<p class="hero-actions" style="justify-content:center">
+<a href="https://chromewebstore.google.com/detail/pooiaaojomiobedlgihdaeljappmckmh" class="button cta-store" data-store-link="mercari-compare" target="_blank" rel="noopener noreferrer">無料で Chrome に追加する</a>
+</p>
+<p>開発者：<a href="https://miupa.jp/">MiUPa</a>（個人開発）。他の作品は<a href="https://miupa.jp/#works">Works</a>に置いています。</p>
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container">
+<p>© 2026 MiUPa. All rights reserved.</p>
+</div>
+</footer>
+
+<script src="../assets/js/ab.js"></script>
+</body>
+</html>
