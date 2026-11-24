@@ -171,7 +171,67 @@ h1, h2 { font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho",
 .cta-band .hero-actions { justify-content: center; margin-top: 1.5rem; }
 .cta-dev { margin-top: 1.5rem; font-size: 0.94rem; }
 footer { background: transparent; }
+
+/* ===== 第8弾：動きの追加（transform / opacity 中心の軽い演出） ===== */
+/* スクロールでふわりと現れる */
+.anim .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,.61,.36,1); transition-delay: var(--d, 0s); }
+.anim .reveal.in { opacity: 1; transform: translateY(0); }
+/* カードのホバーで浮き上がる */
+.feature-card, .step-card { transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease; }
+.feature-card:hover, .step-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(31,30,29,.13); border-color: #DDD5C2; }
+/* ステップの順次ハイライト */
+.step-card .step-num { border-radius: 999px; padding: .15rem .65rem; transition: background .35s ease, color .35s ease; }
+.step-card.lit { border-color: var(--accent); box-shadow: 0 14px 30px rgba(217,119,87,.20); transform: translateY(-4px); }
+.step-card.lit .step-num { background: var(--accent); color: #FFFFFF; }
+/* CTA：ホバーで浮く＋光沢、主ボタンは影が静かに呼吸する */
+.button { position: relative; overflow: hidden; transition: transform .3s ease, box-shadow .3s ease, background .2s ease, border-color .2s ease, color .2s ease; }
+.button:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(31,30,29,.16); }
+.button:not(.button-ghost)::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.35) 50%, transparent 70%); transform: translateX(-130%); transition: transform .7s ease; pointer-events: none; }
+.button:hover::after { transform: translateX(130%); }
+@keyframes cta-breathe { 0%, 100% { box-shadow: 0 6px 18px rgba(217,119,87,.26); } 50% { box-shadow: 0 10px 28px rgba(217,119,87,.44); } }
+.hero-actions .button:not(.button-ghost), .cta-band .button { animation: cta-breathe 3.4s ease-in-out infinite; }
+.hero-actions .button:not(.button-ghost):hover, .cta-band .button:hover { animation: none; }
+/* ヒーローのデモ演出（サンプル表示のオーバーレイ） */
+.hero-visual { position: relative; }
+.demo-overlay { position: absolute; right: 8px; bottom: 56px; width: min(236px, 60%); display: flex; flex-direction: column; align-items: flex-end; gap: .5rem; pointer-events: none; z-index: 3; }
+.demo-tag { align-self: flex-start; background: rgba(31,30,29,.78); color: #FFFFFF; font-size: .68rem; line-height: 1.5; padding: .15rem .6rem; border-radius: 999px; letter-spacing: .04em; }
+.demo-badge { display: inline-flex; align-items: baseline; gap: .45rem; background: var(--accent); color: #FFFFFF; border-radius: 999px; padding: .45rem .95rem; box-shadow: 0 10px 24px rgba(217,119,87,.45); opacity: 0; transform: scale(.55); transition: opacity .3s ease, transform .5s cubic-bezier(.34,1.56,.64,1); }
+.demo-badge .demo-badge-label { font-size: .72rem; font-weight: 600; letter-spacing: .06em; }
+.demo-badge .demo-badge-num { font-size: 1.05rem; font-weight: 700; }
+.demo-card { width: 100%; display: flex; align-items: center; gap: .6rem; background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 10px 24px rgba(31,30,29,.13); padding: .5rem .65rem; opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s cubic-bezier(.22,.61,.36,1); }
+.demo-card.on, .demo-badge.on { opacity: 1; }
+.demo-card.on { transform: translateY(0); }
+.demo-badge.on { transform: scale(1); }
+.demo-thumb { flex: none; width: 38px; height: 38px; border-radius: 8px; }
+.demo-thumb.t1 { background: linear-gradient(135deg, #F3D9C8, #E8A87C); }
+.demo-thumb.t2 { background: linear-gradient(135deg, #DCE8D8, #9DBE9C); }
+.demo-lines { display: flex; flex-direction: column; line-height: 1.45; min-width: 0; }
+.demo-name { font-size: .78rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+.demo-price { font-size: .82rem; font-weight: 700; color: var(--accent-strong); }
+.demo-overlay.bye .demo-card, .demo-overlay.bye .demo-badge { opacity: 0; transform: translateY(8px); transition-duration: .45s; }
+.demo-overlay.static .demo-card, .demo-overlay.static .demo-badge { opacity: 1; transform: none; }
+@media (max-width: 560px) { .demo-overlay { bottom: 60px; right: 4px; } .demo-badge .demo-badge-num { font-size: .95rem; } }
+/* モーションを抑える設定ではすべて静止・表示 */
+@media (prefers-reduced-motion: reduce) {
+    .anim .reveal { opacity: 1; transform: none; transition: none; }
+    .button, .feature-card, .step-card { transition: none; }
+    .hero-actions .button:not(.button-ghost), .cta-band .button { animation: none; }
+    .demo-card, .demo-badge { transition: none; }
+}
 </style>
+<script>
+if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    document.documentElement.classList.add('anim');
+}
+window.addEventListener('load', function () {
+    setTimeout(function () {
+        if (!window.__lpMotion) {
+            var r = document.querySelectorAll('.reveal');
+            for (var i = 0; i < r.length; i++) { r[i].classList.add('in'); }
+        }
+    }, 1800);
+});
+</script>
 </head>
 <body>
 <header class="site-header">
@@ -193,7 +253,7 @@ footer { background: transparent; }
 <section class="hero">
 <div class="container">
 <div class="hero-grid">
-<div>
+<div class="hero-copy reveal">
 <p class="hero-eyebrow">Chrome Extension</p>
 <h1>Amazonで買う前に、<br class="br-pc">メルカリの中古価格をその場でチェック</h1>
 <p class="hero-lead">「それ、メルカリなら安いよ」は、Amazon.co.jpの商品ページを開くだけで、メルカリで今買える中古の候補と、Amazon価格との差額をその場に表示するChrome拡張機能です。別タブを開いて商品名をコピペ検索し直す手間をなくします。無料で使えます。</p>
@@ -203,11 +263,17 @@ footer { background: transparent; }
 </p>
 <p class="hero-note">無料 ・ アカウント登録不要 ・ Chrome Web Store で公開中</p>
 </div>
-<div>
+<div class="hero-visual reveal">
 <figure class="browser-frame">
 <div class="browser-bar"><span></span><span></span><span></span></div>
 <img src="assets/shot-book.png" alt="実際の動作画面。Amazonの本の商品ページに、メルカリの中古候補と価格差（322円安い、など）が表示されている" width="1280" height="800">
 </figure>
+<div class="demo-overlay" aria-hidden="true">
+<span class="demo-tag">デモ表示（サンプル）</span>
+<div class="demo-badge"><span class="demo-badge-label">価格差</span><span class="demo-badge-num">¥<span class="demo-num">0</span></span></div>
+<div class="demo-card"><span class="demo-thumb t1"></span><span class="demo-lines"><span class="demo-name">中古の候補 A</span><span class="demo-price">¥2,980</span></span></div>
+<div class="demo-card"><span class="demo-thumb t2"></span><span class="demo-lines"><span class="demo-name">中古の候補 B</span><span class="demo-price">¥3,480</span></span></div>
+</div>
 <p class="shot-caption">実際の画面：Amazonの商品ページでの表示例（Chrome Web Store掲載中のスクリーンショット）</p>
 </div>
 </div>
@@ -216,32 +282,32 @@ footer { background: transparent; }
 
 <section>
 <div class="container">
-<p class="section-eyebrow">What it does</p>
-<h2>何ができるか</h2>
-<p class="section-lead">新品を買った直後に、メルカリでずっと安い出品を見つけて悔しい思いをしたことはないでしょうか。この拡張機能は、Amazonの商品ページ上でその確認を済ませるためのものです。</p>
+<p class="section-eyebrow reveal">What it does</p>
+<h2 class="reveal">何ができるか</h2>
+<p class="section-lead reveal">新品を買った直後に、メルカリでずっと安い出品を見つけて悔しい思いをしたことはないでしょうか。この拡張機能は、Amazonの商品ページ上でその確認を済ませるためのものです。</p>
 <div class="feature-grid">
-<article class="feature-card">
+<article class="feature-card reveal">
 <img src="assets/shot-electronics.png" alt="実際の動作画面。Amazonのイヤホンの商品ページに、メルカリの中古候補と価格差が表示されている" width="1280" height="800" loading="lazy">
 <div class="feature-body">
 <h3>その場で候補と価格差を表示</h3>
 <p>販売中の候補だけを、価格とAmazon価格との差額つきで表示します。候補をクリックすればメルカリの商品ページへ移動できます。</p>
 </div>
 </article>
-<article class="feature-card">
+<article class="feature-card reveal">
 <img src="assets/shot-beauty.png" alt="実際の動作画面。Amazonの化粧水の商品ページに、自動生成された検索語とメルカリの中古候補が表示されている" width="1280" height="800" loading="lazy">
 <div class="feature-body">
 <h3>検索は自動</h3>
 <p>商品名・ブランド・型番・JAN / ISBN・色・サイズから、メルカリ用の検索語を自動で組み立てます。検索語の手動調整、並び替え、表示件数の切り替えもできます。</p>
 </div>
 </article>
-<article class="feature-card">
+<article class="feature-card reveal">
 <img src="assets/illus-filter.png" alt="本体だけがフィルターに残り、ケースや空箱などの付属品が振り落とされる様子のイラスト" width="1200" height="800" loading="lazy">
 <div class="feature-body">
 <h3>「本体ではない出品」を除く</h3>
 <p>ケース・カバー・フィルム・空箱・ジャンク・付属品のみといった出品を自動で除外します。比べたいのは本体の価格なので、その手前のノイズを取り除きます。</p>
 </div>
 </article>
-<article class="feature-card">
+<article class="feature-card reveal">
 <img src="assets/illus-genres.png" alt="本、ゲームコントローラー、ヘッドホン、化粧品ボトル、カメラが値札つきで棚に並ぶイラスト" width="1200" height="800" loading="lazy">
 <div class="feature-body">
 <h3>対象ジャンルは広め</h3>
@@ -254,10 +320,10 @@ footer { background: transparent; }
 
 <section id="howto">
 <div class="container">
-<p class="section-eyebrow">How to use</p>
-<h2>使い方（3ステップ）</h2>
+<p class="section-eyebrow reveal">How to use</p>
+<h2 class="reveal">使い方（3ステップ）</h2>
 <div class="steps">
-<div class="step-card">
+<div class="step-card reveal">
 <img src="assets/illus-step1.png" alt="ブラウザのツールバーのパズルピースのアイコンと、追加ボタンをクリックするカーソルのイラスト" width="1200" height="800" loading="lazy">
 <div class="step-body">
 <span class="step-num">STEP 1</span>
@@ -265,7 +331,7 @@ footer { background: transparent; }
 <p>Chrome Web Storeのページから「Chromeに追加」を押します。料金は無料で、登録も不要です。</p>
 </div>
 </div>
-<div class="step-card">
+<div class="step-card reveal">
 <img src="assets/illus-step2.png" alt="ノートパソコンにヘッドホンの商品ページが表示されているイラスト" width="1200" height="800" loading="lazy">
 <div class="step-body">
 <span class="step-num">STEP 2</span>
@@ -273,7 +339,7 @@ footer { background: transparent; }
 <p>いつもどおりAmazon.co.jpで商品ページを開くだけです。拡張機能が自動でメルカリの中古候補を探します。</p>
 </div>
 </div>
-<div class="step-card">
+<div class="step-card reveal">
 <img src="assets/illus-step3.png" alt="本の商品カード2枚と価格タグを、虫眼鏡で見比べているイラスト" width="1200" height="800" loading="lazy">
 <div class="step-body">
 <span class="step-num">STEP 3</span>
@@ -287,35 +353,35 @@ footer { background: transparent; }
 
 <section>
 <div class="container">
-<p class="section-eyebrow">FAQ</p>
-<h2>よくある質問</h2>
+<p class="section-eyebrow reveal">FAQ</p>
+<h2 class="reveal">よくある質問</h2>
 <div class="faq-layout">
-<div class="faq-side">
+<div class="faq-side reveal">
 <img src="assets/illus-privacy.png" alt="ブラウザのウィンドウと、盾と鍵のイラスト" width="1200" height="800" loading="lazy">
 <p>データの扱いについて：独自サーバーは使っておらず、設定と短時間の検索キャッシュはお使いのブラウザの中にだけ保存されます。</p>
 </div>
 <div class="faq-list">
-<div class="faq-item">
+<div class="faq-item reveal">
 <h3>料金はかかりますか？</h3>
 <p>無料です。Chrome Web Storeから追加するだけで使えます。</p>
 </div>
-<div class="faq-item">
+<div class="faq-item reveal">
 <h3>対応しているサイトはどこですか？</h3>
 <p>Amazon.co.jpの商品ページに対応しています。ページを開くと、その商品の中古候補をメルカリから探して表示します。比較先はメルカリです。対応ブラウザはGoogle Chrome（PC版）です。</p>
 </div>
-<div class="faq-item">
+<div class="faq-item reveal">
 <h3>使うのにアカウント登録は必要ですか？</h3>
 <p>拡張機能自体への登録は不要です。候補の購入手続きはメルカリ側で行います。</p>
 </div>
-<div class="faq-item">
+<div class="faq-item reveal">
 <h3>データが外部に送信されることはありますか？</h3>
 <p>独自サーバーは使っていません。設定と短時間の検索キャッシュは、お使いのブラウザ内（chrome.storage.local）にだけ保存されます。収集するデータは比較に必要なページ内容のみで、第三者への販売や、目的外の利用はしません。</p>
 </div>
-<div class="faq-item">
+<div class="faq-item reveal">
 <h3>表示される価格は正確ですか？</h3>
 <p>表示価格は取得時点のメルカリの出品情報です。売り切れや価格変更のほか、中古品の状態は出品ごとに異なるため、購入前に必ずメルカリの出品ページでご確認ください。</p>
 </div>
-<div class="faq-item">
+<div class="faq-item reveal">
 <h3>Amazonやメルカリの公式ツールですか？</h3>
 <p>いいえ。Amazon / Mercari 公式のものではなく、個人が開発している非公式ツールです。メルカリ側の仕様変更により、一時的に動作しなくなる場合があります。</p>
 </div>
@@ -326,7 +392,7 @@ footer { background: transparent; }
 
 <section>
 <div class="container">
-<div class="cta-band">
+<div class="cta-band reveal">
 <h2>買う前のひと確認に</h2>
 <p>Amazonの商品ページを開く、いつもの流れのまま使えます。</p>
 <p class="hero-actions">
@@ -345,5 +411,104 @@ footer { background: transparent; }
 </footer>
 
 <script src="../assets/js/ab.js"></script>
+<script>
+/* 第8弾：LPの動き（スクロール出現／ステップ点灯／ヒーローのデモ演出） */
+(function () {
+    'use strict';
+    window.__lpMotion = true;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* スクロールでふわりと現れる（親ごとにスタッガード遅延を付ける） */
+    var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+    var counts = new Map();
+    reveals.forEach(function (el) {
+        var p = el.parentElement;
+        var i = counts.get(p) || 0;
+        counts.set(p, i + 1);
+        el.style.setProperty('--d', Math.min(i * 0.08, 0.4).toFixed(2) + 's');
+    });
+    if (reduce || !('IntersectionObserver' in window)) {
+        reveals.forEach(function (el) { el.classList.add('in'); });
+    } else {
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+        reveals.forEach(function (el) { io.observe(el); });
+    }
+
+    /* 使い方ステップを順に点灯させる */
+    var stepsBox = document.querySelector('.steps');
+    var steps = Array.prototype.slice.call(document.querySelectorAll('.step-card'));
+    if (stepsBox && steps.length && !reduce && 'IntersectionObserver' in window) {
+        var idx = -1, timer = null;
+        var tick = function () {
+            idx = (idx + 1) % steps.length;
+            steps.forEach(function (s, i) { s.classList.toggle('lit', i === idx); });
+        };
+        var sio = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                    if (!timer) { tick(); timer = setInterval(tick, 1400); }
+                } else if (timer) { clearInterval(timer); timer = null; }
+            });
+        }, { threshold: 0.25 });
+        sio.observe(stepsBox);
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden && timer) { clearInterval(timer); timer = null; }
+        });
+    }
+
+    /* ヒーロー：候補カード→価格差バッジ（カウントアップ）のループ演出 */
+    var overlay = document.querySelector('.demo-overlay');
+    if (overlay) {
+        var cards = overlay.querySelectorAll('.demo-card');
+        var badge = overlay.querySelector('.demo-badge');
+        var numEl = overlay.querySelector('.demo-num');
+        var TARGET = 1480, timers = [];
+        var later = function (fn, ms) { timers.push(setTimeout(fn, ms)); };
+        var clearTimers = function () { timers.forEach(clearTimeout); timers = []; };
+        var countUp = function () {
+            var t0 = Date.now(), dur = 900;
+            var iv = setInterval(function () {
+                var p = Math.min((Date.now() - t0) / dur, 1);
+                var eased = 1 - Math.pow(1 - p, 3);
+                numEl.textContent = Math.round(TARGET * eased).toLocaleString('ja-JP');
+                if (p >= 1) clearInterval(iv);
+            }, 30);
+        };
+        var play = function () {
+            clearTimers();
+            overlay.classList.remove('bye');
+            Array.prototype.forEach.call(cards, function (c) { c.classList.remove('on'); });
+            badge.classList.remove('on');
+            numEl.textContent = '0';
+            later(function () { if (cards[0]) cards[0].classList.add('on'); }, 350);
+            later(function () { if (cards[1]) cards[1].classList.add('on'); }, 650);
+            later(function () { badge.classList.add('on'); countUp(); }, 1000);
+            later(function () { overlay.classList.add('bye'); }, 5600);
+            later(play, 6500);
+        };
+        if (reduce) {
+            overlay.classList.add('static');
+            numEl.textContent = TARGET.toLocaleString('ja-JP');
+        } else if ('IntersectionObserver' in window) {
+            var running = false;
+            var hio = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting && !running) { running = true; play(); }
+                    else if (!e.isIntersecting && running) { running = false; clearTimers(); }
+                });
+            }, { threshold: 0.2 });
+            hio.observe(overlay);
+        } else {
+            overlay.classList.add('static');
+            numEl.textContent = TARGET.toLocaleString('ja-JP');
+        }
+    }
+})();
+</script>
+
 </body>
 </html>
