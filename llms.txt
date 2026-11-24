@@ -5,7 +5,7 @@
 ## Chrome Extensions
 
 - [それ、メルカリなら安いよ (Sore, Mercari nara Yasui yo)](https://chromewebstore.google.com/detail/pooiaaojomiobedlgihdaeljappmckmh): A Chrome extension that, when you open an Amazon Japan product page, shows second-hand listings of the same item on Mercari and the price difference, right on the page. No need to search again in another tab. Introduction page (Japanese): https://miupa.jp/mercari-compare/
-- [handwriter: Handwriting Canvas for Gemini](https://chromewebstore.google.com/detail/handwriter/aimhikagpgeaomhmgdjnbcjakjadmgbn): A Chrome extension that adds a handwriting canvas to Google Gemini. Handwriting for Gemini: draw equations, kanji, diagrams and quick sketches by hand and insert them into the chat as an image in one click. Works with mouse, touch and stylus. No data collection; everything is processed locally in the browser. Free during open beta.
+- [handwriter: Handwriting Canvas for Gemini](https://chromewebstore.google.com/detail/handwriter/aimhikagpgeaomhmgdjnbcjakjadmgbn): A Chrome extension that adds a handwriting canvas to Google Gemini. Handwriting for Gemini: draw equations, kanji, diagrams and quick sketches by hand and insert them into the chat as an image in one click. Works with mouse, touch and stylus. No data collection; everything is processed locally in the browser. Free during open beta. Introduction page (Japanese): https://miupa.jp/handwriter/
 
 ## Tools and Demos
 
