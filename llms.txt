@@ -12,7 +12,6 @@
 - [営業リスト自動収集ツール (Sales List Auto-Collection Tool) — live demo](https://miupa.jp/sales-list-tool/): Enter a business category and an area in Japan (e.g. dentists in Okayama City) and it automatically collects publicly available business information (name, address, phone, website) from the OpenStreetMap API, removes duplicates, and produces a CSV sales list. The demo runs entirely in the browser. A Python version outputs formatted Excel files as well.
 - [メルカリShops宛名ラベル作成ツール](http://mercari-print.miupa.jp/): Creates mailing labels (Nagagata No.3 envelope format) from Mercari Shops order CSV files.
 - [投資コーチ Invest Coach](http://invest-coach.miupa.jp/): A web app supporting investment learning and portfolio management.
-- [Goulette](https://goulette.miupa.jp/): A service for discovering restaurants you did not know about, by roulette.
 
 ## About
 
