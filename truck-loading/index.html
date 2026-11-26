@@ -53,10 +53,38 @@
             --border: #E8E4DA;
         }
         html { color-scheme: light only; }
-        body { font-family: sans-serif; margin: 2em auto; max-width: 880px; padding: 0 1em; color: var(--text); background: var(--bg); line-height: 1.75; }
+        body { font-family: sans-serif; margin: 1em auto 2em; max-width: 1440px; padding: 0 1em; color: var(--text); background: var(--bg); line-height: 1.75; }
         h1 { font-size: 1.5em; font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho", "Yu Mincho", "Noto Serif JP", Georgia, serif; font-weight: 600; }
         h2 { font-size: 1.15em; margin-top: 2em; border-bottom: 2px solid var(--accent); padding-bottom: .2em; font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho", "Yu Mincho", "Noto Serif JP", Georgia, serif; font-weight: 600; }
         .card { border: 1px solid var(--border); border-radius: 16px; padding: 1em 1.2em; background: var(--surface); box-shadow: 0 2px 14px rgba(31,30,29,.07); }
+        .tool-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em 1em; margin-bottom: .7em; }
+        .tool-head h1 { margin: 0; font-size: 1.35em; }
+        .tool-head .tool-sub { margin: 0; color: var(--muted); font-size: .92em; }
+        #app { display: grid; grid-template-columns: 450px 1fr; gap: 1em; align-items: stretch; }
+        .pane { height: calc(100vh - 172px); height: calc(100dvh - 172px); min-height: 520px; overflow-y: auto; overscroll-behavior: contain; }
+        .pane-label { font-weight: bold; font-size: .95em; color: var(--accent-strong); letter-spacing: .06em; margin: .2em 0 .6em; }
+        .pane-label.mt { margin-top: 1.2em; }
+        .calc-bar { position: sticky; bottom: 0; background: var(--surface); padding: .7em 0 .1em; margin-top: 1em; border-top: 1px solid var(--border); }
+        .calc-bar button { width: 100%; font-size: 1.05em; }
+        .placeholder { text-align: center; color: var(--muted); padding: 3.2em 1em; }
+        .placeholder svg { display: block; margin: 0 auto 1em; }
+        .pane .stats { margin: .2em 0 .6em; }
+        .pane .bin-tabs { margin: .6em 0 .4em; }
+        .legend .sw.free-sw { background: rgba(107,105,99,.18); border: 1px dashed var(--muted); box-sizing: border-box; }
+        .view-presets .vp-free { font-size: .9em; color: var(--muted); display: inline-flex; align-items: center; gap: .3em; margin-left: .6em; cursor: pointer; }
+        details.mini-help { margin-top: .6em; font-size: .88em; color: var(--muted); }
+        details.mini-help summary { cursor: pointer; color: var(--accent-strong); }
+        details.mini-help p { margin: .4em 0 0; }
+        .share-status { color: var(--accent-strong); font-weight: bold; font-size: .9em; margin-left: .6em; }
+        .below { max-width: 880px; margin: 0 auto; }
+        @media (max-width: 900px) {
+            #app { grid-template-columns: 1fr; }
+            .pane { height: auto; min-height: 0; overflow-y: visible; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            button { transition: none; }
+            button:hover { transform: none; }
+        }
         button { padding: .6em 1.6em; font-size: 1em; background: var(--accent); color: var(--on-accent); border: none; border-radius: 999px; cursor: pointer; transition: transform .2s, box-shadow .2s; }
         button:hover { transform: translateY(-2px); }
         button:disabled { background: #E3B198; cursor: wait; transform: none; }
@@ -81,7 +109,7 @@
         .status { color: var(--accent-strong); font-weight: bold; min-height: 1.5em; }
         a { color: var(--accent-strong); }
         .back { margin-top: 3em; font-size: .9em; }
-        .site-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: .6em; margin-bottom: 1.6em; font-size: .95em; }
+        .site-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: .5em; margin-bottom: .7em; font-size: .95em; }
         .site-bar .brand { font-weight: bold; font-size: 1.15em; color: var(--text); text-decoration: none; }
         .site-bar nav a { margin-left: 1.2em; text-decoration: none; }
         .grid { display: flex; flex-wrap: wrap; gap: 1em 1.6em; align-items: end; }
@@ -95,7 +123,7 @@
         .view-presets { display: flex; flex-wrap: wrap; align-items: center; gap: .5em; margin: .7em 0 .2em; }
         .view-presets .vp-label { font-size: .9em; color: var(--muted); }
         .view-presets button { background: var(--surface-2); color: var(--accent-strong); border: 1px solid var(--accent); padding: .45em 1.1em; }
-        #viewer { width: 100%; height: 430px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(180deg, #FFFFFF, var(--surface-2)); overflow: hidden; touch-action: none; }
+        #viewer { width: 100%; height: clamp(280px, 42vh, 430px); border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(180deg, #FFFFFF, var(--surface-2)); overflow: hidden; touch-action: none; }
         #viewer canvas { display: block; }
         .form-field { margin-bottom: 1em; }
         .form-label { display: block; font-weight: bold; margin-bottom: .3em; font-size: .95em; }
@@ -125,31 +153,33 @@
         <a class="brand" href="https://miupa.jp/">MiUPa</a>
         <nav><a href="https://miupa.jp/#works">Works</a><a href="https://miupa.jp/#contact">Contact</a></nav>
     </div>
-    <h1>トラック積み付け計算ツール <span class="note">（無料・ブラウザで試せるシミュレーション）</span></h1>
-    <p>荷物のサイズと個数を入力すると、トラック・パレット・コンテナへの積み付けを計算し、<strong>積載率・必要台数・配置（3D表示）</strong>をその場で確認できる無料ツールです。Excelで積み付けを検討している現場の「まず概算したい」に応えます。<strong>入力データはブラウザ内でのみ処理され、サーバーに送信されません。</strong>表示される配置は計算によるシミュレーションです。</p>
-    <p class="note">※ 荷台・空間の寸法は一般的な目安値です。実際の積載可否は、車両・荷物の実寸と現場の条件で必ず確認してください。</p>
+    <div class="tool-head">
+        <h1>トラック積み付け計算ツール</h1>
+        <p class="tool-sub">荷物を入れるだけ。積載率・必要台数・3D配置をすぐ計算（無料）。データはブラウザ内のみで処理されます。</p>
+    </div>
 
-    <div class="card" id="tool-card">
+    <main id="app">
+    <section class="pane pane-input card">
       <div id="tool-controls">
-        <h2 style="margin-top:0">1. 積む空間を選ぶ</h2>
+        <div class="pane-label">1. 空間</div>
         <div class="grid">
             <div>
-                <label for="preset">車種・空間プリセット（寸法は目安）</label>
+                <label for="preset">プリセット（寸法は目安）</label>
                 <select id="preset"></select>
             </div>
-            <div><label for="cL">奥行（長さ）mm</label><input type="number" id="cL" min="1"></div>
+            <div><label for="cL">奥行 mm</label><input type="number" id="cL" min="1"></div>
             <div><label for="cW">幅 mm</label><input type="number" id="cW" min="1"></div>
             <div><label for="cH">高さ mm</label><input type="number" id="cH" min="1"></div>
-            <div><label for="payload">最大積載量 kg（0=制限なし）</label><input type="number" id="payload" min="0"></div>
+            <div><label for="payload">最大積載量 kg（0=なし）</label><input type="number" id="payload" min="0"></div>
         </div>
         <p class="note" id="preset-note"></p>
 
-        <h2>2. 荷物を入力する</h2>
+        <div class="pane-label mt">2. 荷物 <span class="note">（寸法 mm・重量 kg）</span></div>
         <div style="overflow-x:auto">
         <table class="cargo">
             <thead><tr>
-                <th>品名</th><th class="num">縦 mm</th><th class="num">横 mm</th><th class="num">高さ mm</th>
-                <th class="num">重量 kg</th><th class="num">個数</th><th>上積み可</th><th>天地指定</th><th></th>
+                <th>品名</th><th class="num">縦</th><th class="num">横</th><th class="num">高さ</th>
+                <th class="num">重量</th><th class="num">個数</th><th>上積み</th><th>天地</th><th></th>
             </tr></thead>
             <tbody id="cargo-body"></tbody>
         </table>
@@ -158,35 +188,51 @@
             <button type="button" class="ghost small" id="add-row">＋ 行を追加</button>
             <button type="button" class="ghost small" id="sample-data">サンプル荷物を入れる</button>
         </p>
-        <p class="note">「上積み可」のチェックを外した荷物の上には、他の荷物を載せません。「天地指定」にチェックした荷物は、高さ方向を固定して計算します（転倒・天地無用など）。</p>
+        <details class="mini-help">
+            <summary>「上積み」「天地」とは？</summary>
+            <p>「上積み」のチェックを外した荷物の上には、他の荷物を載せません。「天地」にチェックした荷物は高さ方向を固定して計算します（天地無用・転倒防止）。</p>
+        </details>
 
         <details>
             <summary>Excelから貼り付けて取り込む</summary>
-            <p class="note">Excelで「品名・縦・横・高さ・重量・個数」の列をコピーし、下の欄に貼り付けてください（タブ区切り）。見出し行があっても読み飛ばします。</p>
+            <p class="note">Excelで「品名・縦・横・高さ・重量・個数」の列をコピーして貼り付け（見出し行は読み飛ばします）。</p>
             <textarea id="paste" rows="5" placeholder="品名&#9;縦&#9;横&#9;高さ&#9;重量&#9;個数&#10;段ボール箱&#9;600&#9;400&#9;400&#9;12&#9;10"></textarea>
             <p><button type="button" class="ghost small" id="paste-btn">貼り付けを取り込む</button> <span class="status" id="paste-status"></span></p>
         </details>
 
-        <p style="margin-top:1.4em"><button type="button" id="calc">積み付けを計算する</button> <span class="status" id="calc-status"></span></p>
+        <div class="calc-bar"><button type="button" id="calc">計算する</button> <span class="status" id="calc-status"></span></div>
       </div>
+    </section>
 
-      <div id="result"></div>
-    </div>
+    <section class="pane pane-result card">
+      <div id="result">
+        <div class="placeholder">
+            <svg width="120" height="84" viewBox="0 0 120 84" aria-hidden="true"><rect x="6" y="34" width="46" height="44" rx="4" fill="#F0EEE6" stroke="#D97757" stroke-width="2"/><rect x="52" y="34" width="30" height="44" rx="4" fill="#F0EEE6" stroke="#D97757" stroke-width="2"/><rect x="21" y="6" width="38" height="28" rx="4" fill="#F0EEE6" stroke="#D97757" stroke-width="2"/><rect x="82" y="50" width="32" height="28" rx="4" fill="#F0EEE6" stroke="#D97757" stroke-width="2"/></svg>
+            <p>荷物を入れて「計算する」を押すと、<br>ここに3D配置と結果が出ます。</p>
+            <p class="note">まずは「サンプル荷物を入れる」でも試せます。</p>
+        </div>
+      </div>
+    </section>
+    </main>
+
+    <div class="below">
 
     <h2>使い方</h2>
     <ol>
-        <li><strong>空間を選ぶ：</strong> 軽トラック・2t・4t・10t・パレット（JIS T11）・コンテナ（20ft/40ft）のプリセットから選ぶか、寸法を直接入力します。</li>
-        <li><strong>荷物を入れる：</strong> 品名・縦・横・高さ・重量・個数を入力します。Excelの一覧からまとめて貼り付けることもできます。</li>
-        <li><strong>計算する：</strong> 積載率・必要台数・総重量と、台ごとの配置を3Dと一覧で表示します。結果はブラウザの印刷機能で紙やPDFに残せます。</li>
+        <li><strong>空間を選ぶ：</strong> プリセット（軽トラ／2t／4t／10t／パレット／コンテナ）か、寸法を直接入力。</li>
+        <li><strong>荷物を入れる：</strong> 品名・サイズ・重量・個数。Excelからの一括貼り付けもできます。</li>
+        <li><strong>計算する：</strong> 積載率・必要台数・残り空間と、台ごとの配置を3Dと一覧で表示。印刷で紙・PDFにも残せます。</li>
     </ol>
 
-    <h2>計算と表示について</h2>
+    <details>
+    <summary><strong>計算と表示について（詳しく）</strong></summary>
     <ul>
         <li>荷物は回転（6通り、天地指定時は高さ固定で2通り）を考慮して、空間に収まるよう自動で配置を計算します（ヒューリスティクスによるシミュレーションであり、最適配置の保証はしません）。</li>
         <li>1台（1空間）に収まらない場合は、必要台数を表示し、台ごとに配置を分けて表示します。</li>
         <li>最大積載量を設定した場合、台ごとの総重量が上限を超えないよう台を分けます。1個の重量だけで上限を超える荷物は「積めなかった荷物」に表示します。</li>
         <li>荷台寸法は目安です。実際の積載可否は現場で確認してください。また、重心バランスや荷崩れ防止などの現場判断はこのツールでは行いません。</li>
     </ul>
+    </details>
 
     <h2>機能要望・ご意見</h2>
     <p>「この機能が欲しい」「この車種・荷物条件に対応してほしい」「計算結果がおかしい」といったご要望・不具合報告を受け付けています。今後の改修の参考にします。<span class="note">※ 送信されるのは、このフォームに入力した内容だけです。上のツールで計算に入力した荷物データが送信されることはありません。</span></p>
@@ -232,7 +278,11 @@
         <button type="submit" class="ghost" id="nl-submit">更新のお知らせを受け取る</button>
     </form>
 
+    <h2>このツールについて</h2>
+    <p>トラック・パレット・コンテナへの積み付けを無料で計算できるWebツールです。荷物のサイズと個数を入れるだけで、積載率・必要台数・配置を3Dでシミュレーションします。Excelからの貼り付けにも対応しています。入力データはブラウザ内でのみ処理され、サーバーに送信されません。表示される配置は計算によるシミュレーションです。荷台・空間の寸法は一般的な目安値のため、実際の積載可否は車両・荷物の実寸と現場の条件で必ず確認してください。</p>
+
     <p class="back">← <a href="https://miupa.jp/">MiUPa のポートフォリオに戻る</a></p>
+    </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -451,6 +501,7 @@ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]
 function fmt(n) { return Math.round(n).toLocaleString('ja-JP');}
 
 var lastResult = null, lastContainer = null, lastPayload = 0, colorMap = {}, currentBin = 0;
+var lastInput = null, showFree = true;
 
 function readInputs() {
 var container = { L: parseFloat(cL.value), W: parseFloat(cW.value), H: parseFloat(cH.value)};
@@ -482,6 +533,7 @@ var input = readInputs();
 if (input.error) { st.textContent = ''; result.innerHTML = '<p class="err">' + esc(input.error) + '</p>'; return;}
 st.textContent = '計算中…';
 setTimeout(function () {
+lastInput = input;
 lastResult = packLoad(input.container, input.items, input.payload);
 lastContainer = input.container; lastPayload = input.payload; currentBin = 0;
 colorMap = {};
@@ -489,23 +541,39 @@ var ci = 0;
 input.items.forEach(function (it) { if (!(it.name in colorMap)) colorMap[it.name] = PALETTE[ci++ % PALETTE.length];});
 st.textContent = '計算が終わりました。';
 renderResult();
+if (window.innerWidth <= 900) {
+var pane = document.querySelector('.pane-result');
+if (pane) pane.scrollIntoView();
+}
 }, 30);
 });
+
+function binInfoText(i) {
+var b = lastResult.bins[i];
+if (!b) return '';
+var cVol = lastContainer.L * lastContainer.W * lastContainer.H;
+var rem = Math.max(0, cVol - b.usedVolume);
+var s = (i + 1) + '台目：積載率 ' + Math.round(b.loadRate * 100) + '%・残り容積 ' + (rem / 1e9).toFixed(2) + ' m³・重量 ' + fmt(b.weight) + ' kg';
+if (lastPayload > 0) s += '（あと ' + fmt(Math.max(0, lastPayload - b.weight)) + ' kg 積めます）';
+return s;
+}
 
 function renderResult() {
 var result = $('result'), res = lastResult;
 if (!res) return;
 var totalItems = res.bins.reduce(function (s, b) { return s + b.placements.length;}, 0) + res.unplaced.length;
 var placedItems = totalItems - res.unplaced.length;
-var html = '<h2>計算結果（シミュレーション）</h2>';
-html += '<p class="note">空間：奥行 ' + fmt(lastContainer.L) + ' × 幅 ' + fmt(lastContainer.W) + ' × 高さ ' + fmt(lastContainer.H) + ' mm' +
-(lastPayload > 0? '／最大積載量 ' + fmt(lastPayload) + ' kg': '／最大積載量 制限なし') + '</p>';
-html += '<div class="stats">' +
+var cVol = lastContainer.L * lastContainer.W * lastContainer.H;
+var usedTotal = res.bins.reduce(function (s, b) { return s + b.usedVolume;}, 0);
+var remainVol = Math.max(0, res.bins.length * cVol - usedTotal);
+var html = '<div class="stats">' +
 '<span class="stat">必要台数 <strong>' + res.bins.length + '</strong> 台</span>' +
-'<span class="stat">積載個数 <strong>' + placedItems + '</strong> / ' + totalItems + ' 個</span>' +
+'<span class="stat">積載率 <strong>' + (res.bins.length? Math.round(100 * usedTotal / (res.bins.length * cVol)): 0) + '</strong> %</span>' +
+'<span class="stat">残り容積 <strong>' + (remainVol / 1e9).toFixed(2) + '</strong> m³</span>' +
 '<span class="stat">総重量 <strong>' + fmt(res.totalWeight) + '</strong> kg</span>' +
-(res.bins.length? '<span class="stat">積載率（全体） <strong>' + Math.round(100 * res.bins.reduce(function (s, b) { return s + b.usedVolume;}, 0) / (res.bins.length * lastContainer.L * lastContainer.W * lastContainer.H)) + '</strong> %</span>': '') +
+'<span class="stat">個数 <strong>' + placedItems + '</strong> / ' + totalItems + '</span>' +
 '</div>';
+html += '<p class="note" id="bin-info"></p>';
 res.bins.forEach(function (b, i) {
 if (lastPayload > 0 && b.weight > lastPayload) {
 html += '<p class="err">' + (i + 1) + '台目の重量（' + fmt(b.weight) + ' kg）が最大積載量を超えています。</p>';
@@ -532,12 +600,14 @@ html += '<div id="viewer-wrap"><div id="viewer"></div>' +
 '<button type="button" data-view="front">正面</button>' +
 '<button type="button" data-view="side">側面</button>' +
 '<button type="button" data-view="reset">視点リセット</button>' +
+'<label class="vp-free"><input type="checkbox" id="free-toggle" checked> 空きスペース</label>' +
 '</div>' +
 '<p class="note">ドラッグ：回転／ホイール・ピンチ：拡大縮小／ボタン：視点切替。色は品名ごとに分かれています。</p>' +
 '<div class="legend">' + Object.keys(colorMap).map(function (n) {
 return '<span><span class="sw" style="background:' + colorMap[n] + '"></span>' + esc(n) + '</span>';
-}).join('') + '</div></div>';
-html += '<p><button type="button" class="ghost" id="print-btn">結果を印刷する（紙・PDF）</button></p>';
+}).join('') + '<span><span class="sw free-sw"></span>空きスペース</span></div></div>';
+html += '<p><button type="button" class="ghost" id="share-btn">結果リンクをコピー</button> <button type="button" class="ghost" id="print-btn">印刷する</button><span class="share-status" id="share-status"></span></p>';
+html += '<details class="tables-details"><summary>配置一覧を見る</summary>';
 res.bins.forEach(function (b, i) {
 html += '<div class="bin-table" data-table="' + i + '"' + (i === currentBin? '': ' style="display:none"') + '>' +
 '<h3>' + (i + 1) + '台目の配置一覧（積載率 ' + Math.round(b.loadRate * 100) + '%／重量 ' + fmt(b.weight) + ' kg／' + b.placements.length + ' 個）</h3>' +
@@ -548,6 +618,7 @@ return '<tr><td class="num">' + (pi + 1) + '</td><td>' + esc(p.name) + '</td>' +
 '<td class="num">' + fmt(p.dx) + '×' + fmt(p.dy) + '×' + fmt(p.dz) + '</td></tr>';
 }).join('') + '</table></div>';
 });
+html += '</details>';
 }
 result.innerHTML = html;
 
@@ -559,16 +630,73 @@ tabs.forEach(function (b2) { b2.classList.toggle('active', b2 === btn);});
 result.querySelectorAll('.bin-table').forEach(function (t) {
 t.style.display = parseInt(t.getAttribute('data-table'), 10) === currentBin? '': 'none';
 });
+var bi = $('bin-info');
+if (bi) bi.textContent = binInfoText(currentBin);
 drawBin(currentBin);
 });
 });
 result.querySelectorAll('.view-presets button').forEach(function (btn) {
 btn.addEventListener('click', function () { if (three && three.setView) three.setView(btn.getAttribute('data-view'));});
 });
+var ft = $('free-toggle');
+if (ft) ft.addEventListener('change', function () { showFree = ft.checked; drawBin(currentBin);});
+var sb = $('share-btn');
+if (sb) sb.addEventListener('click', copyShareLink);
 var pb = $('print-btn');
 if (pb) pb.addEventListener('click', function () { window.print();});
+var bi0 = $('bin-info');
+if (bi0) bi0.textContent = binInfoText(currentBin);
 drawBin(currentBin);
 }
+
+// ---------- 結果の共有リンク（URLハッシュに埋め込む。サーバー送信はしない） ----------
+function stateToHash(input) {
+var s = { v: 1, p: presetSel.value, c: [input.container.L, input.container.W, input.container.H], m: input.payload,
+i: input.items.map(function (it) { return [it.name, it.l, it.w, it.h, it.weight, it.qty, it.stackable ? 1 : 0, it.tenchi ? 1 : 0]; }) };
+var bytes = new TextEncoder().encode(JSON.stringify(s));
+var bin = '';
+for (var i = 0; i < bytes.length; i += 8192) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192));
+return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function hashToState(h) {
+var b64 = h.replace(/-/g, '+').replace(/_/g, '/');
+while (b64.length % 4) b64 += '=';
+var bin = atob(b64);
+var bytes = new Uint8Array(bin.length);
+for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+return JSON.parse(new TextDecoder().decode(bytes));
+}
+function copyShareLink() {
+var st = $('share-status');
+if (!lastInput) return;
+var url = location.href.split('#')[0] + '#s=' + stateToHash(lastInput);
+if (url.length > 8000) { if (st) st.textContent = 'データが多すぎてリンク化できません。'; return; }
+try { history.replaceState(null, '', url); } catch (e) {}
+function done() { if (st) st.textContent = 'リンクをコピーしました。'; }
+if (navigator.clipboard && navigator.clipboard.writeText) {
+navigator.clipboard.writeText(url).then(done, function () { window.prompt('このリンクをコピーしてください', url); done(); });
+} else { window.prompt('このリンクをコピーしてください', url); done(); }
+}
+function loadFromHash() {
+if (!location.hash || location.hash.indexOf('#s=') !== 0) return;
+try {
+var s = hashToState(location.hash.slice(3));
+if (!s || !s.c || !s.i) return;
+if (s.p && PRESETS[s.p]) { presetSel.value = s.p; $('preset-note').textContent = PRESETS[s.p].note; }
+cL.value = s.c[0]; cW.value = s.c[1]; cH.value = s.c[2];
+payloadEl.value = s.m || 0;
+cargoBody.innerHTML = '';
+s.i.forEach(function (r) {
+addRow({ name: r[0], l: r[1], w: r[2], h: r[3], weight: r[4], qty: r[5], stackable: !!r[6], tenchi: !!r[7] });
+});
+if (!cargoBody.children.length) addRow();
+$('calc').click();
+} catch (e) { /* リンクが壊れている場合は通常表示にする */ }
+}
+loadFromHash();
+window.addEventListener('beforeprint', function () {
+document.querySelectorAll('#result details').forEach(function (d) { d.open = true; });
+});
 
 // ---------- 3D表示（Three.js + 自前のオービット操作） ----------
 var three = null;
@@ -752,6 +880,23 @@ box(p.dx * scale, p.dz * scale, p.dy * scale,
 (p.y + p.dy / 2 - c.W / 2) * scale,
 new THREE.MeshLambertMaterial({ color: color}), true);
 });
+// 空きスペース（残り空間）を半透明で表示する
+if (showFree && bin.free && bin.free.length) {
+var cVolF = c.L * c.W * c.H;
+var freeMat = new THREE.MeshBasicMaterial({ color: 0x8A877E, transparent: true, opacity: 0.10, depthWrite: false });
+var freeEdgeMat = new THREE.LineBasicMaterial({ color: 0x6B6963, transparent: true, opacity: 0.30 });
+bin.free.filter(function (f) { return f.dx * f.dy * f.dz > cVolF * 0.002; })
+.sort(function (a, b2) { return b2.dx * b2.dy * b2.dz - a.dx * a.dy * a.dz; })
+.slice(0, 14)
+.forEach(function (f) {
+var geo = new THREE.BoxGeometry(f.dx * scale, f.dz * scale, f.dy * scale);
+var m = new THREE.Mesh(geo, freeMat);
+m.position.set((f.x + f.dx / 2 - c.L / 2) * scale, (f.z + f.dz / 2) * scale, (f.y + f.dy / 2 - c.W / 2) * scale);
+g.add(m);
+var ln = new THREE.LineSegments(new THREE.EdgesGeometry(geo), freeEdgeMat);
+ln.position.copy(m.position); g.add(ln);
+});
+}
 three.view.radius = 15;
 three.render();
 three.kick();
