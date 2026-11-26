@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>トラック積み付け計算ツール（無料）｜積載シミュレーション｜MiUPa</title>
+    <meta name="description" content="トラック・パレット・コンテナへの積み付けを無料で計算できるWebツール。荷物のサイズと個数を入れるだけで、積載率・必要台数・配置を3Dでシミュレーションします。Excelからの貼り付けにも対応。入力データはブラウザ内でのみ処理され、サーバーに送信されません。">
+    <meta name="keywords" content="積み付け計算,トラック,積載,シミュレーション,無料,バンニング,積載率,必要台数,パレット,コンテナ,3D,MiUPa">
+    <meta name="author" content="MiUPa">
+    <meta name="robots" content="index,follow">
+    <meta name="color-scheme" content="light only">
+    <link rel="canonical" href="https://miupa.jp/truck-loading/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://miupa.jp/truck-loading/">
+    <meta property="og:title" content="トラック積み付け計算ツール（無料）｜積載シミュレーション｜MiUPa">
+    <meta property="og:description" content="荷物のサイズと個数を入れるだけで、積載率・必要台数・配置を3D表示する無料の積み付け計算ツール。データはブラウザ内のみで処理されます。">
+    <meta property="og:site_name" content="MiUPa Portfolio">
+    <meta property="og:locale" content="ja_JP">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="トラック積み付け計算ツール（無料）｜積載シミュレーション｜MiUPa">
+    <meta name="twitter:description" content="荷物のサイズと個数を入れるだけで、積載率・必要台数・配置を3D表示する無料の積み付け計算ツール。">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "トラック積み付け計算ツール",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser",
+      "description": "トラック・パレット・コンテナへの荷物の積み付けを計算し、積載率・必要台数・3D配置を表示する無料ツール。処理はブラウザ内で完結し、入力データは外部送信されない。",
+      "url": "https://miupa.jp/truck-loading/",
+      "author": { "@type": "Person", "name": "MiUPa", "url": "https://miupa.jp/" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+    }
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3Q0TK9GK8H"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3Q0TK9GK8H');
+    </script>
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23D97757'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='34' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+    <style>
+        :root {
+            --bg: #FAF9F5; --surface: #FFFFFF; --surface-2: #F0EEE6;
+            --text: #1F1E1D; --muted: #6B6963;
+            --accent: #D97757; --accent-strong: #C15F3C; --on-accent: #FFFFFF;
+            --border: #E8E4DA;
+        }
+        html { color-scheme: light only; }
+        body { font-family: sans-serif; margin: 2em auto; max-width: 880px; padding: 0 1em; color: var(--text); background: var(--bg); line-height: 1.75; }
+        h1 { font-size: 1.5em; font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho", "Yu Mincho", "Noto Serif JP", Georgia, serif; font-weight: 600; }
+        h2 { font-size: 1.15em; margin-top: 2em; border-bottom: 2px solid var(--accent); padding-bottom: .2em; font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho", "Yu Mincho", "Noto Serif JP", Georgia, serif; font-weight: 600; }
+        .card { border: 1px solid var(--border); border-radius: 16px; padding: 1em 1.2em; background: var(--surface); box-shadow: 0 2px 14px rgba(31,30,29,.07); }
+        button { padding: .6em 1.6em; font-size: 1em; background: var(--accent); color: var(--on-accent); border: none; border-radius: 999px; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+        button:hover { transform: translateY(-2px); }
+        button:disabled { background: #E3B198; cursor: wait; transform: none; }
+        button.ghost { background: var(--surface-2); color: var(--accent-strong); border: 1px solid var(--accent); }
+        button.small { padding: .3em 1em; font-size: .88em; }
+        input[type="number"], input[type="text"], input[type="email"], select, textarea {
+            padding: .45em .6em; border: 1px solid var(--border); border-radius: 10px;
+            font-size: .95em; background: var(--surface); color: var(--text); box-sizing: border-box;
+        }
+        input[type="number"] { width: 6em; }
+        textarea { width: 100%; }
+        table { border-collapse: collapse; width: 100%; margin-top: 1em; font-size: .88em; }
+        th, td { border: 1px solid var(--border); padding: .35em .5em; text-align: left; vertical-align: middle; }
+        th { background: var(--accent); color: #fff; }
+        td.num, th.num { text-align: right; }
+        table.cargo input[type="text"] { width: 9em; }
+        table.cargo input[type="number"] { width: 5.2em; }
+        table.cargo td { text-align: center; }
+        table.cargo td.name-cell { text-align: left; }
+        .note { color: var(--muted); font-size: .85em; }
+        .err { color: #b3261e; font-weight: bold; }
+        .status { color: var(--accent-strong); font-weight: bold; min-height: 1.5em; }
+        a { color: var(--accent-strong); }
+        .back { margin-top: 3em; font-size: .9em; }
+        .site-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: .6em; margin-bottom: 1.6em; font-size: .95em; }
+        .site-bar .brand { font-weight: bold; font-size: 1.15em; color: var(--text); text-decoration: none; }
+        .site-bar nav a { margin-left: 1.2em; text-decoration: none; }
+        .grid { display: flex; flex-wrap: wrap; gap: 1em 1.6em; align-items: end; }
+        .grid label { display: block; font-size: .85em; color: var(--muted); margin-bottom: .2em; }
+        .stats { display: flex; flex-wrap: wrap; gap: .6em; margin: 1em 0; }
+        .stat { background: var(--surface-2); border-radius: 999px; padding: .35em 1em; font-size: .92em; }
+        .stat strong { color: var(--accent-strong); font-size: 1.1em; }
+        .bin-tabs { display: flex; flex-wrap: wrap; gap: .5em; margin: 1em 0 .5em; }
+        .bin-tabs button { background: var(--surface-2); color: var(--accent-strong); border: 1px solid var(--accent); }
+        .bin-tabs button.active { background: var(--accent); color: var(--on-accent); }
+        #viewer { width: 100%; height: 430px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(180deg, #FFFFFF, var(--surface-2)); overflow: hidden; touch-action: none; }
+        #viewer canvas { display: block; }
+        .form-field { margin-bottom: 1em; }
+        .form-label { display: block; font-weight: bold; margin-bottom: .3em; font-size: .95em; }
+        .form-tag { font-size: .75em; background: var(--accent); color: #fff; border-radius: 999px; padding: .1em .6em; margin-left: .4em; vertical-align: middle; }
+        .form-input { width: 100%; }
+        .form-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+        .form-error { color: #b3261e; font-weight: bold; }
+        .form-thanks { background: var(--surface-2); border-radius: 16px; padding: 1em 1.2em; font-weight: bold; }
+        .legend { display: flex; flex-wrap: wrap; gap: .4em 1em; font-size: .85em; margin-top: .5em; }
+        .legend .sw { display: inline-block; width: .9em; height: .9em; border-radius: 3px; margin-right: .3em; vertical-align: middle; }
+        @media (max-width: 560px) {
+            #viewer { height: 320px; }
+            table.cargo { font-size: .8em; }
+            table.cargo input[type="text"] { width: 6em; }
+            table.cargo input[type="number"] { width: 4.2em; }
+        }
+        @media print {
+            .site-bar nav, #tool-controls, #viewer-wrap, .bin-tabs, button, .no-print { display: none !important; }
+            .bin-table { display: block !important; }
+            body { margin: 0 auto; }
+            .card { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="site-bar">
+        <a class="brand" href="https://miupa.jp/">MiUPa</a>
+        <nav><a href="https://miupa.jp/#works">Works</a><a href="https://miupa.jp/#contact">Contact</a></nav>
+    </div>
+    <h1>トラック積み付け計算ツール <span class="note">（無料・ブラウザで試せるシミュレーション）</span></h1>
+    <p>荷物のサイズと個数を入力すると、トラック・パレット・コンテナへの積み付けを計算し、<strong>積載率・必要台数・配置（3D表示）</strong>をその場で確認できる無料ツールです。Excelで積み付けを検討している現場の「まず概算したい」に応えます。<strong>入力データはブラウザ内でのみ処理され、サーバーに送信されません。</strong>表示される配置は計算によるシミュレーションです。</p>
+    <p class="note">※ 荷台・空間の寸法は一般的な目安値です。実際の積載可否は、車両・荷物の実寸と現場の条件で必ず確認してください。</p>
+
+    <div class="card" id="tool-card">
+      <div id="tool-controls">
+        <h2 style="margin-top:0">1. 積む空間を選ぶ</h2>
+        <div class="grid">
+            <div>
+                <label for="preset">車種・空間プリセット（寸法は目安）</label>
+                <select id="preset"></select>
+            </div>
+            <div><label for="cL">奥行（長さ）mm</label><input type="number" id="cL" min="1"></div>
+            <div><label for="cW">幅 mm</label><input type="number" id="cW" min="1"></div>
+            <div><label for="cH">高さ mm</label><input type="number" id="cH" min="1"></div>
+            <div><label for="payload">最大積載量 kg（0=制限なし）</label><input type="number" id="payload" min="0"></div>
+        </div>
+        <p class="note" id="preset-note"></p>
+
+        <h2>2. 荷物を入力する</h2>
+        <div style="overflow-x:auto">
+        <table class="cargo">
+            <thead><tr>
+                <th>品名</th><th class="num">縦 mm</th><th class="num">横 mm</th><th class="num">高さ mm</th>
+                <th class="num">重量 kg</th><th class="num">個数</th><th>上積み可</th><th>天地指定</th><th></th>
+            </tr></thead>
+            <tbody id="cargo-body"></tbody>
+        </table>
+        </div>
+        <p>
+            <button type="button" class="ghost small" id="add-row">＋ 行を追加</button>
+            <button type="button" class="ghost small" id="sample-data">サンプル荷物を入れる</button>
+        </p>
+        <p class="note">「上積み可」のチェックを外した荷物の上には、他の荷物を載せません。「天地指定」にチェックした荷物は、高さ方向を固定して計算します（転倒・天地無用など）。</p>
+
+        <details>
+            <summary>Excelから貼り付けて取り込む</summary>
+            <p class="note">Excelで「品名・縦・横・高さ・重量・個数」の列をコピーし、下の欄に貼り付けてください（タブ区切り）。見出し行があっても読み飛ばします。</p>
+            <textarea id="paste" rows="5" placeholder="品名&#9;縦&#9;横&#9;高さ&#9;重量&#9;個数&#10;段ボール箱&#9;600&#9;400&#9;400&#9;12&#9;10"></textarea>
+            <p><button type="button" class="ghost small" id="paste-btn">貼り付けを取り込む</button> <span class="status" id="paste-status"></span></p>
+        </details>
+
+        <p style="margin-top:1.4em"><button type="button" id="calc">積み付けを計算する</button> <span class="status" id="calc-status"></span></p>
+      </div>
+
+      <div id="result"></div>
+    </div>
+
+    <h2>使い方</h2>
+    <ol>
+        <li><strong>空間を選ぶ：</strong> 軽トラック・2t・4t・10t・パレット（JIS T11）・コンテナ（20ft/40ft）のプリセットから選ぶか、寸法を直接入力します。</li>
+        <li><strong>荷物を入れる：</strong> 品名・縦・横・高さ・重量・個数を入力します。Excelの一覧からまとめて貼り付けることもできます。</li>
+        <li><strong>計算する：</strong> 積載率・必要台数・総重量と、台ごとの配置を3Dと一覧で表示します。結果はブラウザの印刷機能で紙やPDFに残せます。</li>
+    </ol>
+
+    <h2>計算と表示について</h2>
+    <ul>
+        <li>荷物は回転（6通り、天地指定時は高さ固定で2通り）を考慮して、空間に収まるよう自動で配置を計算します（ヒューリスティクスによるシミュレーションであり、最適配置の保証はしません）。</li>
+        <li>1台（1空間）に収まらない場合は、必要台数を表示し、台ごとに配置を分けて表示します。</li>
+        <li>最大積載量を設定した場合、台ごとの総重量が上限を超えないよう台を分けます。1個の重量だけで上限を超える荷物は「積めなかった荷物」に表示します。</li>
+        <li>荷台寸法は目安です。実際の積載可否は現場で確認してください。また、重心バランスや荷崩れ防止などの現場判断はこのツールでは行いません。</li>
+    </ul>
+
+    <h2>機能要望・ご意見</h2>
+    <p>「この機能が欲しい」「この車種・荷物条件に対応してほしい」「計算結果がおかしい」といったご要望・不具合報告を受け付けています。今後の改修の参考にします。<span class="note">※ 送信されるのは、このフォームに入力した内容だけです。上のツールで計算に入力した荷物データが送信されることはありません。</span></p>
+    <form id="feedback-form" novalidate>
+        <div class="form-field">
+            <label class="form-label" for="fb-category">要望の種類 <span class="form-tag">必須</span></label>
+            <select class="form-input" id="fb-category">
+                <option value="欲しい機能">欲しい機能</option>
+                <option value="対応してほしい車種・荷物条件">対応してほしい車種・荷物条件</option>
+                <option value="不具合報告">不具合報告</option>
+                <option value="その他">その他</option>
+            </select>
+        </div>
+        <div class="form-field">
+            <label class="form-label" for="fb-name">お名前 <span class="form-tag">必須</span></label>
+            <input class="form-input" type="text" id="fb-name" autocomplete="name" required>
+        </div>
+        <div class="form-field">
+            <label class="form-label" for="fb-email">返信用メールアドレス <span class="form-tag">必須</span></label>
+            <input class="form-input" type="email" id="fb-email" autocomplete="email" required>
+        </div>
+        <div class="form-field">
+            <label class="form-label" for="fb-message">内容 <span class="form-tag">必須</span></label>
+            <textarea class="form-input" id="fb-message" rows="5" required placeholder="例：パレットの積み付け結果だけを印刷したい／○○という車種プリセットが欲しい"></textarea>
+        </div>
+        <div class="form-hp" aria-hidden="true"><label>この欄は入力しないでください<input type="text" id="fb-website" tabindex="-1" autocomplete="off"></label></div>
+        <p class="form-error" id="fb-error" hidden></p>
+        <button type="submit" class="ghost" id="fb-submit">要望を送信する</button>
+    </form>
+    <p class="note">フォームが使えない場合は、<a href="https://docs.google.com/forms/d/e/1FAIpQLSd_hIBHaibkUGzNusEB7nSvlL5KyfgrsCLbS2_IiiWcCk0J3Q/viewform" target="_blank" rel="noopener noreferrer">こちらのフォーム</a>から「拡張機能・ツールについて」としてお送りください。</p>
+
+    <h2>更新のお知らせ（メールマガジン）</h2>
+    <p>このツールのアップデートがあったときにだけお知らせする、<strong>低頻度</strong>のメールマガジンです。登録したメールアドレスは<strong>更新連絡のみ</strong>に使い、他の目的には使いません。<strong>解除方法</strong>：解除したいときは、<a href="https://miupa.jp/#contact">お問い合わせ</a>からご連絡ください。すぐに解除します（届いたメールへの返信でも解除できます）。<span class="note">※ 登録で送信されるのは、入力したメールアドレスだけです。ツールの計算データとは無関係です。</span></p>
+    <!-- TODO(公開前): 本人が Google フォーム（メールアドレス収集用）を作成し、下記スクリプト冒頭の NEWSLETTER_ENDPOINT / NEWSLETTER_ENTRY_EMAIL に値を差し込むこと。未設定の間、送信ボタンは「準備中」を表示する。 -->
+    <form id="newsletter-form" novalidate>
+        <div class="form-field">
+            <label class="form-label" for="nl-email">メールアドレス <span class="form-tag">必須</span></label>
+            <input class="form-input" type="email" id="nl-email" autocomplete="email" required placeholder="you@example.co.jp">
+        </div>
+        <div class="form-hp" aria-hidden="true"><label>この欄は入力しないでください<input type="text" id="nl-website" tabindex="-1" autocomplete="off"></label></div>
+        <p class="form-error" id="nl-error" hidden></p>
+        <p class="status" id="nl-status"></p>
+        <button type="submit" class="ghost" id="nl-submit">更新のお知らせを受け取る</button>
+    </form>
+
+    <p class="back">← <a href="https://miupa.jp/">MiUPa のポートフォリオに戻る</a></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+'use strict';
+
+/*__CORE_START__*/
+// 積み付け計算コア（ブラウザ / Node 共通の純粋関数群）
+// 座標系: x=奥行(長さ), y=幅, z=高さ（単位 mm）
+function rotationsFor(item) {
+var dims = [item.l, item.w, item.h];
+var perms = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]];
+var seen = {}, out = [];
+perms.forEach(function (p) {
+var d = { dx: dims[p[0]], dy: dims[p[1]], dz: dims[p[2]]};
+if (item.tenchi && d.dz!== item.h) return; // 天地指定: 高さ方向を固定
+var k = d.dx + 'x' + d.dy + 'x' + d.dz;
+if (!seen[k]) { seen[k] = true; out.push(d);}
+});
+return out;
+}
+
+function expandItems(items) {
+var out = [];
+items.forEach(function (it, idx) {
+var n = Math.max(0, Math.floor(it.qty) || 0);
+for (var i = 0; i < n; i++) {
+out.push({ name: it.name, l: it.l, w: it.w, h: it.h, weight: it.weight || 0,
+stackable: it.stackable!== false, tenchi:!!it.tenchi, src: idx, seq: i});
+}
+});
+// 決定的な並び: 体積の大きい順 → 品名 → 元の行 → 通し番号
+out.sort(function (a, b) {
+var va = a.l * a.w * a.h, vb = b.l * b.w * b.h;
+if (vb!== va) return vb - va;
+if (a.name!== b.name) return a.name < b.name? -1: 1;
+if (a.src!== b.src) return a.src - b.src;
+return a.seq - b.seq;
+});
+return out;
+}
+
+function newBin(container) {
+return { free: [{ x: 0, y: 0, z: 0, dx: container.L, dy: container.W, dz: container.H}],
+placements: [], weight: 0, usedVolume: 0, loadRate: 0};
+}
+
+function pruneFree(bin) {
+bin.free = bin.free.filter(function (b) { return b.dx > 0 && b.dy > 0 && b.dz > 0;});
+bin.free = bin.free.filter(function (b, i) {
+return!bin.free.some(function (o, j) {
+if (j === i) return false;
+var contains = o.x <= b.x && o.y <= b.y && o.z <= b.z &&
+o.x + o.dx >= b.x + b.dx && o.y + o.dy >= b.y + b.dy && o.z + o.dz >= b.z + b.dz;
+return contains && (o.dx > b.dx || o.dy > b.dy || o.dz > b.dz || j < i);
+});
+});
+}
+
+function tryPlace(bin, item, maxPayload) {
+if (maxPayload > 0 && bin.weight + item.weight > maxPayload) return false;
+var rots = rotationsFor(item);
+var best = null;
+bin.free.forEach(function (fb, fi) {
+rots.forEach(function (r, ri) {
+if (r.dx <= fb.dx && r.dy <= fb.dy && r.dz <= fb.dz) {
+var cand = { fi: fi, r: r, ri: ri,
+score: fb.dx * fb.dy * fb.dz - r.dx * r.dy * r.dz,
+z: fb.z, y: fb.y, x: fb.x};
+if (!best || cand.score < best.score ||
+(cand.score === best.score && (cand.z < best.z ||
+(cand.z === best.z && (cand.y < best.y ||
+(cand.y === best.y && (cand.x < best.x ||
+(cand.x === best.x && cand.ri < best.ri)))))))) {
+best = cand;
+}
+}
+});
+});
+if (!best) return false;
+var fb = bin.free[best.fi], r = best.r;
+bin.placements.push({ name: item.name, x: fb.x, y: fb.y, z: fb.z,
+dx: r.dx, dy: r.dy, dz: r.dz, weight: item.weight});
+bin.weight += item.weight;
+bin.usedVolume += r.dx * r.dy * r.dz;
+bin.free.splice(best.fi, 1);
+// 右の余り
+bin.free.push({ x: fb.x + r.dx, y: fb.y, z: fb.z, dx: fb.dx - r.dx, dy: r.dy, dz: r.dz});
+// 手前の余り
+bin.free.push({ x: fb.x, y: fb.y + r.dy, z: fb.z, dx: fb.dx, dy: fb.dy - r.dy, dz: r.dz});
+// 上の余り（上積み不可の荷物の上は使わない）
+if (item.stackable) {
+bin.free.push({ x: fb.x, y: fb.y, z: fb.z + r.dz, dx: fb.dx, dy: fb.dy, dz: fb.dz - r.dz});
+}
+pruneFree(bin);
+return true;
+}
+
+// container: {L, W, H} / items: [{name,l,w,h,weight,qty,stackable,tenchi}] / maxPayload: kg（0=制限なし）
+// 戻り値: { bins: [{placements, weight, usedVolume, loadRate}], unplaced: [{name, reason}], totalWeight}
+function packLoad(container, items, maxPayload) {
+var instances = expandItems(items);
+var bins = [], unplaced = [];
+instances.forEach(function (it) {
+var fitsEmpty = rotationsFor(it).some(function (r) {
+return r.dx <= container.L && r.dy <= container.W && r.dz <= container.H;
+});
+if (!fitsEmpty) { unplaced.push({ name: it.name, reason: 'size'}); return;}
+var placed = false;
+for (var b = 0; b < bins.length; b++) {
+if (tryPlace(bins[b], it, maxPayload)) { placed = true; break;}
+}
+if (!placed) {
+var bin = newBin(container);
+if (tryPlace(bin, it, maxPayload)) { bins.push(bin); placed = true;}
+}
+if (!placed) unplaced.push({ name: it.name, reason: 'weight'});
+});
+var cVol = container.L * container.W * container.H;
+bins.forEach(function (bin) { bin.loadRate = cVol > 0? bin.usedVolume / cVol: 0;});
+return { bins: bins, unplaced: unplaced,
+totalWeight: bins.reduce(function (s, b) { return s + b.weight;}, 0)};
+}
+/*__CORE_END__*/
+
+// ---------- プリセット（寸法は一般的な公表値に基づく目安） ----------
+var PRESETS = {
+kei: { label: '軽トラック', L: 1940, W: 1410, H: 1100, payload: 350, note: '荷台長 約1,940mm×幅 約1,410mm（キャリイ/ハイゼット等）。高さは積み上げの目安です。最大積載量 350kg。'},
+t2: { label: '2tトラック（ロング・ワイド）', L: 4350, W: 2080, H: 2100, payload: 2000, note: '平ボディ ロング・ワイドの目安（約4,350×2,080mm）。高さはバン内高の目安です。'},
+t4: { label: '4tトラック（ワイド）', L: 6200, W: 2340, H: 2350, payload: 4000, note: '平ボディ ワイドの目安（約6,200×2,340mm）。高さはウイング内高の目安です。'},
+t10: { label: '10tトラック', L: 9600, W: 2390, H: 2400, payload: 10000, note: '大型 平ボディの目安（長さ 約9,500〜10,000mm、幅 約2,340〜2,390mm）。'},
+pallet: { label: 'パレット（JIS T11 1,100×1,100）', L: 1100, W: 1100, H: 1500, payload: 1000, note: 'T11型パレット1枚分。高さ1,500mm・積載1,000kgは積み付けの目安です。'},
+c20: { label: 'コンテナ 20ft', L: 5898, W: 2352, H: 2393, payload: 28000, note: '20ftドライコンテナの内寸目安（5,898×2,352×2,393mm）。最大積載量は目安です。'},
+c40: { label: 'コンテナ 40ft', L: 12032, W: 2352, H: 2393, payload: 26000, note: '40ftドライコンテナの内寸目安（12,032×2,352×2,393mm）。最大積載量は目安です。'},
+custom: { label: 'カスタム（寸法を直接入力）', L: 4350, W: 2080, H: 2100, payload: 0, note: '寸法と最大積載量を直接入力してください。'}
+};
+var PALETTE = ['#D97757','#5B8C5A','#4A6FA5','#C9A227','#8A6BA1','#3E7CB1','#B5542D','#6B9080','#A26769','#7A7E46'];
+
+var $ = function (id) { return document.getElementById(id);};
+var presetSel = $('preset'), cL = $('cL'), cW = $('cW'), cH = $('cH'), payloadEl = $('payload');
+Object.keys(PRESETS).forEach(function (k) {
+var o = document.createElement('option'); o.value = k; o.textContent = PRESETS[k].label; presetSel.appendChild(o);
+});
+function applyPreset() {
+var p = PRESETS[presetSel.value];
+cL.value = p.L; cW.value = p.W; cH.value = p.H; payloadEl.value = p.payload;
+$('preset-note').textContent = p.note;
+}
+presetSel.addEventListener('change', applyPreset);
+presetSel.value = 't4'; applyPreset();
+
+// ---------- 荷物リスト ----------
+var cargoBody = $('cargo-body');
+function addRow(data) {
+data = data || {};
+var tr = document.createElement('tr');
+tr.innerHTML =
+'<td class="name-cell"><input type="text" class="f-name" placeholder="品名"></td>' +
+'<td><input type="number" class="f-l" min="1" placeholder="縦"></td>' +
+'<td><input type="number" class="f-w" min="1" placeholder="横"></td>' +
+'<td><input type="number" class="f-h" min="1" placeholder="高さ"></td>' +
+'<td><input type="number" class="f-weight" min="0" step="0.1" placeholder="kg"></td>' +
+'<td><input type="number" class="f-qty" min="1" value="1"></td>' +
+'<td><input type="checkbox" class="f-stack" checked></td>' +
+'<td><input type="checkbox" class="f-tenchi"></td>' +
+'<td><button type="button" class="ghost small f-del" title="行を削除">×</button></td>';
+cargoBody.appendChild(tr);
+if (data.name!= null) tr.querySelector('.f-name').value = data.name;
+if (data.l!= null) tr.querySelector('.f-l').value = data.l;
+if (data.w!= null) tr.querySelector('.f-w').value = data.w;
+if (data.h!= null) tr.querySelector('.f-h').value = data.h;
+if (data.weight!= null) tr.querySelector('.f-weight').value = data.weight;
+if (data.qty!= null) tr.querySelector('.f-qty').value = data.qty;
+if (data.stackable === false) tr.querySelector('.f-stack').checked = false;
+if (data.tenchi) tr.querySelector('.f-tenchi').checked = true;
+tr.querySelector('.f-del').addEventListener('click', function () { tr.remove();});
+return tr;
+}
+$('add-row').addEventListener('click', function () { addRow();});
+
+var SAMPLE = [
+{ name: '段ボール箱（大）', l: 600, w: 400, h: 400, weight: 12, qty: 10},
+{ name: '段ボール箱（小）', l: 400, w: 300, h: 300, weight: 8, qty: 20},
+{ name: '飲料ケース', l: 450, w: 365, h: 315, weight: 15, qty: 12},
+{ name: '機械部品（上積み不可）', l: 800, w: 600, h: 500, weight: 40, qty: 2, stackable: false}
+];
+function loadSample() { cargoBody.innerHTML = ''; SAMPLE.forEach(addRow);}
+$('sample-data').addEventListener('click', loadSample);
+loadSample();
+
+// ---------- Excel貼り付け ----------
+$('paste-btn').addEventListener('click', function () {
+var text = $('paste').value;
+var st = $('paste-status');
+if (!text.trim()) { st.textContent = '貼り付け欄が空です。'; return;}
+var added = 0;
+text.split(/\r?\n/).forEach(function (line) {
+if (!line.trim()) return;
+var cells = line.split(/\t|,|;/).map(function (c) { return c.trim();});
+if (cells.length < 4) return;
+var nums = cells.slice(1, 6).map(function (c) { return parseFloat(String(c).replace(/[^0-9.\-]/g, ''));});
+if (!(nums[0] > 0 && nums[1] > 0 && nums[2] > 0)) return; // 見出し行などは読み飛ばす
+addRow({ name: cells[0] || '荷物', l: nums[0], w: nums[1], h: nums[2],
+weight: nums[3] > 0? nums[3]: 0, qty: nums[4] > 0? Math.floor(nums[4]): 1});
+added++;
+});
+st.textContent = added? added + ' 行を取り込みました。': '取り込める行がありませんでした（品名・縦・横・高さの順で貼り付けてください）。';
+});
+
+// ---------- 計算と結果表示 ----------
+function esc(s) {
+return String(s == null? '': s).replace(/[&<>"']/g, function (c) {
+return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c];
+});
+}
+function fmt(n) { return Math.round(n).toLocaleString('ja-JP');}
+
+var lastResult = null, lastContainer = null, lastPayload = 0, colorMap = {}, currentBin = 0;
+
+function readInputs() {
+var container = { L: parseFloat(cL.value), W: parseFloat(cW.value), H: parseFloat(cH.value)};
+if (!(container.L > 0 && container.W > 0 && container.H > 0)) return { error: '空間の寸法（奥行・幅・高さ）を正しく入力してください。'};
+var payload = parseFloat(payloadEl.value) || 0;
+var items = [], totalQty = 0;
+var rows = cargoBody.querySelectorAll('tr');
+for (var i = 0; i < rows.length; i++) {
+var r = rows[i];
+var name = r.querySelector('.f-name').value.trim();
+var l = parseFloat(r.querySelector('.f-l').value), w = parseFloat(r.querySelector('.f-w').value),
+h = parseFloat(r.querySelector('.f-h').value),
+weight = parseFloat(r.querySelector('.f-weight').value) || 0,
+qty = Math.floor(parseFloat(r.querySelector('.f-qty').value) || 0);
+if (!name &&!(l > 0) &&!(w > 0) &&!(h > 0)) continue; // 空行
+if (!(l > 0 && w > 0 && h > 0) || qty < 1) return { error: '荷物「' + (name || (i + 1) + '行目') + '」の寸法と個数を確認してください。'};
+totalQty += qty;
+if (totalQty > 1000) return { error: '荷物の合計個数が多すぎます（上限1,000個）。'};
+items.push({ name: name || '荷物', l: l, w: w, h: h, weight: weight, qty: qty,
+stackable: r.querySelector('.f-stack').checked, tenchi: r.querySelector('.f-tenchi').checked});
+}
+if (!items.length) return { error: '荷物を1つ以上入力してください。'};
+return { container: container, payload: payload, items: items};
+}
+
+$('calc').addEventListener('click', function () {
+var st = $('calc-status'), result = $('result');
+var input = readInputs();
+if (input.error) { st.textContent = ''; result.innerHTML = '<p class="err">' + esc(input.error) + '</p>'; return;}
+st.textContent = '計算中…';
+setTimeout(function () {
+lastResult = packLoad(input.container, input.items, input.payload);
+lastContainer = input.container; lastPayload = input.payload; currentBin = 0;
+colorMap = {};
+var ci = 0;
+input.items.forEach(function (it) { if (!(it.name in colorMap)) colorMap[it.name] = PALETTE[ci++ % PALETTE.length];});
+st.textContent = '計算が終わりました。';
+renderResult();
+}, 30);
+});
+
+function renderResult() {
+var result = $('result'), res = lastResult;
+if (!res) return;
+var totalItems = res.bins.reduce(function (s, b) { return s + b.placements.length;}, 0) + res.unplaced.length;
+var placedItems = totalItems - res.unplaced.length;
+var html = '<h2>計算結果（シミュレーション）</h2>';
+html += '<p class="note">空間：奥行 ' + fmt(lastContainer.L) + ' × 幅 ' + fmt(lastContainer.W) + ' × 高さ ' + fmt(lastContainer.H) + ' mm' +
+(lastPayload > 0? '／最大積載量 ' + fmt(lastPayload) + ' kg': '／最大積載量 制限なし') + '</p>';
+html += '<div class="stats">' +
+'<span class="stat">必要台数 <strong>' + res.bins.length + '</strong> 台</span>' +
+'<span class="stat">積載個数 <strong>' + placedItems + '</strong> / ' + totalItems + ' 個</span>' +
+'<span class="stat">総重量 <strong>' + fmt(res.totalWeight) + '</strong> kg</span>' +
+(res.bins.length? '<span class="stat">積載率（全体） <strong>' + Math.round(100 * res.bins.reduce(function (s, b) { return s + b.usedVolume;}, 0) / (res.bins.length * lastContainer.L * lastContainer.W * lastContainer.H)) + '</strong> %</span>': '') +
+'</div>';
+res.bins.forEach(function (b, i) {
+if (lastPayload > 0 && b.weight > lastPayload) {
+html += '<p class="err">' + (i + 1) + '台目の重量（' + fmt(b.weight) + ' kg）が最大積載量を超えています。</p>';
+}
+});
+if (res.unplaced.length) {
+var byReason = {};
+res.unplaced.forEach(function (u) { byReason[u.name + '|' + u.reason] = (byReason[u.name + '|' + u.reason] || 0) + 1;});
+html += '<p class="err">積めなかった荷物：' + Object.keys(byReason).map(function (k) {
+var parts = k.split('|');
+return esc(parts[0]) + ' ×' + byReason[k] + (parts[1] === 'weight'? '（1個の重量が最大積載量を超過）': '（空間より大きい）');
+}).join('、') + '</p>';
+}
+if (res.bins.length) {
+html += '<div class="bin-tabs no-print" role="tablist">' + res.bins.map(function (b, i) {
+return '<button type="button" data-bin="' + i + '"' + (i === currentBin? ' class="active"': '') + '>' +
+(i + 1) + '台目（積載率' + Math.round(b.loadRate * 100) + '%・' + fmt(b.weight) + 'kg）</button>';
+}).join('') + '</div>';
+html += '<div id="viewer-wrap"><div id="viewer"></div>' +
+'<p class="note">ドラッグで回転、ホイール／ピンチで拡大縮小できます。色は品名ごとに分かれています。</p>' +
+'<div class="legend">' + Object.keys(colorMap).map(function (n) {
+return '<span><span class="sw" style="background:' + colorMap[n] + '"></span>' + esc(n) + '</span>';
+}).join('') + '</div></div>';
+html += '<p><button type="button" class="ghost" id="print-btn">結果を印刷する（紙・PDF）</button></p>';
+res.bins.forEach(function (b, i) {
+html += '<div class="bin-table" data-table="' + i + '"' + (i === currentBin? '': ' style="display:none"') + '>' +
+'<h3>' + (i + 1) + '台目の配置一覧（積載率 ' + Math.round(b.loadRate * 100) + '%／重量 ' + fmt(b.weight) + ' kg／' + b.placements.length + ' 個）</h3>' +
+'<table><tr><th class="num">No.</th><th>品名</th><th class="num">位置 奥行 mm</th><th class="num">位置 幅 mm</th><th class="num">位置 高さ mm</th><th class="num">配置寸法 奥行×幅×高さ mm</th></tr>' +
+b.placements.map(function (p, pi) {
+return '<tr><td class="num">' + (pi + 1) + '</td><td>' + esc(p.name) + '</td>' +
+'<td class="num">' + fmt(p.x) + '</td><td class="num">' + fmt(p.y) + '</td><td class="num">' + fmt(p.z) + '</td>' +
+'<td class="num">' + fmt(p.dx) + '×' + fmt(p.dy) + '×' + fmt(p.dz) + '</td></tr>';
+}).join('') + '</table></div>';
+});
+}
+result.innerHTML = html;
+
+var tabs = result.querySelectorAll('.bin-tabs button');
+tabs.forEach(function (btn) {
+btn.addEventListener('click', function () {
+currentBin = parseInt(btn.getAttribute('data-bin'), 10);
+tabs.forEach(function (b2) { b2.classList.toggle('active', b2 === btn);});
+result.querySelectorAll('.bin-table').forEach(function (t) {
+t.style.display = parseInt(t.getAttribute('data-table'), 10) === currentBin? '': 'none';
+});
+drawBin(currentBin);
+});
+});
+var pb = $('print-btn');
+if (pb) pb.addEventListener('click', function () { window.print();});
+drawBin(currentBin);
+}
+
+// ---------- 3D表示（Three.js + 自前のオービット操作） ----------
+var three = null;
+function initThree() {
+var wrap = $('viewer');
+if (!wrap ||!window.THREE) return null;
+var renderer;
+try { renderer = new THREE.WebGLRenderer({ antialias: true});}
+catch (e) { return null;}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+renderer.setClearColor(0xf7f4ec);
+wrap.appendChild(renderer.domElement);
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(45, wrap.clientWidth / wrap.clientHeight, 0.1, 1000);
+scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+var dir = new THREE.DirectionalLight(0xffffff, 0.55); dir.position.set(5, 10, 7); scene.add(dir);
+var group = new THREE.Group(); scene.add(group);
+var view = { theta: 0.85, phi: 1.05, radius: 16};
+function render() {
+camera.position.set(
+view.radius * Math.sin(view.phi) * Math.cos(view.theta),
+view.radius * Math.cos(view.phi),
+view.radius * Math.sin(view.phi) * Math.sin(view.theta));
+camera.lookAt(0, 0, 0);
+renderer.render(scene, camera);
+}
+var dragging = false, px = 0, py = 0, pinch = 0;
+var el = renderer.domElement;
+el.addEventListener('pointerdown', function (e) { dragging = true; px = e.clientX; py = e.clientY; el.setPointerCapture(e.pointerId);});
+el.addEventListener('pointermove', function (e) {
+if (!dragging) return;
+view.theta -= (e.clientX - px) * 0.008;
+view.phi = Math.min(1.5, Math.max(0.15, view.phi - (e.clientY - py) * 0.008));
+px = e.clientX; py = e.clientY; render();
+});
+el.addEventListener('pointerup', function () { dragging = false;});
+el.addEventListener('wheel', function (e) {
+e.preventDefault();
+view.radius = Math.min(60, Math.max(4, view.radius * (e.deltaY > 0? 1.1: 0.9)));
+render();
+}, { passive: false});
+el.addEventListener('touchmove', function (e) {
+if (e.touches.length === 2) {
+var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+if (pinch) { view.radius = Math.min(60, Math.max(4, view.radius * pinch / d)); render();}
+pinch = d;
+}
+}, { passive: true});
+el.addEventListener('touchend', function () { pinch = 0;});
+window.addEventListener('resize', function () {
+var w = wrap.clientWidth, h = wrap.clientHeight;
+if (!w ||!h) return;
+renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); render();
+});
+return { scene: scene, group: group, render: render, view: view};
+}
+
+function drawBin(idx) {
+var wrap = $('viewer');
+if (!wrap ||!lastResult ||!lastResult.bins.length) return;
+if (!window.THREE) {
+wrap.innerHTML = '<p class="note" style="padding:1em">3D表示用ライブラリを読み込めませんでした。配置は下の一覧でご確認ください。</p>';
+return;
+}
+if (!three) { three = initThree(); if (!three) { wrap.innerHTML = '<p class="note" style="padding:1em">このブラウザでは3D表示が使えません。配置は下の一覧でご確認ください。</p>'; return;}}
+var g = three.group;
+while (g.children.length) g.remove(g.children[0]);
+var c = lastContainer;
+var scale = 10 / Math.max(c.L, c.W, c.H);
+function box(w, h, d, x, y, z, mat, edges) {
+var geo = new THREE.BoxGeometry(w, h, d);
+var mesh = new THREE.Mesh(geo, mat);
+mesh.position.set(x, y, z);
+g.add(mesh);
+if (edges) {
+var line = new THREE.LineSegments(new THREE.EdgesGeometry(geo),
+new THREE.LineBasicMaterial({ color: 0x6B6963}));
+line.position.copy(mesh.position); g.add(line);
+}
+return mesh;
+}
+// 空間の枠（x=奥行→three x, y=幅→three z, z=高さ→three y）
+var frame = new THREE.LineSegments(
+new THREE.EdgesGeometry(new THREE.BoxGeometry(c.L * scale, c.H * scale, c.W * scale)),
+new THREE.LineBasicMaterial({ color: 0xC15F3C}));
+frame.position.set(0, c.H * scale / 2, 0);
+g.add(frame);
+var floor = new THREE.Mesh(new THREE.BoxGeometry(c.L * scale, 0.06, c.W * scale),
+new THREE.MeshLambertMaterial({ color: 0xE8E4DA}));
+floor.position.set(0, -0.03, 0); g.add(floor);
+var bin = lastResult.bins[idx];
+bin.placements.forEach(function (p) {
+var color = new THREE.Color(colorMap[p.name] || '#D97757');
+box(p.dx * scale, p.dz * scale, p.dy * scale,
+(p.x + p.dx / 2 - c.L / 2) * scale,
+(p.z + p.dz / 2) * scale,
+(p.y + p.dy / 2 - c.W / 2) * scale,
+new THREE.MeshLambertMaterial({ color: color}), true);
+});
+three.view.radius = 15;
+three.render();
+}
+})();
+</script>
+<script>
+(function () {
+'use strict';
+var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// ---------- 機能要望フォーム（既存のお問い合わせ用 Google フォームへ送信） ----------
+var fb = document.getElementById('feedback-form');
+if (fb) {
+var FB_ENDPOINT = 'https://docs.google.com/forms/d/e/1FAIpQLSd_hIBHaibkUGzNusEB7nSvlL5KyfgrsCLbS2_IiiWcCk0J3Q/formResponse';
+var FB_ENTRY = { type: 'entry.191184380', name: 'entry.298176938', email: 'entry.88747827', message: 'entry.1265614861'};
+var FB_FBZX = '1390385662613740558';
+var fbRenderedAt = Date.now();
+var fbError = document.getElementById('fb-error');
+var fbSubmit = document.getElementById('fb-submit');
+fb.addEventListener('submit', function (event) {
+event.preventDefault();
+fbError.hidden = true;
+var name = document.getElementById('fb-name').value.trim();
+var email = document.getElementById('fb-email').value.trim();
+var body = document.getElementById('fb-message').value.trim();
+var category = document.getElementById('fb-category').value;
+var problems = [];
+if (!name) problems.push('お名前を入力してください。');
+if (!email) problems.push('返信用メールアドレスを入力してください。');
+else if (!EMAIL_RE.test(email)) problems.push('メールアドレスの形式が正しくありません。');
+if (!body) problems.push('内容を入力してください。');
+if (problems.length) { fbError.textContent = problems.join(''); fbError.hidden = false; return;}
+var hp = document.getElementById('fb-website');
+if ((hp && hp.value) || Date.now() - fbRenderedAt < 2000) { // bot対策: 送信せず完了表示
+fb.innerHTML = '<p class="form-thanks" role="status">送信しました。ありがとうございます。</p>';
+return;
+}
+var params = new URLSearchParams();
+params.append(FB_ENTRY.type, '拡張機能・ツールについて');
+params.append(FB_ENTRY.name, name);
+params.append(FB_ENTRY.email, email);
+params.append(FB_ENTRY.message, '\n種類: ' + category + '\n\n' + body);
+params.append('fvv', '1'); params.append('pageHistory', '0'); params.append('fbzx', FB_FBZX);
+fbSubmit.disabled = true; fbSubmit.textContent = '送信中…';
+fetch(FB_ENDPOINT, { method: 'POST', mode: 'no-cors',
+headers: { 'Content-Type': 'application/x-www-form-urlencoded'}, body: params.toString()
+}).then(function () {
+fb.innerHTML = '<p class="form-thanks" role="status">送信しました。ありがとうございます。</p>';
+}).catch(function () {
+fbSubmit.disabled = false; fbSubmit.textContent = '要望を送信する';
+fbError.textContent = '送信できませんでした。お手数ですが、ページ下部のリンク先フォームからお送りください。';
+fbError.hidden = false;
+});
+});
+}
+
+// ---------- メルマガ登録フォーム（専用 Google フォームの接続待ち） ----------
+// TODO(公開前): 本人がメールアドレス収集用の Google フォームを作成し、formResponse URL と
+// メールアドレス欄の entry ID をここに差し込む。未設定の間は「準備中」を表示して送信しない。
+var NEWSLETTER_ENDPOINT = '';
+var NEWSLETTER_ENTRY_EMAIL = '';
+var nl = document.getElementById('newsletter-form');
+if (nl) {
+var nlRenderedAt = Date.now();
+var nlError = document.getElementById('nl-error');
+var nlStatus = document.getElementById('nl-status');
+var nlSubmit = document.getElementById('nl-submit');
+nl.addEventListener('submit', function (event) {
+event.preventDefault();
+nlError.hidden = true; nlStatus.textContent = '';
+var email = document.getElementById('nl-email').value.trim();
+if (!email) { nlError.textContent = 'メールアドレスを入力してください。'; nlError.hidden = false; return;}
+if (!EMAIL_RE.test(email)) { nlError.textContent = 'メールアドレスの形式が正しくありません。'; nlError.hidden = false; return;}
+var hp = document.getElementById('nl-website');
+if ((hp && hp.value) || Date.now() - nlRenderedAt < 2000) {
+nlStatus.textContent = '登録しました。ありがとうございます。';
+return;
+}
+if (!NEWSLETTER_ENDPOINT ||!NEWSLETTER_ENTRY_EMAIL) {
+nlStatus.textContent = '登録フォームは現在準備中です。公開まで今しばらくお待ちください。';
+return;
+}
+var params = new URLSearchParams();
+params.append(NEWSLETTER_ENTRY_EMAIL, email);
+params.append('fvv', '1'); params.append('pageHistory', '0');
+nlSubmit.disabled = true; nlSubmit.textContent = '登録中…';
+fetch(NEWSLETTER_ENDPOINT, { method: 'POST', mode: 'no-cors',
+headers: { 'Content-Type': 'application/x-www-form-urlencoded'}, body: params.toString()
+}).then(function () {
+nl.innerHTML = '<p class="form-thanks" role="status">登録しました。更新があったときにお知らせします。</p>';
+}).catch(function () {
+nlSubmit.disabled = false; nlSubmit.textContent = '更新のお知らせを受け取る';
+nlError.textContent = '登録できませんでした。時間をおいて再度お試しください。';
+nlError.hidden = false;
+});
+});
+}
+})();
+</script>
+</body>
+</html>
