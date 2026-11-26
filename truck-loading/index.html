@@ -92,6 +92,9 @@
         .bin-tabs { display: flex; flex-wrap: wrap; gap: .5em; margin: 1em 0 .5em; }
         .bin-tabs button { background: var(--surface-2); color: var(--accent-strong); border: 1px solid var(--accent); }
         .bin-tabs button.active { background: var(--accent); color: var(--on-accent); }
+        .view-presets { display: flex; flex-wrap: wrap; align-items: center; gap: .5em; margin: .7em 0 .2em; }
+        .view-presets .vp-label { font-size: .9em; color: var(--muted); }
+        .view-presets button { background: var(--surface-2); color: var(--accent-strong); border: 1px solid var(--accent); padding: .45em 1.1em; }
         #viewer { width: 100%; height: 430px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(180deg, #FFFFFF, var(--surface-2)); overflow: hidden; touch-action: none; }
         #viewer canvas { display: block; }
         .form-field { margin-bottom: 1em; }
@@ -522,7 +525,15 @@ return '<button type="button" data-bin="' + i + '"' + (i === currentBin? ' class
 (i + 1) + '台目（積載率' + Math.round(b.loadRate * 100) + '%・' + fmt(b.weight) + 'kg）</button>';
 }).join('') + '</div>';
 html += '<div id="viewer-wrap"><div id="viewer"></div>' +
-'<p class="note">ドラッグで回転、ホイール／ピンチで拡大縮小できます。色は品名ごとに分かれています。</p>' +
+'<div class="view-presets no-print" role="group" aria-label="視点切替">' +
+'<span class="vp-label">視点：</span>' +
+'<button type="button" data-view="angle">斜め</button>' +
+'<button type="button" data-view="top">上面</button>' +
+'<button type="button" data-view="front">正面</button>' +
+'<button type="button" data-view="side">側面</button>' +
+'<button type="button" data-view="reset">視点リセット</button>' +
+'</div>' +
+'<p class="note">ドラッグ：回転／ホイール・ピンチ：拡大縮小／ボタン：視点切替。色は品名ごとに分かれています。</p>' +
 '<div class="legend">' + Object.keys(colorMap).map(function (n) {
 return '<span><span class="sw" style="background:' + colorMap[n] + '"></span>' + esc(n) + '</span>';
 }).join('') + '</div></div>';
@@ -551,6 +562,9 @@ t.style.display = parseInt(t.getAttribute('data-table'), 10) === currentBin? '':
 drawBin(currentBin);
 });
 });
+result.querySelectorAll('.view-presets button').forEach(function (btn) {
+btn.addEventListener('click', function () { if (three && three.setView) three.setView(btn.getAttribute('data-view'));});
+});
 var pb = $('print-btn');
 if (pb) pb.addEventListener('click', function () { window.print();});
 drawBin(currentBin);
@@ -574,43 +588,126 @@ scene.add(new THREE.AmbientLight(0xffffff, 0.75));
 var dir = new THREE.DirectionalLight(0xffffff, 0.55); dir.position.set(5, 10, 7); scene.add(dir);
 var group = new THREE.Group(); scene.add(group);
 var view = { theta: 0.85, phi: 1.05, radius: 16};
+var radiusCur = view.radius;
 function render() {
 camera.position.set(
-view.radius * Math.sin(view.phi) * Math.cos(view.theta),
-view.radius * Math.cos(view.phi),
-view.radius * Math.sin(view.phi) * Math.sin(view.theta));
+radiusCur * Math.sin(view.phi) * Math.cos(view.theta),
+radiusCur * Math.cos(view.phi),
+radiusCur * Math.sin(view.phi) * Math.sin(view.theta));
 camera.lookAt(0, 0, 0);
 renderer.render(scene, camera);
 }
-var dragging = false, px = 0, py = 0, pinch = 0;
+// ドラッグ操作を滑らかにする仕組み：ポインターイベントでは移動量を貯めるだけにし、
+// 回転の適用と描画は requestAnimationFrame で1フレームに1回だけ行う。
+// 指を離した後は慣性で少し回り続け、ズームは目標値へ滑らかに寄せる。
 var el = renderer.domElement;
-el.addEventListener('pointerdown', function (e) { dragging = true; px = e.clientX; py = e.clientY; el.setPointerCapture(e.pointerId);});
-el.addEventListener('pointermove', function (e) {
-if (!dragging) return;
-view.theta -= (e.clientX - px) * 0.008;
-view.phi = Math.min(1.5, Math.max(0.15, view.phi - (e.clientY - py) * 0.008));
-px = e.clientX; py = e.clientY; render();
+el.style.touchAction = 'none';
+el.style.cursor = 'grab';
+var pointers = new Map();
+var pendDX = 0, pendDY = 0;
+var velTheta = 0, velPhi = 0;
+var lastPinchDist = 0;
+var loopActive = false;
+var presetTarget = null;
+var PRESETS = {
+angle: { theta: 0.85, phi: 1.05 },
+top: { theta: null, phi: 0.15 },
+front: { theta: 0, phi: 1.35 },
+side: { theta: Math.PI / 2, phi: 1.35 },
+reset: { theta: 0.85, phi: 1.05, radius: 15 }
+};
+function setView(name) {
+var p = PRESETS[name];
+if (!p) return;
+presetTarget = { theta: (p.theta === null ? view.theta : p.theta), phi: p.phi };
+if (p.radius) view.radius = p.radius;
+velTheta = 0; velPhi = 0;
+kick();
+}
+function clampPhi(p) { return Math.min(1.5, Math.max(0.15, p));}
+function clampRadius(r) { return Math.min(60, Math.max(4, r));}
+function kick() { if (!loopActive) { loopActive = true; requestAnimationFrame(tick);}}
+function tick() {
+var active = false;
+if (pointers.size === 1 && (pendDX || pendDY)) {
+var dTheta = -pendDX * 0.008, dPhi = -pendDY * 0.008;
+view.theta += dTheta;
+view.phi = clampPhi(view.phi + dPhi);
+velTheta = velTheta * 0.6 + dTheta * 0.4;
+velPhi = velPhi * 0.6 + dPhi * 0.4;
+pendDX = 0; pendDY = 0;
+active = true;
+} else if (presetTarget && pointers.size === 0) {
+var dt = presetTarget.theta - view.theta;
+dt = Math.atan2(Math.sin(dt), Math.cos(dt));
+var dp = presetTarget.phi - view.phi;
+if (Math.abs(dt) < 0.002 && Math.abs(dp) < 0.002) {
+view.theta = presetTarget.theta; view.phi = presetTarget.phi; presetTarget = null;
+} else {
+view.theta += dt * 0.18; view.phi += dp * 0.18;
+}
+active = true;
+} else if (pointers.size === 0 && (Math.abs(velTheta) > 0.00005 || Math.abs(velPhi) > 0.00005)) {
+view.theta += velTheta;
+var np = clampPhi(view.phi + velPhi);
+if (np === view.phi) velPhi = 0; else view.phi = np;
+velTheta *= 0.94; velPhi *= 0.94;
+active = true;
+}
+if (Math.abs(view.radius - radiusCur) > 0.001) {
+radiusCur += (view.radius - radiusCur) * 0.22;
+if (Math.abs(view.radius - radiusCur) <= 0.001) radiusCur = view.radius;
+active = true;
+}
+if (active || pointers.size) { render(); requestAnimationFrame(tick);}
+else { loopActive = false;}
+}
+el.addEventListener('pointerdown', function (e) {
+try { el.setPointerCapture(e.pointerId);} catch (err) {}
+pointers.set(e.pointerId, { x: e.clientX, y: e.clientY});
+velTheta = 0; velPhi = 0; pendDX = 0; pendDY = 0; presetTarget = null;
+if (pointers.size === 2) {
+var pts = Array.from(pointers.values());
+lastPinchDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+}
+el.style.cursor = 'grabbing';
+kick();
 });
-el.addEventListener('pointerup', function () { dragging = false;});
+el.addEventListener('pointermove', function (e) {
+var p = pointers.get(e.pointerId);
+if (!p) return;
+if (pointers.size === 1) { pendDX += e.clientX - p.x; pendDY += e.clientY - p.y;}
+p.x = e.clientX; p.y = e.clientY;
+if (pointers.size === 2) {
+var pts = Array.from(pointers.values());
+var d = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+if (lastPinchDist > 0 && d > 0) view.radius = clampRadius(view.radius * lastPinchDist / d);
+lastPinchDist = d;
+}
+kick();
+});
+function endPointer(e) {
+if (!pointers.has(e.pointerId)) return;
+pointers.delete(e.pointerId);
+if (pointers.size < 2) lastPinchDist = 0;
+if (pointers.size === 0) el.style.cursor = 'grab';
+pendDX = 0; pendDY = 0;
+kick();
+}
+el.addEventListener('pointerup', endPointer);
+el.addEventListener('pointercancel', endPointer);
 el.addEventListener('wheel', function (e) {
 e.preventDefault();
-view.radius = Math.min(60, Math.max(4, view.radius * (e.deltaY > 0? 1.1: 0.9)));
-render();
+var delta = e.deltaY * (e.deltaMode === 1 ? 16 : 1);
+view.radius = clampRadius(view.radius * Math.exp(delta * 0.0012));
+kick();
 }, { passive: false});
-el.addEventListener('touchmove', function (e) {
-if (e.touches.length === 2) {
-var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-if (pinch) { view.radius = Math.min(60, Math.max(4, view.radius * pinch / d)); render();}
-pinch = d;
-}
-}, { passive: true});
-el.addEventListener('touchend', function () { pinch = 0;});
 window.addEventListener('resize', function () {
 var w = wrap.clientWidth, h = wrap.clientHeight;
 if (!w ||!h) return;
 renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); render();
 });
-return { scene: scene, group: group, render: render, view: view};
+return { scene: scene, group: group, render: render, view: view, kick: kick, setView: setView};
 }
 
 function drawBin(idx) {
@@ -657,6 +754,7 @@ new THREE.MeshLambertMaterial({ color: color}), true);
 });
 three.view.radius = 15;
 three.render();
+three.kick();
 }
 })();
 </script>
