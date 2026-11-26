@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF請求書→CSV変換ツール（ブラウザで試せるデモ）｜MiUPa</title>
+    <meta name="description" content="PDFの請求書をブラウザにドラッグ＆ドロップするだけで、明細表（品目・数量・単価・金額）を抽出してCSV化するツールのデモです。ファイルは外部に送信されず、ブラウザ内だけで処理されます。">
+    <meta name="keywords" content="PDF,請求書,CSV変換,データ抽出,業務自動化,経理,JavaScript,PDF.js,MiUPa">
+    <meta name="author" content="MiUPa">
+    <meta name="robots" content="index,follow">
+    <meta name="color-scheme" content="light only">
+    <link rel="canonical" href="https://miupa.jp/pdf-invoice-csv/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://miupa.jp/pdf-invoice-csv/">
+    <meta property="og:title" content="PDF請求書→CSV変換ツール（ブラウザで試せるデモ）｜MiUPa">
+    <meta property="og:description" content="PDF請求書の明細表をブラウザ内だけでCSV化するデモ。ファイルは外部送信されません。">
+    <meta property="og:site_name" content="MiUPa Portfolio">
+    <meta property="og:locale" content="ja_JP">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="PDF請求書→CSV変換ツール（ブラウザで試せるデモ）｜MiUPa">
+    <meta name="twitter:description" content="PDF請求書の明細表をブラウザ内だけでCSV化するデモ。ファイルは外部送信されません。">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "PDF請求書→CSV変換ツール",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser",
+      "description": "PDF請求書から明細表（品目・数量・単価・金額）を抽出してCSV化するツール。処理はブラウザ内で完結し、ファイルは外部送信されない。",
+      "url": "https://miupa.jp/pdf-invoice-csv/",
+      "author": { "@type": "Person", "name": "MiUPa", "url": "https://miupa.jp/" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+    }
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3Q0TK9GK8H"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3Q0TK9GK8H');
+    </script>
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23D97757'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='34' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+    <style>
+        html { color-scheme: light only; }
+        body { font-family: sans-serif; margin: 2em auto; max-width: 880px; padding: 0 1em; color: #1F1E1D; background: #FAF9F5; line-height: 1.7; }
+        h1 { font-size: 1.5em; font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho", "Yu Mincho", "Noto Serif JP", Georgia, serif; font-weight: 600; }
+        h2 { font-size: 1.15em; margin-top: 2em; border-bottom: 2px solid #D97757; padding-bottom: .2em; font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho", "Yu Mincho", "Noto Serif JP", Georgia, serif; font-weight: 600; }
+        .card { border: 1px solid #E8E4DA; border-radius: 16px; padding: 1em 1.2em; background: #FFFFFF; }
+        button { margin-top: 1em; padding: .6em 1.6em; font-size: 1em; background: #D97757; color: #fff; border: none; border-radius: 999px; cursor: pointer; }
+        button:disabled { background: #E3B198; cursor: wait; }
+        button.ghost { background: #F0EEE6; color: #C15F3C; border: 1px solid #D97757; }
+        #drop { border: 2px dashed #D97757; border-radius: 16px; padding: 2em 1em; text-align: center; background: #FAF9F5; cursor: pointer; }
+        #drop.over { background: #F0EEE6; }
+        #drop p { margin: .3em 0; }
+        table { border-collapse: collapse; width: 100%; margin-top: 1em; font-size: .88em; }
+        th, td { border: 1px solid #E8E4DA; padding: .35em .5em; text-align: left; vertical-align: top; }
+        th { background: #D97757; color: #fff; }
+        td.num, th.num { text-align: right; }
+        .note { color: #6B6963; font-size: .85em; }
+        .err { color: #b3261e; font-weight: bold; }
+        .status { color: #C15F3C; font-weight: bold; min-height: 1.5em; }
+        a { color: #C15F3C; }
+        .back { margin-top: 3em; font-size: .9em; }
+        .site-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E8E4DA; padding-bottom: .6em; margin-bottom: 1.6em; font-size: .95em; }
+        .site-bar .brand { font-weight: bold; font-size: 1.15em; color: #1F1E1D; text-decoration: none; }
+        .site-bar nav a { margin-left: 1.2em; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="site-bar">
+        <a class="brand" href="https://miupa.jp/">MiUPa</a>
+        <nav><a href="https://miupa.jp/#works">Works</a><a href="https://miupa.jp/#contact">Contact</a></nav>
+    </div>
+    <h1>PDF請求書 → CSV変換ツール <span class="note">（ブラウザで試せるデモ）</span></h1>
+    <p>PDFの請求書から明細表（品目・数量・単価・金額）を読み取り、CSVファイルとしてダウンロードできるツールです。毎月の請求書を会計ソフトや表計算に手で打ち直す作業をなくすためのものです。<strong>処理はすべてこのブラウザの中で完結し、PDFファイルが外部サーバーに送信されることはありません。</strong></p>
+
+    <div class="card">
+        <div id="drop" tabindex="0" role="button" aria-label="PDFファイルを選択">
+            <p><strong>ここに PDF をドラッグ＆ドロップ</strong></p>
+            <p class="note">またはクリックしてファイルを選択</p>
+            <input type="file" id="file" accept="application/pdf,.pdf" hidden>
+        </div>
+        <p>
+            <button type="button" id="sample" class="ghost">サンプル請求書PDFで試す</button>
+            <span class="note">架空の会社・金額で作ったサンプルです。<a href="sample-invoice.pdf" download>サンプルPDFをダウンロード</a>して、手元のPDFリーダーで中身を確認もできます。</span>
+        </p>
+        <p class="status" id="status"></p>
+        <div id="result"></div>
+    </div>
+
+    <h2>出力サンプル</h2>
+    <p>上のサンプル請求書を変換すると、この明細がCSVになります（全角数字は半角にそろえて出力します）。</p>
+    <table>
+        <tr><th>品目</th><th class="num">数量</th><th class="num">単価</th><th class="num">金額</th></tr>
+        <tr><td>サーバー利用料（11月分）</td><td class="num">1</td><td class="num">12,000</td><td class="num">12,000</td></tr>
+        <tr><td>ドメイン管理費</td><td class="num">1</td><td class="num">1,500</td><td class="num">1,500</td></tr>
+        <tr><td>作業費（ページ改修）</td><td class="num">3</td><td class="num">8,000</td><td class="num">24,000</td></tr>
+        <tr><td>ライセンス費用</td><td class="num">2</td><td class="num">3,300</td><td class="num">6,600</td></tr>
+    </table>
+
+    <h2>仕組み</h2>
+    <ul>
+        <li>PDF.js（Mozilla製のPDF解析ライブラリ）で、PDF内のテキストとその座標を読み取ります。</li>
+        <li>座標から「行」を復元し、明細表の見出し行（品目・数量・単価・金額）の位置から「列」を判定して、各セルに振り分けます。小計・消費税・合計の行は明細から除きます。</li>
+        <li>CSVは Excel で文字化けしないよう UTF-8（BOM付き）で出力します。</li>
+    </ul>
+    <p class="note">※ 対応できるのは、テキスト情報が埋め込まれたPDF（システムから出力された請求書など）です。紙をスキャンした画像PDFは文字情報を持たないため、このデモでは抽出できません（実案件ではOCRと組み合わせて対応します）。表の作りによっては列の判定がずれる場合があります。実案件では取引先ごとのフォーマットに合わせて抽出ルールを調整します。</p>
+
+    <h2>カスタマイズ例（案件ごとに調整）</h2>
+    <ul>
+        <li><strong>取引先フォーマット対応：</strong> 取引先ごとに異なる請求書レイアウトへ、抽出ルールを個別に最適化</li>
+        <li><strong>複数ファイル一括処理：</strong> 月末にフォルダ内の請求書PDFをまとめて1つのCSVに統合</li>
+        <li><strong>会計ソフト形式で出力：</strong> freee・マネーフォワード等の取り込み形式に合わせた列構成・勘定科目の自動付与</li>
+        <li><strong>明細以外の項目も抽出：</strong> 請求番号・請求日・支払期限・合計金額などを別シートに出力</li>
+        <li><strong>納品書・見積書・発注書への展開：</strong> 同じ仕組みで他の帳票にも対応</li>
+    </ul>
+
+    <p class="back">← <a href="https://miupa.jp/">MiUPa のポートフォリオに戻る</a></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function () {
+    'use strict';
+    if (window.pdfjsLib) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    /*__CORE_START__*/
+    function normCell(s) {
+        return String(s == null ? '' : s).normalize('NFKC').replace(/\s+/g, ' ').trim();
+    }
+
+    // items: [{s, x, y, w}] — PDF座標（yはページ下端からの基線位置、wはテキスト幅）
+    // 戻り値: { header: [..] | null, rows: [[..], ..] }（rows の先頭は見出し行を含む）
+    function extractTable(items) {
+        var cleaned = items.filter(function (i) { return i.s && i.s.trim() !== ''; });
+        var sorted = cleaned.slice().sort(function (a, b) { return (b.y - a.y) || (a.x - b.x); });
+        var rows = [];
+        sorted.forEach(function (it) {
+            var last = rows.length ? rows[rows.length - 1] : null;
+            if (last && Math.abs(last.y - it.y) <= 4) last.items.push(it);
+            else rows.push({ y: it.y, items: [it] });
+        });
+        rows.forEach(function (r) { r.items.sort(function (a, b) { return a.x - b.x; }); });
+        function rowText(r) { return r.items.map(function (i) { return i.s; }).join(' '); }
+
+        var hIdx = -1;
+        for (var i = 0; i < rows.length; i++) {
+            var t = rowText(rows[i]);
+            if (/(品目|品名)/.test(t) && /(数量|単価|金額)/.test(t)) { hIdx = i; break; }
+        }
+        if (hIdx < 0) {
+            for (var j = 0; j < rows.length; j++) {
+                if (/(品目|品名|項目)/.test(rowText(rows[j]))) { hIdx = j; break; }
+            }
+        }
+        if (hIdx < 0) {
+            // 見出し行が見つからない場合は、横の間隔でセルを割るフォールバック
+            return { header: null, rows: rows.map(function (r) { return splitByGap(r.items); }) };
+        }
+
+        var headerItems = rows[hIdx].items;
+        var bounds = [];
+        for (var k = 0; k < headerItems.length - 1; k++) {
+            bounds.push(((headerItems[k].x + headerItems[k].w) + headerItems[k + 1].x) / 2);
+        }
+        function assign(it) {
+            var c = it.x + it.w / 2;
+            var col = 0;
+            while (col < bounds.length && c >= bounds[col]) col++;
+            return col;
+        }
+
+        var out = [headerItems.map(function (i) { return normCell(i.s); })];
+        for (var r = hIdx + 1; r < rows.length; r++) {
+            if (/(小計|消費税|合計)/.test(rowText(rows[r]))) break;
+            var cells = [];
+            for (var c2 = 0; c2 < headerItems.length; c2++) cells.push('');
+            rows[r].items.forEach(function (it) {
+                var col = assign(it);
+                var v = normCell(it.s);
+                cells[col] = cells[col] ? cells[col] + ' ' + v : v;
+            });
+            if (cells.some(function (c) { return c !== ''; })) out.push(cells);
+        }
+        return { header: out[0], rows: out };
+    }
+
+    function splitByGap(items) {
+        var cells = [], cur = '', prevEnd = null;
+        items.forEach(function (it) {
+            if (prevEnd !== null && it.x - prevEnd > 14) { cells.push(normCell(cur)); cur = ''; }
+            cur = cur ? cur + ' ' + it.s : it.s;
+            prevEnd = it.x + it.w;
+        });
+        if (cur) cells.push(normCell(cur));
+        return cells;
+    }
+
+    function toCsv(rows) {
+        return '\ufeff' + rows.map(function (row) {
+            return row.map(function (c) {
+                c = String(c == null ? '' : c);
+                return /[",\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c;
+            }).join(',');
+        }).join('\r\n');
+    }
+    /*__CORE_END__*/
+
+    var status = document.getElementById('status');
+    var result = document.getElementById('result');
+    var drop = document.getElementById('drop');
+    var fileInput = document.getElementById('file');
+    var lastCsv = null, lastName = 'invoice.csv';
+
+    function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+
+    function render(table, fileName) {
+        if (!table.rows.length) {
+            result.innerHTML = '<p class="err">表を抽出できませんでした。テキスト埋め込み型のPDFかどうかをご確認ください。</p>';
+            status.textContent = '';
+            return;
+        }
+        var html = '<h2>抽出結果（' + esc(fileName) + '）</h2>';
+        html += '<p>' + (table.header ? '明細 ' + (table.rows.length - 1) + ' 行を抽出しました。' : '見出し行が見つからなかったため、間隔ベースで分割しました（' + table.rows.length + ' 行）。') + '</p>';
+        html += '<p><button type="button" id="dl">CSVをダウンロード</button></p>';
+        html += '<table>';
+        table.rows.forEach(function (row, ri) {
+            var tag = (table.header && ri === 0) ? 'th' : 'td';
+            html += '<tr>' + row.map(function (c) {
+                var cls = /^[\d,.\-]+$/.test(c) ? ' class="num"' : '';
+                return '<' + tag + cls + '>' + esc(c) + '</' + tag + '>';
+            }).join('') + '</tr>';
+        });
+        html += '</table>';
+        result.innerHTML = html;
+        lastCsv = new Blob([toCsv(table.rows)], { type: 'text/csv;charset=utf-8' });
+        document.getElementById('dl').addEventListener('click', function () {
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(lastCsv);
+            a.download = lastName;
+            a.click();
+            setTimeout(function () { URL.revokeObjectURL(a.href); }, 5000);
+        });
+        status.textContent = '完了しました。';
+    }
+
+    function process(arrayBuffer, fileName) {
+        if (!window.pdfjsLib) {
+            result.innerHTML = '<p class="err">PDF解析ライブラリの読み込みに失敗しました。通信環境をご確認のうえ、再読み込みしてください。</p>';
+            return;
+        }
+        status.textContent = '読み取り中…';
+        result.innerHTML = '';
+        lastName = fileName.replace(/\.pdf$/i, '') + '.csv';
+        pdfjsLib.getDocument({ data: arrayBuffer }).promise.then(function (pdf) {
+            var chain = Promise.resolve([]);
+            var pages = [];
+            for (var p = 1; p <= pdf.numPages; p++) pages.push(p);
+            pages.forEach(function (p) {
+                chain = chain.then(function (acc) {
+                    return pdf.getPage(p).then(function (page) {
+                        return page.getTextContent();
+                    }).then(function (tc) {
+                        tc.items.forEach(function (it) {
+                            acc.push({ s: it.str, x: it.transform[4], y: it.transform[5] + (pdf.numPages - p) * 100000, w: it.width });
+                        });
+                        return acc;
+                    });
+                });
+            });
+            return chain;
+        }).then(function (items) {
+            render(extractTable(items), fileName);
+        }).catch(function (e) {
+            status.textContent = '';
+            result.innerHTML = '<p class="err">読み取りに失敗しました：' + esc(e && e.message ? e.message : e) + '</p>';
+        });
+    }
+
+    function handleFile(file) {
+        if (!file) return;
+        if (!/\.pdf$/i.test(file.name) && file.type !== 'application/pdf') {
+            result.innerHTML = '<p class="err">PDFファイルを選択してください。</p>';
+            return;
+        }
+        file.arrayBuffer().then(function (buf) { process(buf, file.name); });
+    }
+
+    drop.addEventListener('click', function () { fileInput.click(); });
+    drop.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
+    fileInput.addEventListener('change', function () { handleFile(fileInput.files[0]); });
+    ['dragenter', 'dragover'].forEach(function (ev) {
+        drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('over'); });
+    });
+    ['dragleave', 'drop'].forEach(function (ev) {
+        drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('over'); });
+    });
+    drop.addEventListener('drop', function (e) {
+        var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        handleFile(f);
+    });
+    document.getElementById('sample').addEventListener('click', function () {
+        status.textContent = 'サンプルを読み込んでいます…';
+        fetch('sample-invoice.pdf').then(function (r) {
+            if (!r.ok) throw new Error('サンプルの取得に失敗しました (HTTP ' + r.status + ')');
+            return r.arrayBuffer();
+        }).then(function (buf) { process(buf, 'sample-invoice.pdf'); })
+        .catch(function (e) {
+            status.textContent = '';
+            result.innerHTML = '<p class="err">' + esc(e.message) + '</p>';
+        });
+    });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GASフォーム自動化キット（無料公開）｜MiUPa</title>
+    <meta name="description" content="Googleフォームの回答を自動で整形記録し、申込者への自動返信メールとSlack／LINE通知までを自動化するGoogle Apps Script（GAS）一式です。コードをGitHubで無料公開しています。">
+    <meta name="keywords" content="Google Apps Script,GAS,Googleフォーム,自動化,自動返信,Slack通知,LINE通知,業務効率化,MiUPa">
+    <meta name="author" content="MiUPa">
+    <meta name="robots" content="index,follow">
+    <meta name="color-scheme" content="light only">
+    <meta name="theme-color" content="#FAF9F5">
+    <link rel="canonical" href="https://miupa.jp/gas-form-kit/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://miupa.jp/gas-form-kit/">
+    <meta property="og:title" content="GASフォーム自動化キット（無料公開）｜MiUPa">
+    <meta property="og:description" content="フォーム送信をきっかけに、整形記録・自動返信メール・Slack／LINE通知を自動化するGAS一式。GitHubで無料公開中。">
+    <meta property="og:site_name" content="MiUPa Portfolio">
+    <meta property="og:locale" content="ja_JP">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="GASフォーム自動化キット（無料公開）｜MiUPa">
+    <meta name="twitter:description" content="フォーム送信をきっかけに、整形記録・自動返信メール・Slack／LINE通知を自動化するGAS一式。GitHubで無料公開中。">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "GASフォーム自動化キット",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Google Workspace",
+      "description": "Googleフォーム送信をトリガーに、回答の整形記録、自動返信メール、Slack/LINE通知を行うGoogle Apps Script一式。",
+      "url": "https://miupa.jp/gas-form-kit/",
+      "author": { "@type": "Person", "name": "MiUPa", "url": "https://miupa.jp/" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+    }
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3Q0TK9GK8H"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3Q0TK9GK8H');
+    </script>
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23D97757'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='34' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+    <style>
+        html { color-scheme: light only; }
+        body { font-family: sans-serif; margin: 2em auto; max-width: 880px; padding: 0 1em; color: #1F1E1D; background: #FAF9F5; line-height: 1.7; }
+        h1 { font-size: 1.5em; font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho", "Yu Mincho", "Noto Serif JP", Georgia, serif; font-weight: 600; }
+        h2 { font-size: 1.15em; margin-top: 2em; border-bottom: 2px solid #D97757; padding-bottom: .2em; font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "YuMincho", "Yu Mincho", "Noto Serif JP", Georgia, serif; font-weight: 600; }
+        .card { border: 1px solid #E8E4DA; border-radius: 16px; padding: 1em 1.2em; background: #FFFFFF; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1em; margin-top: 1em; }
+        .grid .card h3 { margin-top: 0; font-size: 1em; }
+        .btn { display: inline-block; margin-top: 1em; padding: .65em 1.6em; font-size: 1em; background: #D97757; color: #fff; border: none; border-radius: 999px; cursor: pointer; text-decoration: none; }
+        .btn.ghost { background: #F0EEE6; color: #C15F3C; border: 1px solid #D97757; }
+        ol.steps li { margin: .4em 0; }
+        pre { background: #F0EEE6; border: 1px solid #E8E4DA; border-radius: 10px; padding: .8em 1em; overflow-x: auto; font-size: .85em; line-height: 1.6; }
+        .fig { background: #FFFFFF; border: 1px solid #E8E4DA; border-radius: 16px; padding: 1em; margin-top: 1em; }
+        .fig figcaption { color: #6B6963; font-size: .85em; text-align: center; margin-top: .5em; }
+        .note { color: #6B6963; font-size: .85em; }
+        a { color: #C15F3C; }
+        .back { margin-top: 3em; font-size: .9em; }
+        .site-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E8E4DA; padding-bottom: .6em; margin-bottom: 1.6em; font-size: .95em; }
+        .site-bar .brand { font-weight: bold; font-size: 1.15em; color: #1F1E1D; text-decoration: none; }
+        .site-bar nav a { margin-left: 1.2em; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="site-bar">
+        <a class="brand" href="https://miupa.jp/">MiUPa</a>
+        <nav><a href="https://miupa.jp/#works">Works</a><a href="https://miupa.jp/#contact">Contact</a></nav>
+    </div>
+    <h1>GASフォーム自動化キット <span class="note">（コードを無料公開中）</span></h1>
+    <p>Google フォームに申し込みがあるたびに発生する「スプレッドシートへの転記・受付メールの送信・担当者への連絡」を、Google Apps Script（GAS）で自動化する一式です。セミナー申込、予約受付、問い合わせ、資料請求など、フォームの後処理が定型の業務で使えます。コードは GitHub で無料公開しています。</p>
+
+    <figure class="fig">
+        <svg viewBox="0 0 860 190" width="100%" role="img" aria-label="フォーム送信をきっかけに、整形記録・自動返信メール・Slack/LINE通知が自動で動く流れ図">
+            <defs>
+                <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M0,0 L10,5 L0,10 z" fill="#C15F3C"></path>
+                </marker>
+            </defs>
+            <rect x="10" y="60" width="170" height="70" rx="14" fill="#F0EEE6" stroke="#E8E4DA"></rect>
+            <text x="95" y="90" text-anchor="middle" font-size="15" fill="#1F1E1D">Googleフォーム</text>
+            <text x="95" y="112" text-anchor="middle" font-size="12" fill="#6B6963">申込・問い合わせ</text>
+            <rect x="250" y="60" width="170" height="70" rx="14" fill="#D97757"></rect>
+            <text x="335" y="90" text-anchor="middle" font-size="15" fill="#FFFFFF">GAS（本キット）</text>
+            <text x="335" y="112" text-anchor="middle" font-size="12" fill="#FFFFFF">送信トリガーで自動実行</text>
+            <line x1="180" y1="95" x2="244" y2="95" stroke="#C15F3C" stroke-width="2" marker-end="url(#arr)"></line>
+            <rect x="490" y="10" width="160" height="46" rx="12" fill="#FFFFFF" stroke="#E8E4DA"></rect>
+            <text x="570" y="38" text-anchor="middle" font-size="13" fill="#1F1E1D">整形して受付ログに記録</text>
+            <rect x="490" y="72" width="160" height="46" rx="12" fill="#FFFFFF" stroke="#E8E4DA"></rect>
+            <text x="570" y="100" text-anchor="middle" font-size="13" fill="#1F1E1D">申込者へ自動返信メール</text>
+            <rect x="490" y="134" width="160" height="46" rx="12" fill="#FFFFFF" stroke="#E8E4DA"></rect>
+            <text x="570" y="162" text-anchor="middle" font-size="13" fill="#1F1E1D">Slack / LINE / メール通知</text>
+            <line x1="420" y1="80" x2="484" y2="40" stroke="#C15F3C" stroke-width="2" marker-end="url(#arr)"></line>
+            <line x1="420" y1="95" x2="484" y2="95" stroke="#C15F3C" stroke-width="2" marker-end="url(#arr)"></line>
+            <line x1="420" y1="110" x2="484" y2="152" stroke="#C15F3C" stroke-width="2" marker-end="url(#arr)"></line>
+            <text x="730" y="100" font-size="12" fill="#6B6963">すべて自動</text>
+        </svg>
+        <figcaption>フォーム送信後の3つの後処理を自動化します（概念図）</figcaption>
+    </figure>
+
+    <h2>できること</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>1. 整形して記録</h3>
+            <p>回答を「受付ログ」シートに整形して蓄積します。返信・通知の成否も行ごとに記録されるので、「送れたかどうか」を後から追えます。</p>
+        </div>
+        <div class="card">
+            <h3>2. 自動返信メール</h3>
+            <p>申込者へ受付完了メールを即時送信。本文はテンプレート式で、申込者の名前や申込内容を自動で差し込めます。</p>
+        </div>
+        <div class="card">
+            <h3>3. Slack / LINE 通知</h3>
+            <p>新しい申込の内容を、Slack・LINE（公式アカウントの Messaging API）・管理者メールに即時通知。Webhook URL やトークンはコードに書かず、スクリプト プロパティで管理します。</p>
+        </div>
+    </div>
+
+    <h2>導入の流れ</h2>
+    <ol class="steps">
+        <li>Google フォームと、回答スプレッドシートを用意する</li>
+        <li>スプレッドシートの Apps Script エディタに、本キットの5ファイル（.gs）を貼り付ける</li>
+        <li>Config.gs で返信メールの文面などを自社用に編集する</li>
+        <li>（任意）Slack / LINE の通知先をスクリプト プロパティに登録する</li>
+        <li>セットアップ関数を1回実行すれば、あとはフォーム送信のたびに自動で動く</li>
+    </ol>
+    <p>詳しい手順書（画面操作レベル）は GitHub リポジトリの README にあります。</p>
+    <p>
+        <a class="btn" href="https://github.com/MiUPa/gas-form-automation-kit" target="_blank" rel="noopener noreferrer">GitHub でコードを見る</a>
+        <a class="btn ghost" href="https://github.com/MiUPa/gas-form-automation-kit#readme" target="_blank" rel="noopener noreferrer">導入手順書（README）</a>
+    </p>
+
+    <h2>コードの一部</h2>
+    <p>処理の中心は、フォーム送信トリガーから呼ばれるこの関数です（抜粋）。</p>
+    <pre>function handleFormSubmit(e) {
+  const record = eventToRecord_(e);   // 回答を {見出し: 回答} の形に変換
+  processRecord_(record);             // ログ記録 → 自動返信 → Slack/LINE通知
+}
+
+function processRecord_(record) {
+  const email = findEmail_(record);   // メールアドレスの列を自動検出
+  if (email) sendReplyMail_(record, email);
+  const text = buildNotificationText_(record);
+  if (getSecret_('SLACK_WEBHOOK_URL')) notifySlack_(text);
+  if (getSecret_('LINE_CHANNEL_ACCESS_TOKEN')) notifyLine_(text);
+  appendLog_(record, status);         // 受付ログへ整形して記録
+}</pre>
+
+    <h2>カスタマイズ例（案件ごとに調整）</h2>
+    <ul>
+        <li><strong>条件分岐：</strong> 申込内容（希望コース・日時など）に応じて返信文や通知先を切り替える</li>
+        <li><strong>カレンダー連携：</strong> 予約フォームの内容から Google カレンダーへ仮予定を自動登録</li>
+        <li><strong>PDF自動生成：</strong> 回答内容から受付票・請求書PDFを生成し、自動返信に添付</li>
+        <li><strong>締切連動：</strong> 定員・締切に達したらフォームの受付を自動停止</li>
+        <li><strong>顧客管理連携：</strong> 既存の顧客シートへの転記、重複申込の検知</li>
+    </ul>
+    <p class="note">※ このキットは、そのまま使える基本形として公開しているものです。個別の業務フローに合わせた調整・設置のご相談は、<a href="https://miupa.jp/#contact">お問い合わせ</a>からどうぞ。</p>
+
+    <p class="back">← <a href="https://miupa.jp/">MiUPa のポートフォリオに戻る</a></p>
+</body>
+</html>

@@ -10,6 +10,8 @@
 ## Tools and Demos
 
 - [営業リスト自動収集ツール (Sales List Auto-Collection Tool) — live demo](https://miupa.jp/sales-list-tool/): Enter a business category and an area in Japan (e.g. dentists in Okayama City) and it automatically collects publicly available business information (name, address, phone, website) from the OpenStreetMap API, removes duplicates, and produces a CSV sales list. The demo runs entirely in the browser. A Python version outputs formatted Excel files as well.
+- [GASフォーム自動化キット (GAS Form Automation Kit) — open source](https://miupa.jp/gas-form-kit/): A Google Apps Script kit that, on each Google Form submission, logs the response in a formatted sheet, sends an automatic reply email to the applicant, and notifies Slack / LINE / email. Source code and setup guide are published on GitHub (github.com/MiUPa/gas-form-automation-kit).
+- [PDF請求書→CSV変換ツール (PDF Invoice to CSV Converter) — live demo](https://miupa.jp/pdf-invoice-csv/): Drop a PDF invoice into the browser and it extracts the line-item table (item, quantity, unit price, amount) into a CSV file. Everything runs locally in the browser; the PDF is never uploaded. A sample invoice PDF is included.
 - [メルカリShops宛名ラベル作成ツール](http://mercari-print.miupa.jp/): Creates mailing labels (Nagagata No.3 envelope format) from Mercari Shops order CSV files.
 - [投資コーチ Invest Coach](http://invest-coach.miupa.jp/): A web app supporting investment learning and portfolio management.
 
